@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="stylesheets/app.css">
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+		<!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+		<link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
+
+		<!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
+		<script type="text/javascript" src="<%= file %>"></script><% }); %>
+		<script>document.write('<script src="http://'
+			+ (location.host || 'localhost').split(':')[0]
+			+ ':35729/livereload.js"></'
+			+ 'script>')</script>
+	</head>
+	<body>
+		<header>
+			Template for AngularJS projects.
+		</header>
+		<section>
+			<p>Your content goes here.</p>
+		</section>
+		<footer>
+			<small>Copyright 2015 {Viet Hang Nguyen}</small>
+		</footer>
+		<script src="javascripts/app.js"></script>
+	</body>
+</html>
