@@ -23,7 +23,7 @@
 		<section>
 			<div ng-controller = 'newFarmFormController as newFarm'>
 				<form name = 'newFarmForm'
-					ng-controller = >
+					ng-submit = 'newFarm.submit()'>
 					<label for = 'newFarmName'>Name</label>
 					<input name = 'name'
 						type = 'text'
@@ -33,7 +33,7 @@
 						<label for = 'canton'>Canton</label>
 						<select name = 'canton'
 							ng-model = 'newFarm.canton'
-							ng-options = 'canton in cantons'>
+							ng-options = 'canton for canton in cantons'>
 						</select>
 						<br/>
 
@@ -77,6 +77,8 @@
 								ng-model = 'product.price'/>
 						</div>
 					</div>
+					<input type = 'submit'
+						value = 'Submit'/>
 				</form>
 			</div>
 		</section>
