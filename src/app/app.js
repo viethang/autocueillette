@@ -1,1 +1,1 @@
-//Main module goes here
+var app = angular.module('app',[]);
