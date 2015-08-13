@@ -75,119 +75,129 @@ module.exports = function ( grunt ) {
 
 		copy: {
 			build_app_assets: {
-			files: [
-				{
-					src: [ '**' ],
-					dest: '<%= build_dir %>/assets/',
-					cwd: 'src/assets',
-					expand: true
-				}
-			]
+				files: [
+					{
+						src: [ '**' ],
+						dest: '<%= build_dir %>/assets/',
+						cwd: 'src/assets',
+						expand: true
+					}
+				]
 			},
 			build_vendor_assets: {
-			files: [
-				{
-					src: [ '<%= vendor_files.assets %>' ],
-					dest: '<%= build_dir %>/assets/',
-					cwd: '.',
-					expand: true,
-					flatten: true
-				}
-			]
+				files: [
+					{
+						src: [ '<%= vendor_files.assets %>' ],
+						dest: '<%= build_dir %>/assets/',
+						cwd: '.',
+						expand: true,
+						flatten: true
+					}
+				]
 			},
 			build_appjs: {
-			files: [
-				{
-					src: [ '<%= app_files.js %>' ],
-					dest: '<%= build_dir %>/',
-					cwd: '.',
-					expand: true
-				}
-			]
+				files: [
+					{
+						src: [ '<%= app_files.js %>' ],
+						dest: '<%= build_dir %>/',
+						cwd: '.',
+						expand: true
+					}
+				]
 			},
 			build_vendorjs: {
-			files: [
-				{
-					src: [ '<%= vendor_files.js %>' ],
-					dest: '<%= build_dir %>/',
-					cwd: '.',
-					expand: true
-				}
-			]
+				files: [
+					{
+						src: [ '<%= vendor_files.js %>' ],
+						dest: '<%= build_dir %>/',
+						cwd: '.',
+						expand: true
+					}
+				]
 			},
 			build_vendorcss: {
-			files: [
-				{
-					src: [ '<%= vendor_files.css %>' ],
-					dest: '<%= build_dir %>/',
-					cwd: '.',
-					expand: true
-				}
-			]
+				files: [
+					{
+						src: [ '<%= vendor_files.css %>' ],
+						dest: '<%= build_dir %>/',
+						cwd: '.',
+						expand: true
+					}
+				]
+			},
+			build_server: {
+				files: [
+					{
+						src: [ '<%= server_files.js %>' ],
+						dest: '<%= build_dir %>/',
+						cwd: '.',
+						expand: true
+					}
+				]
 			},
 			compile_assets: {
-			files: [
-				{
-					src: [ '**' ],
-					dest: '<%= compile_dir %>/assets',
-					cwd: '<%= build_dir %>/assets',
-					expand: true
-				},
-				{
-					src: [ '<%= vendor_files.css %>' ],
-					dest: '<%= compile_dir %>/',
-					cwd: '.',
-					expand: true
-				}
-			]
+				files: [
+					{
+						src: [ '**' ],
+						dest: '<%= compile_dir %>/assets',
+						cwd: '<%= build_dir %>/assets',
+						expand: true
+					},
+					{
+						src: [ '<%= vendor_files.css %>' ],
+						dest: '<%= compile_dir %>/',
+						cwd: '.',
+						expand: true
+					}
+				]
 			}
 		},
 		concat: {
 			build_css: {
-			src: [
-				'<%= vendor_files.css %>',
-				'<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
-			],
-			dest: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+				src: [
+					'<%= vendor_files.css %>',
+					'<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+				],
+				dest: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
 			},
 			compile_js: {
-			options: {
-				banner: '<%= meta.banner %>'
-			},
-			src: [
-				'<%= vendor_files.js %>',
-				'module.prefix',
-				'<%= build_dir %>/src/**/*.js',
-				'<%= html2js.app.dest %>',
-				'<%= html2js.common.dest %>',
-				'module.suffix'
-			],
-			dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.js'
+				options: {
+					banner: '<%= meta.banner %>'
+				},
+				src: [
+					'<%= vendor_files.js %>',
+					'module.prefix',
+					'<%= build_dir %>/src/**/*.js',
+					'<%= html2js.app.dest %>',
+					'<%= html2js.common.dest %>',
+					'module.suffix'
+				],
+				dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.js'
 			}
 		},
 
 
 		ngAnnotate: {
 			compile: {
-			files: [
-				{
-					src: [ '<%= app_files.js %>' ],
-					cwd: '<%= build_dir %>',
-					dest: '<%= build_dir %>',
-					expand: true
-				}
-			]
+				files: [
+					{
+						src: [ '<%= app_files.js %>' ],
+						cwd: '<%= build_dir %>',
+						dest: '<%= build_dir %>',
+						expand: true
+					}
+				]
 			}
 		},
 
 		uglify: {
 			compile: {
-			options: {
-				banner: '<%= meta.banner %>'
-			},
-			files: {
-				'<%= concat.compile_js.dest %>': '<%= concat.compile_js.dest %>'
-			}
+				options: {
+					banner: '<%= meta.banner %>'
+				},
+				files: {
+					'<%= concat.compile_js.dest %>': '<%= concat.compile_js.dest %>'
+				}
 			}
 		},
 
@@ -231,22 +241,22 @@ module.exports = function ( grunt ) {
 
 		jshint: {
 			src: [
-			'<%= app_files.js %>'
+				'<%= app_files.js %>'
 			],
 			test: [
-			'<%= app_files.jsunit %>'
+				'<%= app_files.jsunit %>'
 			],
 			gruntfile: [
-			'Gruntfile.js'
+				'Gruntfile.js'
 			],
 			options: {
-			curly: true,
-			immed: true,
-			newcap: true,
-			noarg: true,
-			sub: true,
-			boss: true,
-			eqnull: true
+				curly: true,
+				immed: true,
+				newcap: true,
+				noarg: true,
+				sub: true,
+				boss: true,
+				eqnull: true
 			},
 			globals: {}
 		},
@@ -286,24 +296,33 @@ module.exports = function ( grunt ) {
 
 		index: {
 			build: {
-			dir: '<%= build_dir %>',
-			src: [
-				'<%= vendor_files.js %>',
-				'<%= build_dir %>/src/**/*.js',
-				'<%= html2js.common.dest %>',
-				'<%= html2js.app.dest %>',
-				'<%= vendor_files.css %>',
-				'<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
-			]
+				dir: '<%= build_dir %>',
+				src: [
+					'<%= vendor_files.js %>',
+					'<%= build_dir %>/src/**/*.js',
+					'<%= html2js.common.dest %>',
+					'<%= html2js.app.dest %>',
+					'<%= vendor_files.css %>',
+					'<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+				]
 			},
 
 			compile: {
-			dir: '<%= compile_dir %>',
-			src: [
-				'<%= concat.compile_js.dest %>',
-				'<%= vendor_files.css %>',
-				'<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
-			]
+				dir: '<%= compile_dir %>',
+				src: [
+					'<%= concat.compile_js.dest %>',
+					'<%= vendor_files.css %>',
+					'<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+				]
+			}
+		},
+
+		server: {
+			build: {
+				dir: '<%= build_dir %>'
+			},
+			compile: {
+				dir: '<%= compile_dir %>'
 			}
 		},
 
