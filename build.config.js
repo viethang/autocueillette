@@ -10,7 +10,8 @@ module.exports = {
   build_dir: 'build',
   compile_dir: 'bin',
   app_files: {
-    js: [ 'src/**/*.js', 'src/**/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*.js' ],
+    js: [ 'src/**/*.js', 'src/**/**/*.js', '!src/**/*.spec.js',
+		'!src/assets/**/*.js', '!src/server/**/*.js'],
     jsunit: [ 'src/**/*.spec.js' ],
 
 	 atpl: [ 'src/app/**/*.tpl.html' ],
@@ -43,4 +44,7 @@ module.exports = {
     assets: [
     ]
   },
+  server_files: {
+	  js: ['src/server/server.js']
+  }
 };

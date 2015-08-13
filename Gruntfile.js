@@ -357,6 +357,11 @@ module.exports = function ( grunt ) {
 				tasks: [ 'jshint:src', 'karma:unit:run', 'copy:build_appjs' ]
 			},
 
+			serverjs: {
+				files: ['<%= server_files.js %>'],
+				tasks: ['server:build']
+			},
+
 			assets: {
 				files: [
 					'src/assets/**/*'
@@ -468,7 +473,7 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'build', [
 		'clean', 'html2js', 'jshint', 'less:build', 'sass:build',
 		'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
-		'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'index:build', 'karmaconfig',
+		'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'index:build', 'server:build', 'karmaconfig',
 		'karma:continuous'
 	]);
 
@@ -477,7 +482,8 @@ module.exports = function ( grunt ) {
 		* minifying your code.
 		*/
 	grunt.registerTask( 'compile', [
-		'less:compile', 'sass:compile', 'copy:compile_assets', 'ngAnnotate', 'concat:compile_js', 'uglify', 'index:compile'
+		'less:compile', 'sass:compile', 'copy:compile_assets', 'ngAnnotate',
+		'concat:compile_js', 'uglify', 'index:compile', 'server:compile'
 	]);
 
 	/**
@@ -543,6 +549,10 @@ module.exports = function ( grunt ) {
 			});
 			}
 		});
+	});
+
+	grunt.registerMultiTask('server', 'Copy server file', function(){
+		grunt.file.copy('src/server/server.js', this.data.dir + '/server.js');
 	});
 
 };
