@@ -19,7 +19,16 @@ require('http').createServer(function(req, res) {
 				jsonString += data;
 			});
 			req.on('end', function () {
-				console.log('Data  received ok' ,JSON.parse(jsonString));
+				var farm = JSON.parse(jsonString);
+				console.log('Data  received ok', farm);
+				var nano = require('nano')('http://localhost:5984');
+				var farmDB = nano.db.use('auto_cueillette_farms');
+				farmDB.insert(farm, function(err, body) {
+					if (!err) {
+						console.log(body.rows);
+					}
+				});
+				
 			});
 			res.end();
 		}
