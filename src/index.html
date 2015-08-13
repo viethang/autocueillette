@@ -3,7 +3,6 @@
 	<head>
 		<meta charset="utf-8">
 		<title></title>
-		<link rel="stylesheet" href="stylesheets/app.css">
 <!-- 		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"> -->
 
 		<!-- compiled CSS --><% styles.forEach( function ( file ) { %>
@@ -21,7 +20,7 @@
 			Autocueillette Suisse
 		</header>
 		<section>
-			<div ng-controller = 'newFarmFormController as newFarm'>
+			<div ng-controller = 'NewFarmFormController as newFarm'>
 				<form name = 'newFarmForm'
 					ng-submit = 'newFarm.submit()'>
 					<label for = 'newFarmName'>Name</label>
@@ -65,10 +64,10 @@
 
 					<div>
 						<span>Products</span>
-						<div ng-repeat = 'product in newFarm.products'>
-							<label ng-cloak>Product{{$index}}</label>
-							<input name = 'product'
-								ng-model = 'product.name'/>
+						<div ng-repeat = 'product in products'>
+							<label>Product {{$index}}</label>
+							<input type = 'text'
+								name = 'product'/>
 							<label>Gather period</label>
 							<input name = 'gatherPeriod'
 								ng-model = 'product.gatherPeriod'/>
