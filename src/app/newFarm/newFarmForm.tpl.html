@@ -1,0 +1,61 @@
+<a ui-sref="searchFarm">Search one farm</a>
+<div ng-controller = 'NewFarmFormController as newFarm'>
+	<form name = 'newFarmForm'
+		ng-submit = 'newFarm.submit()'>
+		<label for = 'newFarmName'>Name</label>
+		<input name = 'name'
+			type = 'text'
+			ng-model = 'newFarm.name'/><br/>
+
+		<div name = 'address'>
+			<label for = 'canton'>Canton</label>
+			<select name = 'canton'
+				ng-model = 'newFarm.canton'
+				ng-options = 'canton for canton in cantons'>
+			</select>
+			<br/>
+
+			<label for = 'newFarmCity'>City/Town</label>
+			<input name = 'city'
+				type = 'text'
+				ng-model = 'newFarm.city'/><br/>
+
+			<label for = 'newFarmPostalCode'>Postal Code</label>
+			<input name = 'postalCode'
+				type = 'number'
+				ng-model = 'newFarm.postalCode'/><br/>
+
+			<label for = 'newFarmStreet'>Street address</label>
+			<input name = 'street'
+				type = 'text'
+				ng-model = 'newFarm.street'/><br/>
+
+		</div>
+
+		<label for = 'newFarmTel'>Telephone</label>
+		<input name = 'tel'
+			type = 'text'
+			ng-model = 'newFarm.tel'/><br/>
+
+		<label for = 'newFarmOpenHours'>Open hours</label>
+		<input name = 'openHours'
+			ng-model = 'newFarm.openHours'/>
+
+		<div>
+			<span>Products</span>
+			<div ng-repeat = 'product in products'>
+				<label>Product {{$index}}</label>
+				<input type = 'text'
+					name = 'product'/>
+				<label>Gather period</label>
+				<input name = 'gatherPeriod'
+					ng-model = 'product.gatherPeriod'/>
+				<label>Price</label>
+				<input name = 'price'
+					ng-model = 'product.price'/>
+			</div>
+		</div>
+		<input type = 'submit'
+			value = 'Submit'/>
+	</form>
+</div>
