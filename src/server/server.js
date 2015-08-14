@@ -33,6 +33,17 @@ require('http').createServer(function(req, res) {
 			res.end();
 		}
 	}
+	if (req.url === '/searchFarm.html') {
+		var nano = require('nano')('http://localhost:5984');
+		var farmDB = nano.db.use('auto_cueillette_farms');
+		console.log('search requested');
+		farmDB.view('example', 'by_canton', {'key': 'Vaud'}, function(err, body) {
+			console.log('view!');
+			res.write(JSON.stringify(body.rows));
+			res.end();
+		});
+		
+	}
 }).listen(8000);
 
 function addFarm(farm) {
