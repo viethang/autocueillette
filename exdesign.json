@@ -1,0 +1,9 @@
+{
+	"_id" : "_design/example",
+	"views" : {
+		"by_canton" : {
+			"map" : "function(doc){ emit(doc.adress.canton, [doc.address.tel])}"
+		}
+	}
+}
+
