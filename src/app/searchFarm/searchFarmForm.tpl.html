@@ -1,5 +1,19 @@
 <div ng-controller = 'SearchFarmController as searchFarmCtrl'>
+	Find a farm
+	<form name = 'searchForm'>
+		<label>Canton</label>
+		<select name = 'canton'
+			ng-model = 'searchFarmCtrl.searchForm.canton'
+			ng-options = 'canton for canton in cantons'>
+		</select>
+		<br/>
+		<label>Product</label>
+		<input name = 'product'
+			ng-model = 'searchFarmCtrl.searchForm.product'/>
+	</form>
 	<button ng-click = 'searchFarmCtrl.search()'> Search</button>
+	<div ui-view></div>
+
 </div>
 
 <a ui-sref="newFarm">New farm</a>
