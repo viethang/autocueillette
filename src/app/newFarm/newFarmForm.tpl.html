@@ -1,61 +1,64 @@
 <a ui-sref="searchFarm">Search one farm</a>
-<div ng-controller = 'NewFarmFormController as newFarm'>
-	<form name = 'newFarmForm'
-		ng-submit = 'newFarm.submit()'>
-		<label for = 'newFarmName'>Name</label>
+<div ng-controller = 'NewFarmFormController as newFarmCtrl'>
+	<form>
+		<label>Name</label>
 		<input name = 'name'
 			type = 'text'
-			ng-model = 'newFarm.name'/><br/>
+			ng-model = 'newFarmCtrl.farm.name'/><br/>
 
 		<div name = 'address'>
-			<label for = 'canton'>Canton</label>
+			<label>Canton</label>
 			<select name = 'canton'
-				ng-model = 'newFarm.canton'
+				ng-model = 'newFarmCtrl.farm.canton'
 				ng-options = 'canton for canton in cantons'>
 			</select>
 			<br/>
 
-			<label for = 'newFarmCity'>City/Town</label>
+			<label>City/Town</label>
 			<input name = 'city'
 				type = 'text'
-				ng-model = 'newFarm.city'/><br/>
+				ng-model = 'newFarmCtrl.farm.city'/><br/>
 
-			<label for = 'newFarmPostalCode'>Postal Code</label>
+			<label>Postal Code</label>
 			<input name = 'postalCode'
 				type = 'number'
-				ng-model = 'newFarm.postalCode'/><br/>
+				ng-model = 'newFarmCtrl.farm.postalCode'/><br/>
 
-			<label for = 'newFarmStreet'>Street address</label>
+			<label>Street address</label>
 			<input name = 'street'
 				type = 'text'
-				ng-model = 'newFarm.street'/><br/>
-
+				ng-model = 'newFarmCtrl.farm.street'/><br/>
+			<label>Telephone</label>
+			<input name = 'tel'
+				type = 'text'
+				ng-model = 'newFarmCtrl.farm.tel'/><br/>
 		</div>
 
-		<label for = 'newFarmTel'>Telephone</label>
-		<input name = 'tel'
-			type = 'text'
-			ng-model = 'newFarm.tel'/><br/>
-
-		<label for = 'newFarmOpenHours'>Open hours</label>
+		<label>Open hours</label>
 		<input name = 'openHours'
-			ng-model = 'newFarm.openHours'/>
+			ng-model = 'newFarmCtrl.farm.openHours'/>
 
 		<div>
 			<span>Products</span>
-			<div ng-repeat = 'product in products'>
-				<label>Product {{$index}}</label>
+			<div ng-repeat = 'product in newFarmCtrl.farm.products'>
+				<label>Product {{$index + 1}}</label>
 				<input type = 'text'
-					name = 'product'/>
+					name = 'product'
+					ng-model = 'product.name'/>
 				<label>Gather period</label>
 				<input name = 'gatherPeriod'
 					ng-model = 'product.gatherPeriod'/>
 				<label>Price</label>
 				<input name = 'price'
 					ng-model = 'product.price'/>
+				<button
+					type = 'button'
+					ng-click = 'newFarmCtrl.removeProduct($index)'>Remove</button>
 			</div>
+			<button type = 'button'
+				ng-click = 'newFarmCtrl.addProduct()'>Add product</button>
 		</div>
-		<input type = 'submit'
-			value = 'Submit'/>
+		<input type = 'button' value = 'Submit'
+			ng-click = 'newFarmCtrl.submit()'/>
 	</form>
 </div>

@@ -1,20 +1,11 @@
 app.controller('NewFarmFormController', ['$scope', '$http',
 					function($scope, $http) {
-	$scope.products = [{}];
+	var self = this;
+	self.farm = {};
+	self.farm.products = [{}];
 
 	this.submit = function() {
-		var farm = {
-			name: this.name,
-			address: {
-				canton: this.canton,
-				city: this.city,
-				postalCode: this.postalCode,
-				street: this.street
-			},
-			tel: this.tel,
-			products: this.products,
-			openHours: this.openHours
-		};
+		var farm = self.farm;
 		var req = {
 			method: 'post',
 			url: '/newFarm.html',
@@ -22,12 +13,20 @@ app.controller('NewFarmFormController', ['$scope', '$http',
 		};
 		$http(req).then(function() {
 			console.log('ok');
-			this.name = 'tata';
-			this.city = undefined;
-		}.bind(this), function() {
+			self.farm = {};
+			self.farm.products = [{}];
+		}, function() {
 			console.log('error');
 		});
 		console.log('submit!');
 	};
 	$scope.cantons = ['Vaud', 'Valais'];
+
+	this.addProduct = function() {
+		self.farm.products.push({});
+	};
+
+	this.removeProduct = function(index) {
+		self.farm.products.splice(index,1);
+	};
 }]);
