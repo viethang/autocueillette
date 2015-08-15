@@ -6,11 +6,12 @@ app.controller('SearchFarmController', ['$scope', '$http', '$state',
 		console.log('search');
 		var req = {
 			method: 'post',
-			url: '/searchFarm.html',
+			url: '/showFarms.html',
 			data: this.searchForm
 		};
 		$http(req).then(function(res) {
 			console.log(res.data);
+			console.log(this.searchForm);
 			this.results = res.data;
 			$state.transitionTo('searchFarm.showFarms');
 		}.bind(this), function() {});
