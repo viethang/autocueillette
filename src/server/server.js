@@ -4,11 +4,14 @@ require('http').createServer(function(req, res) {
 	var method = req.method.toLowerCase();
 	console.log(req.url);
 	if (method === 'get') {
-		var file = path.normalize('.' + req.url);
-		fs.exists(file, function(exists) {
+		var filename = path.normalize('.' + req.url);
+		if (filename === './') filename = 'index.html';
+		fs.exists(filename, function(exists) {
 			if (exists) {
-				fs.createReadStream(file).pipe(res);
-				console.log('Serving file', file);
+				fs.createReadStream(filename).pipe(res);
+				console.log('Serving file', filename);
+			} else {
+				fs.createReadStream('index.html').pipe(res);
 			}
 		});
 	}
@@ -28,12 +31,11 @@ require('http').createServer(function(req, res) {
 						console.log(body.rows);
 					}
 				});
-				
 			});
 			res.end();
 		}
 	}
-	if (req.url === '/searchFarm.html') {
+	if (req.url === '/showFarms.html') {
 		var nano = require('nano')('http://localhost:5984');
 		var farmDB = nano.db.use('auto_cueillette_farms');
 		var jsonString = '';
@@ -42,9 +44,13 @@ require('http').createServer(function(req, res) {
 		});
 		req.on('end', function () {
 			var farm = JSON.parse(jsonString);
+			var key;
 			console.log('search requested');
-			farmDB.view('example', 'by_canton', {'key': 'Vaud'}, function(err, body) {
-				console.log('view!');
+			if (farm.canton) {
+				key = farm.canton;
+			}
+			farmDB.view('example', 'by_canton', {'key': key}, function(err, body) {
+				console.log('fabulous view!', farm);
 				res.write(JSON.stringify(body.rows));
 				res.end();
 			});
