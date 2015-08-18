@@ -10,11 +10,11 @@ module.exports = {
   build_dir: 'build',
   compile_dir: 'bin',
   app_files: {
-    js: [ 'src/**/*.js', 'src/**/**/*.js','src/**/**/**/*.js',  '!src/**/*.spec.js',
-		'!src/assets/**/*.js', '!src/server/**/*.js'],
-    jsunit: [ 'src/**/*.spec.js' ],
+    js: [ 'src/client/*.js', 'src/client/**/*.js',
+	'!src/client/*.spec.js','!src/client/*.spec.js' ],
+    jsunit: [ 'src/client/**/*.spec.js' ],
 
-	 atpl: [ 'src/app/**/*.tpl.html' ],
+	 atpl: [ 'src/client/**/*.tpl.html' ],
     ctpl: [ 'src/common/**/*.tpl.html' ],
 
     html: [ 'src/index.html' ],

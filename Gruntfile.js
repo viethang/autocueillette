@@ -266,7 +266,7 @@ module.exports = function ( grunt ) {
 
 			app: {
 			options: {
-				base: 'src/app'
+				base: 'src/client/'
 			},
 			src: [ '<%= app_files.atpl %>' ],
 			dest: '<%= build_dir %>/templates-app.js'
@@ -299,7 +299,7 @@ module.exports = function ( grunt ) {
 				dir: '<%= build_dir %>',
 				src: [
 					'<%= vendor_files.js %>',
-					'<%= build_dir %>/src/**/*.js',
+					'<%= build_dir %>/src/client/app.js',
 					'<%= html2js.common.dest %>',
 					'<%= html2js.app.dest %>',
 					'<%= vendor_files.css %>',
@@ -544,7 +544,7 @@ module.exports = function ( grunt ) {
 	
 	grunt.registerTask('start-server', 'Start server', function() {
 		var cp = require('child_process');
-		var server = cp.spawn('nodemon', [ 'src/server/server.js' ], {cwd: './build'});
+		var server = cp.spawn('nodemon', [ 'src/server/server.js' ], {cwd: './build', stdio: 'inherit'});
 		server.on('error', function(err) {
 			console.error('error!', err.toString());
 		});
