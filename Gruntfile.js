@@ -299,7 +299,7 @@ module.exports = function ( grunt ) {
 				dir: '<%= build_dir %>',
 				src: [
 					'<%= vendor_files.js %>',
-					'<%= build_dir %>/src/client/app.js',
+					'<%= build_dir %>/src/client/**/*.js',
 					'<%= html2js.common.dest %>',
 					'<%= html2js.app.dest %>',
 					'<%= vendor_files.css %>',

@@ -10,7 +10,7 @@ module.exports = {
   build_dir: 'build',
   compile_dir: 'bin',
   app_files: {
-    js: [ 'src/client/*.js', 'src/client/**/*.js',
+    js: [ 'src/client/**/*.js',
 	'!src/client/*.spec.js','!src/client/*.spec.js' ],
     jsunit: [ 'src/client/**/*.spec.js' ],
 
