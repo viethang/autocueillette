@@ -8,13 +8,13 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
 	})
 	.state('newFarm', {
 		url: '/newFarm',
-		templateUrl: 'newFarm/newFarmForm.tpl.html'
+		templateUrl: 'components/newFarm/newFarmForm.tpl.html'
 	})
 	.state('searchFarm', {
 		url: '/searchFarm',
-		templateUrl: 'searchFarm/searchFarmForm.tpl.html'
+		templateUrl: 'components/searchFarm/searchFarmForm.tpl.html'
 	})
 	.state('searchFarm.showFarms', {
-		templateUrl:'searchFarm/showFarms.tpl.html'
+		templateUrl:'components/searchFarm/showFarms.tpl.html'
 	});
 }]);
