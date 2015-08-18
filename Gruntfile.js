@@ -317,15 +317,6 @@ module.exports = function ( grunt ) {
 			}
 		},
 
-		server: {
-			build: {
-				dir: '<%= build_dir %>'
-			},
-			compile: {
-				dir: '<%= compile_dir %>'
-			}
-		},
-
 		karmaconfig: {
 			unit: {
 			dir: '<%= build_dir %>',
@@ -359,7 +350,7 @@ module.exports = function ( grunt ) {
 
 			serverjs: {
 				files: ['<%= server_files.js %>'],
-				tasks: ['server:build']
+				tasks: ['copy:build_server']
 			},
 
 			assets: {
@@ -460,7 +451,7 @@ module.exports = function ( grunt ) {
 		* before watching for changes.
 		*/
 	grunt.renameTask( 'watch', 'delta' );
-	grunt.registerTask( 'watch', [ 'build', 'karma:unit', 'delta' ] );
+	grunt.registerTask( 'watch', [ 'build', 'karma:unit', 'start-server', 'delta'] );
 	grunt.registerTask('e2e-test', ['connect:test', 'protractor:e2e']);
 	/**
 		* The default task is to build and compile.
@@ -473,7 +464,7 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'build', [
 		'clean', 'html2js', 'jshint', 'less:build', 'sass:build',
 		'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
-		'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'index:build', 'server:build', 'karmaconfig',
+		'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'copy:build_server', 'index:build', 'karmaconfig',
 		'karma:continuous'
 	]);
 
@@ -550,9 +541,12 @@ module.exports = function ( grunt ) {
 			}
 		});
 	});
-
-	grunt.registerMultiTask('server', 'Copy server file', function(){
-		grunt.file.copy('src/server/server.js', this.data.dir + '/server.js');
+	
+	grunt.registerTask('start-server', 'Start server', function() {
+		var cp = require('child_process');
+		var server = cp.spawn('nodemon', [ 'src/server/server.js' ], {cwd: './build'});
+		server.on('error', function(err) {
+			console.error('error!', err.toString());
+		});
 	});
-
 };
