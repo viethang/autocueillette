@@ -1,5 +1,5 @@
-app.controller('SearchFarmController', ['$scope', '$http', '$state',
-					function($scope, $http, $state) {
+
+function searchFarmController($scope, $http, $state) {
 	this.searchForm = {};
 	$scope.cantons = ['Vaud', 'Valais'];
 	this.search = function() {
@@ -16,4 +16,6 @@ app.controller('SearchFarmController', ['$scope', '$http', '$state',
 			$state.transitionTo('searchFarm.showFarms');
 		}.bind(this), function() {});
 	};
-}]);
+}
+
+searchFarmController.$inject = ['$scope', '$http', '$state'];

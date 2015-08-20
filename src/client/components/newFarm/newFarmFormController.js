@@ -1,5 +1,4 @@
-app.controller('NewFarmFormController', ['$scope', '$http',
-					function($scope, $http) {
+function newFarmFormController($scope, $http) {
 	var self = this;
 	self.farm = {};
 	self.farm.products = [{}];
@@ -29,4 +28,6 @@ app.controller('NewFarmFormController', ['$scope', '$http',
 	this.removeProduct = function(index) {
 		self.farm.products.splice(index,1);
 	};
-}]);
+}
+
+newFarmFormController.$inject = ['$scope', '$http']; 
