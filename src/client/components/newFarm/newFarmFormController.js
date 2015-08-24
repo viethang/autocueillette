@@ -13,6 +13,12 @@ function newFarmFormController($scope, $http) {
 		$scope.showMap = true;
 	};
 
+	this.showSuggestions = function() {
+		resource = self.farmSuggestion[0].resources[0];
+		self.farm.city = resource.address.locality;
+		self.farm.canton = resource.address.adminDistrict;
+		self.farm.streetLine = resource.address.addressLine;
+	};
 
 	this.submit = function() {
 		var farm = self.farm;
