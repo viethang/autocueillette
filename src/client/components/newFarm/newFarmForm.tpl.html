@@ -127,9 +127,10 @@
 	<div class = 'col-md-6'>
 		<div name = 'farmSuggestion'>
 			<div ng-repeat = 'suggestion in newFarmCtrl.farmSuggestion'>
-				<a href = '' 
+				<a href = ''
+					class = 'farm-suggestion'
 					ng-bind = '$index + 1 + ". " + suggestion.name'
-					ng-click = 'newFarmCtrl.showDetails(suggestion)'></a>
+					ng-click = 'newFarmCtrl.showDetails(suggestion, $index)'></a>
 			</div>
 		</div>
 		<div id = 'map' aspect-ratio = '1:2' ng-show = 'showMap'>

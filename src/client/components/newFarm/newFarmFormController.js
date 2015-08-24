@@ -1,4 +1,4 @@
-function newFarmFormController($scope, $http, searchService) {
+function newFarmFormController($scope, $http, searchService, $timeout) {
 	var map = new OSMMap();
 	var resource;
 	var farm;
@@ -8,17 +8,20 @@ function newFarmFormController($scope, $http, searchService) {
 	products = this.farm.products = [{}];
 	farmSuggestion = this.farmSuggestion = {};
 
-	this.showDetails = function(suggestion) {
+	this.showDetails = function(suggestion, index) {
 		var coordinates = suggestion.geocodePoints[0].coordinates;
 		resetFarmAddress(suggestion);
 		map.resetView(coordinates);
 		$scope.showMap = true;
+		$timeout(function() {
+			markChosenAddress(index);
+		});
 	};
 
 	this.showSuggestions = function() {
 		var suggestion = farmSuggestion[0];
 		resetFarmAddress(suggestion);
-		this.showDetails(suggestion);
+		this.showDetails(suggestion, 0);
 		$scope.showParsedAddress = true;
 	}.bind(this);
 
@@ -121,7 +124,17 @@ function newFarmFormController($scope, $http, searchService) {
 		farm.city = address.locality;
 		farm.canton = address.adminDistrict;
 		farm.streetLine = address.addressLine;
+		farm.formattedAddress = address.formattedAddress;
+		farm.coordinates = suggestion.geocodePoints[0].coordinates;
+	}
+	
+	function markChosenAddress(index) {
+		var links = document.getElementsByClassName('farm-suggestion');
+		[].forEach.call(links, function(link) {
+			angular.element(link).removeClass('chosen');
+		});
+		angular.element(links[index]).addClass('chosen');
 	}
 }
 
-newFarmFormController.$inject = ['$scope', '$http', 'searchService']; 
+newFarmFormController.$inject = ['$scope', '$http', 'searchService', '$timeout']; 
