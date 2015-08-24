@@ -1,64 +1,137 @@
-<a ui-sref="searchFarm">Search one farm</a>
 <div ng-controller = 'NewFarmFormController as newFarmCtrl'>
-	<form>
-		<label>Name</label>
-		<input name = 'name'
-			type = 'text'
-			ng-model = 'newFarmCtrl.farm.name'/><br/>
-
-		<div name = 'address'>
-			<label>Canton</label>
-			<select name = 'canton'
-				ng-model = 'newFarmCtrl.farm.canton'
-				ng-options = 'canton for canton in cantons'>
-			</select>
-			<br/>
-
-			<label>City/Town</label>
-			<input name = 'city'
-				type = 'text'
-				ng-model = 'newFarmCtrl.farm.city'/><br/>
-
-			<label>Postal Code</label>
-			<input name = 'postalCode'
-				type = 'number'
-				ng-model = 'newFarmCtrl.farm.postalCode'/><br/>
-
-			<label>Street address</label>
-			<input name = 'street'
-				type = 'text'
-				ng-model = 'newFarmCtrl.farm.street'/><br/>
-			<label>Telephone</label>
-			<input name = 'tel'
-				type = 'text'
-				ng-model = 'newFarmCtrl.farm.tel'/><br/>
-		</div>
-
-		<label>Open hours</label>
-		<input name = 'openHours'
-			ng-model = 'newFarmCtrl.farm.openHours'/>
-
-		<div>
-			<span>Products</span>
-			<div ng-repeat = 'product in newFarmCtrl.farm.products'>
-				<label>Product {{$index + 1}}</label>
-				<input type = 'text'
-					name = 'product'
-					ng-model = 'product.name'/>
-				<label>Gather period</label>
-				<input name = 'gatherPeriod'
-					ng-model = 'product.gatherPeriod'/>
-				<label>Price</label>
-				<input name = 'price'
-					ng-model = 'product.price'/>
-				<button
-					type = 'button'
-					ng-click = 'newFarmCtrl.removeProduct($index)'>Remove</button>
+	<div class = 'row-fluid'>
+	<form class = 'form-horizontal col-md-6'
+		ng-submit = 'newFarmCtrl.submit()'>
+		<div id = 'simpleForm' class = 'row'>
+			<div class = 'form-group row no-gutter'>
+				<label class = 'control-label col-md-3'>Name</label>
+				<div class = 'col-md-9'>
+					<input id = 'name'
+						class = 'form-control'
+						type = 'text'
+						ng-model = 'newFarmCtrl.farm.name'
+						disable-emitter/>
+				</div>
 			</div>
-			<button type = 'button'
-				ng-click = 'newFarmCtrl.addProduct()'>Add product</button>
+			<div class = 'form-group row no-gutter'>
+				<label class = 'control-label col-md-3'>Telephone</label>
+				<div class = 'col-md-9'>
+					<input class = 'form-control'
+						name = 'tel'
+						type = 'text'
+						ng-model = 'newFarmCtrl.farm.tel'
+						disable-emitter/>
+				</div>
+			</div>
+			<div class = 'form-group row no-gutter'>
+				<label class = 'control-label col-md-3'>Address</label>
+				<div class = 'col-md-9'>
+					<bing-search 
+						class = 'form-control'
+						ng-model = 'newFarmCtrl.searchStr'
+						result = 'newFarmCtrl.farmSuggestion'
+						on-complete = 'newFarmCtrl.showSuggestions()'
+						disable-emitter></bing-search>
+				</div>
+			</div>
+			<div class = 'row no-gutter'>
+				<div class = 'col-md-12 text-right'>
+					<button ng-click = 'newFarmCtrl.localize(newFarmCtrl.searchStr)'
+						disable-emitter>Localize</button>
+				</div>
+			</div>
 		</div>
-		<input type = 'button' value = 'Submit'
-			ng-click = 'newFarmCtrl.submit()'/>
+		<div id = 'parsedAddress' class = 'row'>
+			<p>Chosen address:</p>
+			<div class = 'row no-gutter'>
+				<div class = 'form-group col-md-6 row no-gutter'>
+					<label class = 'control-label col-md-6'>Canton</label>
+					<div class = 'col-md-6'>
+						<input type = 'text'
+							class = 'form-control'
+							ng-model = 'newFarmCtrl.farm.canton'
+							disabled disable-emitter>
+					</div>
+				</div>
+
+				<div class = 'form-group col-md-6 row no-gutter'>
+					<label class = 'control-label col-md-6'>City/Town</label>
+					<div class = 'col-md-6'>
+						<input name = 'city'
+							class = 'form-control'
+							type = 'text'
+							ng-model = 'newFarmCtrl.farm.city'
+							disable-emitter disabled/>
+					</div>
+				</div>
+			</div>
+			<div class = 'row no-gutter form-group'>
+					<label class = 'control-label col-md-3'>Street address</label>
+					<div class = 'col-md-9'>
+						<input class = 'form-control'
+							type = 'text'
+							ng-model = 'newFarmCtrl.farm.streetLine'
+							disable-emitter disabled/>
+					</div>
+			</div>
+		</div>
+		<div class = 'row'>
+			<div class = 'col-md-12 text-right'>
+				<button ng-click = 'newFarmCtrl.addFarm()'>Add</button>
+			</div>
+		</div>
+		<div id = 'detailedInfo' class = 'row'>
+			<p>Detailed informations:</p>
+			<div class = 'row no-gutter'>
+				<label class = 'col-md-2'>Open hours</label>
+				<input name = 'openHours'
+					class = 'col-md-10'
+						ng-model = 'newFarmCtrl.farm.openHours'
+						disable-emitter/>
+			</div>
+			<div ng-repeat = 'product in newFarmCtrl.farm.products' class = 'row no-gutter'>
+					<label class = 'col-md-2'>Product {{$index + 1}}</label>
+					<input type = 'text'
+							class = 'col-md-3'
+							name = 'product'
+							ng-model = 'product.name'
+							disable-emitter/>
+					<div class = 'col-md-3'><label>Available</label>
+						<input type = 'checkbox'/>
+					</div>
+					<div class = 'col-md-3'><label class = 'col-md-6'>Price</label>
+						<input type = 'text'
+							class = 'col-md-6'
+							ng-model = 'product.price'
+							disable-emitter/>
+					</div>
+					<button type = 'button'
+							class = 'col-md-1'
+							ng-click = 'newFarmCtrl.removeProduct($index)'
+							disable-emitter>Rm</button>
+			</div>
+			
+			<div class = 'row no-gutter'>
+				<button type = 'button'
+					class = 'col-md-3'
+					ng-click = 'newFarmCtrl.addProduct()'
+					disable-emitter>More product</button>
+			</div>
+		</div>
+		<div class = 'row'>
+				<input type = 'submit' value = 'Submit'/>
+		</div>
 	</form>
+	
+	<div class = 'col-md-6'>
+		<div name = 'farmSuggestion'>
+			<div ng-repeat = 'suggestion in newFarmCtrl.farmSuggestion'>
+				<a href = '' 
+					ng-bind = '$index + 1 + ". " + suggestion.resources[0].name'
+					ng-click = 'newFarmCtrl.showDetails(suggestion)'></a>
+			</div>
+		</div>
+		<div id = 'map' aspect-ratio = '1:2' ng-show = 'showMap'>
+		</div>
+	</div>
 </div>
