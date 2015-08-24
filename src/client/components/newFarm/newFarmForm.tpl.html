@@ -41,7 +41,8 @@
 				</div>
 			</div>
 		</div>
-		<div id = 'parsedAddress' class = 'row'>
+		<div id = 'parsedAddress' class = 'row'
+			ng-if = 'showParsedAddress'>
 			<p>Chosen address:</p>
 			<div class = 'row no-gutter'>
 				<div class = 'form-group col-md-6 row no-gutter'>
@@ -75,7 +76,7 @@
 					</div>
 			</div>
 		</div>
-		<div class = 'row'>
+		<div class = 'row' ng-if = 'showParsedAddress'>
 			<div class = 'col-md-12 text-right'>
 				<button ng-click = 'newFarmCtrl.addFarm()'>Add</button>
 			</div>

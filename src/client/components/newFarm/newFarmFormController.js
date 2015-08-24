@@ -19,6 +19,7 @@ function newFarmFormController($scope, $http, searchService) {
 		var suggestion = farmSuggestion[0];
 		resetFarmAddress(suggestion);
 		this.showDetails(suggestion);
+		$scope.showParsedAddress = true;
 	}.bind(this);
 
 	this.localize = function(searchStr) {
