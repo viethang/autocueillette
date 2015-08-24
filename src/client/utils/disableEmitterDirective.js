@@ -7,6 +7,9 @@ function disableEmitterDirective() {
 					event.preventDefault();
 				}
 			});
+			element.bind('click', function(event) {
+				event.preventDefault();
+			});
 		}
 	};
 }
