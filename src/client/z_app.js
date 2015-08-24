@@ -19,8 +19,16 @@
 			templateUrl:'components/searchFarm/showFarms.tpl.html'
 		});
 	}]);
-	app.constant('BingKey', 'AuQVSGKrGaAfsgpuGwkEd_JZRIBjlu8ZDSqa3AHbknlQ_2G8R55EM7TiJI7_fNkO');
+	app.run(function($rootScope) {
+		angular.element(window).on("resize", function() {
+			$rootScope.$apply();
+		});
+	});
+	app.constant('BingKey', 'Au8OlA-KP8dCeyVh4LZ5wUrx9gwnckxhiwdMR0Lrb11XpjovcBCAM_3uurH8r2XT');
+	app.service('searchService', searchService);
 	app.directive('bingSearch', bingSearchDirective);
+	app.directive('disableEmitter', disableEmitterDirective);
+	app.directive('aspectRatio', aspectRatioDirective);
 	app.controller('NewFarmFormController', newFarmFormController);
 	app.controller('SearchFarmController', searchFarmController);
 })();
