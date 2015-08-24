@@ -1,54 +1,52 @@
 /*usage: 
-* <bingSearch ng-model = 'searchStr' option = 'options'
-* results = 'results' on-complete = 'callback'></bingSearch>
+* <bing-search ng-model = 'searchStr' option = 'options'
+* results = 'results' on-complete = 'callback'></bing-search>
 */
 
-function bingSearchDirective(BingKey, $http) {
+function bingSearchDirective(searchService) {
 	return {
 		restrict: 'EA',
 		scope: {
 			option: '=',
-			results: '=',
+			result: '=',
 			action: '&onComplete',
-			searchString: '@ngModel'
+			searchString: '=ngModel'
 		},
 		template: '<input type = "text"></input>',
 		replace: true,
 		link: function(scope, element, attrs, controller) {
 			setCheckComplete();
 			scope.$on('complete', function() {
-				console.log('complete!');
-				var request = "http://dev.virtualearth.net/REST/v1/Locations?query=" +
-					encodeURIComponent(scope.searchString) +
-					"&jsonp=JSON_CALLBACK&key=" + BingKey;
-				$http.jsonp(request)
-				.success(function(result) {
-					if (!result.resourceSets.length) {
-						console.log('No result found');
-						return;
+				searchService.bingSearch(scope.searchString, function(response) {
+					switch (response.status) {
+						case 'NR':
+							console.log('No result found');
+							break;
+						case 'ERR':
+							console.log('Error! Try again.');
+							break;
+						case 'OK':
+							if (attrs.result) {
+								for (var key in response.result) {
+									scope.result[key] = response.result[key];
+								}
+							}
+							if (scope.action) {
+								scope.action();
+							}
+							break;
 					}
-					if (scope.results) {
-						for (var key in result) {
-							scope.results[key] = result[key];
-						}
-					}
-					if (scope.action) {
-						scope.action();
-					}
-					console.log(result);
-				})
-				.error(function() {
-					console.log('error');
 				});
 			});
 			function setCheckComplete() {
 				element.bind('keydown', function(event) {
 					if (event.keyCode == 13) {
 						scope.$emit('complete');
+						console.log('enter');
 					}
 				});
 			}
 		}
 	};
 }
-bingSearchDirective.$inject = ['BingKey', '$http'];
+bingSearchDirective.$inject = ['searchService'];
