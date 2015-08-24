@@ -127,7 +127,7 @@
 		<div name = 'farmSuggestion'>
 			<div ng-repeat = 'suggestion in newFarmCtrl.farmSuggestion'>
 				<a href = '' 
-					ng-bind = '$index + 1 + ". " + suggestion.resources[0].name'
+					ng-bind = '$index + 1 + ". " + suggestion.name'
 					ng-click = 'newFarmCtrl.showDetails(suggestion)'></a>
 			</div>
 		</div>

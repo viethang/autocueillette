@@ -1,27 +1,48 @@
-function newFarmFormController($scope, $http) {
-	var self = this;
+function newFarmFormController($scope, $http, searchService) {
 	var map = new OSMMap();
 	var resource;
-	window.map = map;
-	self.farm = {};
-	self.farm.products = [{}];
-	this.farmSuggestion = {};
+	var farm;
+	var farmSuggestion;
+	var products;
+	farm = this.farm = {};
+	products = this.farm.products = [{}];
+	farmSuggestion = this.farmSuggestion = {};
 
 	this.showDetails = function(suggestion) {
-		var coordinates = suggestion.resources[0].geocodePoints[0].coordinates;
+		var coordinates = suggestion.geocodePoints[0].coordinates;
+		resetFarmAddress(suggestion);
 		map.resetView(coordinates);
 		$scope.showMap = true;
 	};
 
 	this.showSuggestions = function() {
-		resource = self.farmSuggestion[0].resources[0];
-		self.farm.city = resource.address.locality;
-		self.farm.canton = resource.address.adminDistrict;
-		self.farm.streetLine = resource.address.addressLine;
-	};
+		var suggestion = farmSuggestion[0];
+		resetFarmAddress(suggestion);
+		this.showDetails(suggestion);
+	}.bind(this);
+
+	this.localize = function(searchStr) {
+		var showSuggestions = this.showSuggestions;
+		searchService.bingSearch(searchStr, function(response) {
+			switch (response.status) {
+				case 'NR':
+					console.log('No result found');
+					break;
+				case 'ERR':
+					console.log('Error! Try again.');
+					break;
+				case 'OK':
+					for (var key in response.result) {
+						farmSuggestion[key] = response.result[key];
+					}
+					break;
+			}
+			showSuggestions();
+		});
+		
+	}.bind(this);
 
 	this.submit = function() {
-		var farm = self.farm;
 		var req = {
 			method: 'post',
 			url: '/newFarm.html',
@@ -29,21 +50,20 @@ function newFarmFormController($scope, $http) {
 		};
 		$http(req).then(function() {
 			console.log('ok');
-			self.farm = {};
-			self.farm.products = [{}];
+			this.farm = {};
+			this.farm.products = [{}];
 		}, function() {
 			console.log('error');
 		});
 		console.log('submit!');
-	};
-	$scope.cantons = ['Vaud', 'Valais'];
+	}.bind(this);
 
 	this.addProduct = function() {
-		self.farm.products.push({});
+		products.push({});
 	};
 
 	this.removeProduct = function(index) {
-		self.farm.products.splice(index,1);
+		products.splice(index,1);
 	};
 	
 	function OSMMap() {
@@ -94,6 +114,13 @@ function newFarmFormController($scope, $http) {
 			ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]])
 		);
 	};
+	
+	function resetFarmAddress(suggestion) {
+		var address = suggestion.address;
+		farm.city = address.locality;
+		farm.canton = address.adminDistrict;
+		farm.streetLine = address.addressLine;
+	}
 }
 
-newFarmFormController.$inject = ['$scope', '$http']; 
+newFarmFormController.$inject = ['$scope', '$http', 'searchService']; 
