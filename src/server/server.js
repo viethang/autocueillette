@@ -1,62 +1,56 @@
 var path = require('path');
+var express = require('express');
+var app = express();
+var http = require('http');
 var fs = require('fs');
-require('http').createServer(function(req, res) {
-	var method = req.method.toLowerCase();
-	console.log(req.url);
-	if (method === 'get') {
-		var filename = path.normalize('.' + req.url);
-		if (filename === './') filename = 'index.html';
-		fs.exists(filename, function(exists) {
-			if (exists) {
-				fs.createReadStream(filename).pipe(res);
-				console.log('Serving file', filename);
-			} else {
-				fs.createReadStream('index.html').pipe(res);
-			}
-		});
-	}
-	if (req.url === '/newFarm.html') {
-		if (method === 'post') {
-			var jsonString = '';
-			req.on('data', function (data) {
-				jsonString += data;
-			});
-			req.on('end', function () {
-				var farm = JSON.parse(jsonString);
-				console.log('Data  received ok', farm);
-				var nano = require('nano')('http://localhost:5984');
-				var farmDB = nano.db.use('auto_cueillette_farms');
-				farmDB.insert(farm, function(err, body) {
-					if (!err) {
-						console.log(body.rows);
-					}
-				});
-			});
-			res.end();
-		}
-	}
-	if (req.url === '/showFarms.html') {
-		var nano = require('nano')('http://localhost:5984');
-		var farmDB = nano.db.use('auto_cueillette_farms');
-		var jsonString = '';
-		req.on('data', function (data) {
-			jsonString += data;
-		});
-		req.on('end', function () {
-			var farm = JSON.parse(jsonString);
-			var key;
-			console.log('search requested');
-			if (farm.canton) {
-				key = farm.canton;
-			}
-			farmDB.view('example', 'by_canton', {'key': key}, function(err, body) {
-				console.log('fabulous view!', farm);
-				res.write(JSON.stringify(body.rows));
-				res.end();
-			});
-		});
-	}
-}).listen(8000);
+var bodyParser = require('body-parser');
+var dbtools = require('./dbtools');
 
-function addFarm(farm) {
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+
+app.use('/assets', express.static('assets'));
+app.use('/vendor', express.static('vendor'));
+app.use('/src/client', express.static('src/client'));
+
+var serverReversedPath = '../..';
+
+var servedFiles = ['/index.html', '/templates-app.js', '/templates-common.js'];
+
+function serveFile(url) {
+	app.get(url, function(req, res, next) {
+		res.sendFile(path.join(__dirname, serverReversedPath, url));
+	});
 }
+
+servedFiles.forEach(function(url) {
+	serveFile(url);
+});
+
+app.post('/addNewFarm', function(req, res, next) {
+	var farm = req.body;
+	var db = 'autocueillette_farms';
+	dbtools.checkDbExistence(farm, db, function(resp) {
+		if (resp.exists) {
+			res.send({status: 'exists'});
+		} else if (resp.closeFarms) {
+			res.send({status: 'confirm', farms: resp.closeFarms});
+		} else {
+			dbtools.updateDb(farm, db);
+			res.send({status: 'update'});
+		}
+	});
+});
+
+app.use(function(req, res) {
+	console.log(req.url, 'File not found! Send index.html');
+	res.sendFile(path.join(__dirname, serverReversedPath, '/index.html'));
+});
+
+app.use(function(err, req, res) {
+	res.end('Error!', err.toString());
+});
+
+http.createServer(app).listen(8000);
+
