@@ -303,7 +303,8 @@ module.exports = function ( grunt ) {
 					'<%= html2js.common.dest %>',
 					'<%= html2js.app.dest %>',
 					'<%= vendor_files.css %>',
-					'<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+					'<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css',
+					'<%= build_dir %>/assets/style.css'
 				]
 			},
 
@@ -345,7 +346,7 @@ module.exports = function ( grunt ) {
 				files: [
 					'<%= app_files.js %>'
 				],
-				tasks: [ 'jshint:src', 'karma:unit:run', 'copy:build_appjs' ]
+				tasks: [ 'jshint:src', 'copy:build_appjs' ]
 			},
 
 			serverjs: {
@@ -383,7 +384,7 @@ module.exports = function ( grunt ) {
 			* When the CSS files change, we need to compile and minify them.
 			*/
 			less: {
-				files: [ 'src/**/*.less' ],
+				files: [ 'src/less/*.less' ],
 				tasks: [ 'less:build' ]
 			},
 			
@@ -396,15 +397,17 @@ module.exports = function ( grunt ) {
 				files: [
 					'<%= app_files.jsunit %>'
 				],
-				tasks: [ 'jshint:test', 'karma:unit:run' ],
+				tasks: [ 'jshint:test'
+				],
 				options: {
 					livereload: false
 				}
-			},
-			protractor: {
-				files: ['app/**/*.js', 'e2e/**/.js'],
-				tasks: ['protractor:continuous']
 			}
+//			protractor: {
+//				files: ['src/client/**/*.js', 'e2e/**/.js'],
+//				tasks: ['protractor:continuous']
+//			}
+			
 		},
 
 		protractor: {
@@ -451,7 +454,7 @@ module.exports = function ( grunt ) {
 		* before watching for changes.
 		*/
 	grunt.renameTask( 'watch', 'delta' );
-	grunt.registerTask( 'watch', [ 'build', 'karma:unit', 'start-server', 'delta'] );
+	grunt.registerTask( 'watch', [ 'build', 'start-server', 'delta'] );
 	grunt.registerTask('e2e-test', ['connect:test', 'protractor:e2e']);
 	/**
 		* The default task is to build and compile.
@@ -464,8 +467,7 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'build', [
 		'clean', 'html2js', 'jshint', 'less:build', 'sass:build',
 		'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
-		'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'copy:build_server', 'index:build', 'karmaconfig',
-		'karma:continuous'
+		'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'copy:build_server', 'index:build'
 	]);
 
 	/**
