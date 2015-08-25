@@ -1,5 +1,5 @@
 (function startAngular() {
-	var app = angular.module('app',['ui.router', 'templates-app']);
+	var app = angular.module('app',['ui.router', 'templates-app', 'ui.bootstrap']);
 	app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
 		$locationProvider.html5Mode(true);
 		$urlRouterProvider.otherwise('/index.html');
@@ -29,6 +29,7 @@
 	app.directive('bingSearch', bingSearchDirective);
 	app.directive('disableEmitter', disableEmitterDirective);
 	app.directive('aspectRatio', aspectRatioDirective);
+	app.controller('ModalController', modalCtrl);
 	app.controller('NewFarmFormController', newFarmFormController);
 	app.controller('SearchFarmController', searchFarmController);
 })();

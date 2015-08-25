@@ -1,4 +1,4 @@
-function newFarmFormController($scope, $http, searchService, $timeout) {
+function newFarmFormController($scope, $http, searchService, $timeout, $modal) {
 	var map = new OSMMap();
 	var resource;
 	var farm;
@@ -52,13 +52,49 @@ function newFarmFormController($scope, $http, searchService, $timeout) {
 			url: '/newFarm.html',
 			data: farm
 		};
-		$http(req).then(function() {
-			console.log('ok');
-			this.farm = {};
-			this.farm.products = [{}];
+		$http(req).then(function(res) {
+			console.log('ok', res.data);
+			switch (res.data.status) {
+				case 'exists':
+					announceExistence();
+					break;
+				case 'confirm':
+					confirm();
+					break;
+				case 'update':
+					update();
+					break;
+			}
 		}, function() {
 			console.log('error');
 		});
+		function announceExistence() {
+			var modalInstance = $modal.open({
+				animation: false,
+				templateUrl: 'components/newFarm/farmExistsAlert.tpl.html',
+				controller: 'ModalController',
+				resolve: {
+				}
+			});
+
+			modalInstance.result.then(function (result) {
+				switch (result) {
+					case 'other farm':
+						$scope.showMap = $scope.showParsedAddress = false;
+						break;
+				}
+				console.log(result);
+			}, function (reason) {
+				console.log(reason);
+			});
+		}
+			
+		function confirm() {
+			console.log('need confirm');
+		}
+		function update() {
+			console.log('update');
+		}
 		console.log('submit!');
 	}.bind(this);
 
@@ -137,4 +173,14 @@ function newFarmFormController($scope, $http, searchService, $timeout) {
 	}
 }
 
-newFarmFormController.$inject = ['$scope', '$http', 'searchService', '$timeout']; 
+function modalCtrl($scope, $modalInstance) {
+	$scope.addNewFarm = function() {
+		$modalInstance.close('other farm');
+	};
+	$scope.goHome = function() {
+		$modalInstance.close('go home');
+	};
+}
+
+modalCtrl.$inject = ['$scope', '$modalInstance'];
+newFarmFormController.$inject = ['$scope', '$http', 'searchService', '$timeout', '$modal']; 
