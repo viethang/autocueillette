@@ -172,15 +172,4 @@ function newFarmFormController($scope, $http, searchService, $timeout, $modal) {
 		angular.element(links[index]).addClass('chosen');
 	}
 }
-
-function modalCtrl($scope, $modalInstance) {
-	$scope.addNewFarm = function() {
-		$modalInstance.close('other farm');
-	};
-	$scope.goHome = function() {
-		$modalInstance.close('go home');
-	};
-}
-
-modalCtrl.$inject = ['$scope', '$modalInstance'];
 newFarmFormController.$inject = ['$scope', '$http', 'searchService', '$timeout', '$modal']; 
