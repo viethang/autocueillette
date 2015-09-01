@@ -1,20 +1,31 @@
+/*bingSearchDirective.js*/
 /*usage: 
 * <bing-search ng-model = 'searchStr' option = 'options'
 * results = 'results' on-complete = 'callback'></bing-search>
 */
 
-function bingSearchDirective(searchService) {
-	return {
-		restrict: 'EA',
-		scope: {
-			option: '=',
-			result: '=',
-			action: '&onComplete',
-			searchString: '=ngModel'
-		},
-		template: '<input type = "text"></input>',
-		replace: true,
-		link: function(scope, element, attrs, controller) {
+(function () {
+	'use strict';
+
+	angular.module('app')
+	.directive('bingSearch', bingSearchDirective);
+	bingSearchDirective.$inject = ['searchService'];
+	function bingSearchDirective(searchService) {
+		var directive = {
+			restrict: 'EA',
+			scope: {
+				option: '=',
+				result: '=',
+				action: '&onComplete',
+				searchString: '=ngModel'
+			},
+			template: '<input type = "text"></input>',
+			replace: true,
+			link: linkFn
+		};
+		return directive;
+
+		function linkFn(scope, element, attrs, controller) {
 			setCheckComplete();
 			scope.$on('complete', function() {
 				searchService.bingSearch(scope.searchString, function(response) {
@@ -38,6 +49,7 @@ function bingSearchDirective(searchService) {
 					}
 				});
 			});
+
 			function setCheckComplete() {
 				element.bind('keydown', function(event) {
 					if (event.keyCode == 13) {
@@ -47,6 +59,5 @@ function bingSearchDirective(searchService) {
 				});
 			}
 		}
-	};
-}
-bingSearchDirective.$inject = ['searchService'];
+	}
+})();

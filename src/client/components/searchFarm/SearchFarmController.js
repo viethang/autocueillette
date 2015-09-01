@@ -1,21 +1,27 @@
+(function () {
+	'use strict';
 
-function searchFarmController($scope, $http, $state) {
-	this.searchForm = {};
-	$scope.cantons = ['Vaud', 'Valais'];
-	this.search = function() {
-		console.log('search');
-		var req = {
-			method: 'post',
-			url: '/showFarms.html',
-			data: this.searchForm
+	searchFarmController.$inject = ['$scope', '$http', '$state'];
+	angular.module('app')
+	.controller('SearchFarmController', searchFarmController);
+	function searchFarmController($scope, $http, $state) {
+		/* jshint validthis: true*/
+		var searchFarmCtrl = this;
+		searchFarmCtrl.searchForm = {};
+		$scope.cantons = ['Vaud', 'Valais'];
+		searchFarmCtrl.search = function() {
+			console.log('search');
+			var req = {
+				method: 'post',
+				url: '/showFarms.html',
+				data: searchFarmCtrl.searchForm
+			};
+			$http(req).then(function(res) {
+				console.log(res.data);
+				console.log(searchFarmCtrl.searchForm);
+				searchFarmCtrl.results = res.data;
+				$state.transitionTo('searchFarm.showFarms');
+			}, function() {});
 		};
-		$http(req).then(function(res) {
-			console.log(res.data);
-			console.log(this.searchForm);
-			this.results = res.data;
-			$state.transitionTo('searchFarm.showFarms');
-		}.bind(this), function() {});
-	};
-}
-
-searchFarmController.$inject = ['$scope', '$http', '$state'];
+	}
+})();

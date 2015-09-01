@@ -1,7 +1,15 @@
-function aspectRatioDirective() {
-	return {
-		restrict: 'A',
-		link: function(scope, element, attrs) {
+(function () {
+	'use strict';
+
+	angular.module('app')
+	.directive('aspectRatio', aspectRatioDirective);
+	function aspectRatioDirective() {
+		var directive = {
+			restrict: 'A',
+			link: linkFn
+		};
+		return directive;
+		function linkFn(scope, element, attrs) {
 			var str = attrs['aspectRatio'];
 			try {
 				var values = str.split(':');
@@ -17,5 +25,6 @@ function aspectRatioDirective() {
 			} catch(err) {
 			}
 		}
-	};
-}
+	}
+})();
+

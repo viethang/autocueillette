@@ -9,7 +9,24 @@
 		})
 		.state('newFarm', {
 			url: '/newFarm',
-			templateUrl: 'components/newFarm/newFarmForm.tpl.html'
+			templateUrl: 'components/newFarm/newFarmForm.tpl.html',
+			controller: function($state) {
+				$state.transitionTo('newFarm.fillAddress');
+			}
+		})
+		.state('newFarm.fillAddress', {
+			views: {
+				'simpleForm': {
+					templateUrl: 'components/newFarm/simpleForm.tpl.html'
+				}
+			}
+		})
+		.state('newFarm.parsedAddress', {
+			views: {
+				'parsedAddress': {
+					template: '<span>parsedAddress</span>'
+				}
+			}
 		})
 		.state('searchFarm', {
 			url: '/searchFarm',
@@ -25,11 +42,4 @@
 		});
 	});
 	app.constant('BingKey', 'Au8OlA-KP8dCeyVh4LZ5wUrx9gwnckxhiwdMR0Lrb11XpjovcBCAM_3uurH8r2XT');
-	app.service('searchService', searchService);
-	app.directive('bingSearch', bingSearchDirective);
-	app.directive('disableEmitter', disableEmitterDirective);
-	app.directive('aspectRatio', aspectRatioDirective);
-	app.controller('ModalController', modalCtrl);
-	app.controller('NewFarmFormController', newFarmFormController);
-	app.controller('SearchFarmController', searchFarmController);
 })();
