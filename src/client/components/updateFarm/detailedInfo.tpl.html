@@ -1,0 +1,40 @@
+<div id = 'detailedInfo' 
+	ng-if = 'fillDetails'
+	class = 'row'>
+	<p>Detailed informations:</p>
+	<div class = 'row no-gutter'>
+		<label class = 'col-md-2'>Open hours</label>
+		<input name = 'openHours'
+			class = 'col-md-10'
+				ng-model = 'newFarmCtrl.farm.openHours'
+				disable-emitter/>
+	</div>
+	<div ng-repeat = 'product in newFarmCtrl.farm.products' class = 'row no-gutter'>
+			<label class = 'col-md-2'>Product {{$index + 1}}</label>
+			<input type = 'text'
+					class = 'col-md-3'
+					name = 'product'
+					ng-model = 'product.name'
+					disable-emitter/>
+			<div class = 'col-md-3'><label>Available</label>
+				<input type = 'checkbox'/>
+			</div>
+			<div class = 'col-md-3'><label class = 'col-md-6'>Price</label>
+				<input type = 'text'
+					class = 'col-md-6'
+					ng-model = 'product.price'
+					disable-emitter/>
+			</div>
+			<button type = 'button'
+					class = 'col-md-1'
+					ng-click = 'newFarmCtrl.removeProduct($index)'
+					disable-emitter>Rm</button>
+	</div>
+
+	<div class = 'row no-gutter'>
+		<button type = 'button'
+			class = 'col-md-3'
+			ng-click = 'newFarmCtrl.addProduct()'
+			disable-emitter>More product</button>
+	</div>
+</div>

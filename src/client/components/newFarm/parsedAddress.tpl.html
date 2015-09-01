@@ -1,0 +1,34 @@
+<div id = 'parsedAddress' class = 'row'>
+	<p>Chosen address:</p>
+	<div class = 'row no-gutter'>
+		<div class = 'form-group col-md-6 row no-gutter'>
+			<label class = 'control-label col-md-6'>Canton</label>
+			<div class = 'col-md-6'>
+				<input type = 'text'
+					class = 'form-control'
+					ng-model = 'newFarmCtrl.farm.canton'
+					disabled disable-emitter>
+			</div>
+		</div>
+
+		<div class = 'form-group col-md-6 row no-gutter'>
+			<label class = 'control-label col-md-6'>City/Town</label>
+			<div class = 'col-md-6'>
+				<input name = 'city'
+					class = 'form-control'
+					type = 'text'
+					ng-model = 'newFarmCtrl.farm.city'
+					disable-emitter disabled/>
+			</div>
+		</div>
+	</div>
+	<div class = 'row no-gutter form-group'>
+			<label class = 'control-label col-md-3'>Street address</label>
+			<div class = 'col-md-9'>
+				<input class = 'form-control'
+					type = 'text'
+					ng-model = 'newFarmCtrl.farm.streetLine'
+					disable-emitter disabled/>
+			</div>
+	</div>
+</div>

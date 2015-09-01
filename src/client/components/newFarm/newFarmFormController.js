@@ -10,30 +10,31 @@
 		/* jshint validthis: true*/
 		var newFarmCtrl = this;
 		var map = new OSMMap();
+		$scope.search = {};
+		newFarmCtrl.farm = {};
 		newFarmCtrl.farmSuggestion = [];
 		newFarmCtrl.showDetails = showDetails;
 		newFarmCtrl.showSuggestions = showSuggestions;
 		newFarmCtrl.localize = localize;
-		newFarmCtrl.submit = submit;
-		newFarmCtrl.addProduct = addProduct;
-		newFarmCtrl.removeProduct = removeProduct;
+		newFarmCtrl.addFarm = submit;
 
 		function showDetails(suggestion, index) {
 			var coordinates = suggestion.geocodePoints[0].coordinates;
 			resetFarmAddress(suggestion);
-			map.resetView(coordinates);
-			$scope.showMap = true;
 			$timeout(function() {
+				map.resetView(coordinates);
 				markChosenAddress(index);
 			});
 		}
 
 		function showSuggestions() {
+			$state.go('newFarm.confirmAddress');
 			var suggestion = newFarmCtrl.farmSuggestion[0];
 			resetFarmAddress(suggestion);
-			showDetails(suggestion, 0);
-			$scope.showParsedAddress = true;
-			$state.transitionTo('newFarm.parsedAddress');
+			$timeout(function() {
+				map.map.setTarget('map');
+				showDetails(suggestion, 0);
+			});
 		}
 
 		function localize(searchStr) {
@@ -88,9 +89,9 @@
 				modalInstance.result.then(function (result) {
 					switch (result) {
 						case 'other farm':
-							$state.go('newFarm.simpleForm');
-							$scope.showMap = $scope.showParsedAddress = false;
-							$scope.search.searchStr = null;
+							$state.go('newFarm.fillAddress');
+							$scope.search = {};
+							newFarmCtrl.farm = {};
 							break;
 						case 'go home':
 							$state.transitionTo('index');
@@ -110,17 +111,9 @@
 			console.log('submit!');
 		}
 
-		function addProduct() {
-			newFarmCtrl.farm.products.push({});
-		}
-
-		function removeProduct(index) {
-			newFarmCtrl.farm.products.splice(index,1);
-		}
-		
 		function OSMMap() {
 			var image, style;
-			newFarmCtrl.coordinates = [];
+			this.coordinates = [];
 			image = new ol.style.Circle({
 						radius: 5,
 				fill: null,
@@ -134,13 +127,12 @@
 				image: image
 			});
 
-			newFarmCtrl.centerFeature = new ol.Feature(
+			this.centerFeature = new ol.Feature(
 				new ol.geom.Point(
-					ol.proj.fromLonLat([newFarmCtrl.coordinates[1], newFarmCtrl.coordinates[0]])
+					ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]])
 				)
 			);
-			newFarmCtrl.map = new ol.Map({
-				target: "map",
+			this.map = new ol.Map({
 				renderer: 'canvas',
 				layers: [
 					new ol.layer.Tile({
@@ -148,7 +140,7 @@
 					}),
 					new ol.layer.Vector({
 						source: new ol.source.Vector({
-							features: [newFarmCtrl.centerFeature]
+							features: [this.centerFeature]
 						}),
 						style: style
 					})
@@ -160,16 +152,16 @@
 			});
 		}
 		OSMMap.prototype.resetView = function(coordinates){
-			newFarmCtrl.coordinates = coordinates;
-			newFarmCtrl.map.getView().setCenter(ol.proj.fromLonLat([newFarmCtrl.coordinates[1], newFarmCtrl.coordinates[0]]));
-			newFarmCtrl.centerFeature.getGeometry().setCoordinates(
-				ol.proj.fromLonLat([newFarmCtrl.coordinates[1], newFarmCtrl.coordinates[0]])
+			this.coordinates = coordinates;
+			this.map.getView().setCenter(ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]]));
+			this.centerFeature.getGeometry().setCoordinates(
+				ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]])
 			);
 		};
 		
 		function resetFarmAddress(suggestion) {
 			var address = suggestion.address;
-			var farm = newFarmCtrl.farm = {};
+			var farm = newFarmCtrl.farm;
 			farm.city = address.locality;
 			farm.canton = address.adminDistrict;
 			farm.streetLine = address.addressLine;

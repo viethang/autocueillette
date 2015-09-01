@@ -5,6 +5,7 @@
 		<title></title>
 		<base href="/">
 		<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+		
 		<!-- compiled CSS --><% styles.forEach( function ( file ) { %>
 		<link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
 
@@ -15,18 +16,21 @@
 			+ ':35729/livereload.js"></'
 			+ 'script>')</script>
 	</head>
-	<body ng-app = 'app'>
+	<body ng-app = 'app' class = 'container'>
 		<header>
-			Autocueillette Suisse
-		</header>
-		<ui-view>
-			<a ui-sref="newFarm">New farm</a>
+				Autocueillette Suisse demontree a mon mari
+			</header>
+		<div ui-view>
+			
+			<ui-view>
+				<a ui-sref="newFarm">New farm</a>
 
-			<a ui-sref="searchFarm">Search farm</a>
+				<a ui-sref="searchFarm">Search farm</a>
 
-		</ui-view>
+			</ui-view>
+		</div>
 		<footer>
-			<small>Copyright 2015, Viet Hang Nguyen.</small>
+				<small>Copyright 2015, Viet Hang Nguyen.</small>
 		</footer>
 	</body>
 </html>

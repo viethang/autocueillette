@@ -21,10 +21,19 @@
 				}
 			}
 		})
-		.state('newFarm.parsedAddress', {
+		.state('newFarm.confirmAddress', {
 			views: {
+				'simpleForm': {
+					templateUrl: 'components/newFarm/simpleForm.tpl.html'
+				},
 				'parsedAddress': {
-					template: '<span>parsedAddress</span>'
+					templateUrl: 'components/newFarm/parsedAddress.tpl.html'
+				},
+				'map': {
+					templateUrl: 'components/newFarm/map.tpl.html'
+				},
+				'addFarmButton': {
+					template: "<div class = 'text-right'><button ng-click = 'newFarmCtrl.addFarm()'>Add this farm</button>"
 				}
 			}
 		})
