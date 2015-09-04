@@ -38,8 +38,15 @@ app.post('/addNewFarm', function(req, res, next) {
 		} else if (resp.closeFarms && !forced) {
 			res.send({status: 'confirm', closeFarms: resp.closeFarms});
 		} else {
-			dbtools.updateDb(farm, db);
-			res.send({status: 'update'});
+			dbtools.updateDb(farm, db, function(err, body) {
+				if (!err) {
+					dbtools.solrIndex(farm, body.id);
+					res.send({status: 'update'});
+				} else {
+					console.log('Error', err);
+					res.send({status: 'error'});
+				}
+			});
 		}
 	});
 });

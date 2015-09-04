@@ -43,12 +43,7 @@ function findCloseFarms(doc, list) {
 function updateDb(doc, dbName, callback) {
 	var nano = require('nano')('http://localhost:5984');
 	var db = nano.db.use(dbName);
-	db.insert(doc, function(err, body) {
-		if (err) {
-			console.log('err');
-		} else {
-		}
-	});
+	db.insert(doc, callback);
 }
 
 function getStraightDistance(x, y) {
@@ -70,5 +65,58 @@ function toRad(l) {
 	return l * Math.PI /180;
 }
 
+function solrIndex(farm, id) {
+	var coordinates = farm.coordinates[0] + ',' + farm.coordinates[1];
+	var name = farm.name;
+	var short_addr = farm.formattedAddress; //FIXME
+	var product =[];
+	if (farm.products) {
+		for (var i = 0; i < farm.products.length; i++) {
+			product.push(farm.products[i].name);
+		}
+	}
+	var doc = [{
+		id: id,
+		farm_name: name,
+		coordinates: coordinates,
+		short_address: short_addr,
+		product: product
+	}];
+	var post_data = JSON.stringify(doc);
+
+	console.log(doc, post_data);
+
+	var options = {
+		method: 'POST',
+		host: 'localhost',
+		port: 8983,
+		path: '/solr/autocueillette/update?commit=true',
+		headers: {
+			'Content-Type': 'application/json',
+			'Cache-Control': 'no-cache',
+			'Content-Length': post_data.length
+		}
+	};
+	var post = http.request(options, function(res){
+		console.log('post');
+		var str = '';
+		res.on('data', function(data) {
+			console.log('response');
+			str += data;
+		}, function(err){
+			console.log('error', err);
+		});
+		res.on('end', function() {
+			console.log("response with data", str);
+		});
+	});
+	post.on('error', function(err){
+		console.log('Post error', err.message, new Date());
+	});
+	post.write(post_data);
+	post.end();
+}
+
 module.exports.checkDbExistence = checkDbExistence;
 module.exports.updateDb = updateDb;
+module.exports.solrIndex = solrIndex;
