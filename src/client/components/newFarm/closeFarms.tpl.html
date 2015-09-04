@@ -1,0 +1,11 @@
+<div ng-show = 'newFarmCtrl.closeFarms && newFarmCtrl.closeFarms.length'>
+	<p>Your suggested farm is close to the following existing farms.
+	<div ng-repeat = 'closeFarm in newFarmCtrl.closeFarms'>
+		<a href = '' class = 'farm-suggestion' 
+		ng-bind = '$index + 1 + ". " + closeFarm.value.formattedAddress'></a>
+		<a href = ''>Edit</a>
+	</div>
+	<p>Is it not one of these?</p>
+	<button ng-click = 'newFarmCtrl.addFarm(true)'>No, add it as a new farm</button>
+	<button ng-click = 'newFarmCtrl.goHome()'>Yes, cancel</button>
+</div>

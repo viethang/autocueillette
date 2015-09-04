@@ -34,6 +34,9 @@ angular.module('app')
 			},
 			'addFarmButton': {
 				template: "<div class = 'text-right'><button ng-click = 'newFarmCtrl.addFarm()'>Add this farm</button>"
+			},
+			'closeFarms': {
+				templateUrl: 'components/newFarm/closeFarms.tpl.html'
 			}
 		}
 	})
