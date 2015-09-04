@@ -1,4 +1,17 @@
-<div name = 'detailInfo'>
-	Detail info
-	<button ng-click = 'farmInfoCtrl.editDetails()'>Edit</button>
+<div name = 'detailedInfo' class = 'row'>
+	<table>
+		<tr class = 'row'>
+			<td class = 'col-md-3'>Open hours</td>
+			<td class = 'col-md-9'
+			ng-bind = 'farmInfoCtrl.farm.openHours'></td>
+		</tr>
+		<tr class = 'row'>
+			<td class = 'col-md-3'>Product(s)</td>
+			<td class = 'col-md-9'> <span ng-repeat = 'product in farmInfoCtrl.farm.products'>{{product.name + ', '}}</span>
+			</td>
+		</tr>
+	</table>
+	<div>
+		<button ng-click = 'farmInfoCtrl.editDetails()'>Edit</button>
+	</div>
 </div>

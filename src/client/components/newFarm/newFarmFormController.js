@@ -1,14 +1,14 @@
 (function() {
 	'strict mode';
-	newFarmFormController.$inject = ['$scope', '$http', 'searchService', '$timeout', '$modal', '$state'];
+	newFarmFormController.$inject = ['$scope', '$http', 'searchService', '$timeout', '$modal', '$state', 'OSMServices'];
 	angular.module('app')
 	.controller('NewFarmFormController', newFarmFormController);
 
-	function newFarmFormController($scope, $http, searchService, $timeout, $modal, $state) {
+	function newFarmFormController($scope, $http, searchService, $timeout, $modal, $state, OSMServices) {
 		/* jshint validthis: true*/
 		$state.transitionTo('newFarm.fillAddress');
 		var newFarmCtrl = this;
-		var map = new OSMMap();
+		var map = new OSMServices.OSMMap();
 		$scope.search = {};
 		newFarmCtrl.farm = {};
 		newFarmCtrl.farmSuggestion = [];
@@ -116,53 +116,6 @@
 		}
 		console.log('submit!');
 
-		function OSMMap() {
-			var image, style;
-			this.coordinates = [];
-			image = new ol.style.Circle({
-						radius: 5,
-				fill: null,
-				stroke: new ol.style.Stroke({
-					color: 'red',
-					width: 2
-				})
-			});
-
-			style = new ol.style.Style({
-				image: image
-			});
-
-			this.centerFeature = new ol.Feature(
-				new ol.geom.Point(
-					ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]])
-				)
-			);
-			this.map = new ol.Map({
-				renderer: 'canvas',
-				layers: [
-					new ol.layer.Tile({
-						source: new ol.source.OSM()
-					}),
-					new ol.layer.Vector({
-						source: new ol.source.Vector({
-							features: [this.centerFeature]
-						}),
-						style: style
-					})
-				],
-				view: new ol.View({
-					maxZoom: 18,
-					zoom: 15
-				})
-			});
-		}
-		OSMMap.prototype.resetView = function(coordinates){
-			this.coordinates = coordinates;
-			this.map.getView().setCenter(ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]]));
-			this.centerFeature.getGeometry().setCoordinates(
-				ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]])
-			);
-		};
 		function resetFarmAddress(suggestion) {
 			var address = suggestion.address;
 			var farm = newFarmCtrl.farm;

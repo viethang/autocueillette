@@ -1,6 +1,13 @@
 <div name = 'farmInfo'>
-	<div ui-view = 'general'></div>
-	<div ui-view = 'detailed'></div>
-	<div ui-view = 'editAddress' class = 'col-md-6'></div>
-	<div ui-view = 'editDetails' class = 'col-md-6'></div>
+	<div class = 'row'>
+		<div class = 'col-md-6'>
+			<div ui-view = 'general' ></div>
+			<div ui-view = 'detailed'></div>
+			<div ui-view = 'editAddress'></div>
+			<div ui-view = 'editDetails'></div>
+		</div>
+		<div class = 'col-md-6'>
+			<div id = 'map1' aspect-ratio = '1:2'></div>
+		</div>
+	</div>
 <div>
