@@ -1,16 +1,14 @@
-<a ui-sref="newFarm">New farm</a>
 <div>
 	Find a farm
 	<form name = 'searchForm'>
-		<label>Canton</label>
-		<select name = 'canton'
-			ng-model = 'searchFarmCtrl.searchForm.canton'
-			ng-options = 'canton for canton in cantons'>
-		</select>
+		<label>Where</label>
+		<input name = 'place'
+			ng-model = 'searchFarmCtrl.searchForm.place'/> 
 		<br/>
-		<label>Product</label>
+		<label>Product(s)</label>
 		<input name = 'product'
-			ng-model = 'searchFarmCtrl.searchForm.product'/>
+			ng-model = 'searchFarmCtrl.searchForm.product'
+			placeholder = 'Ex: salade "haricot vert"'/>
 	</form>
 	<button ng-click = 'searchFarmCtrl.search()'> Search</button>
 	<div ui-view></div>

@@ -66,6 +66,17 @@ app.post('/updateFarm', function(req, res) {
 	});
 });
 
+app.post('/searchIndex', function(req, res) {
+	var data = req.body;
+	dbtools.searchIndex(data, function(err, body) {
+		if (!err) {
+			res.send(body);
+		} else {
+			res.send({err: err});
+		}
+	});
+});
+
 app.use(function(req, res) {
 	console.log(req.url, 'File not found! Send index.html');
 	res.sendFile(path.join(__dirname, serverReversedPath, '/index.html'));
