@@ -29,13 +29,14 @@ servedFiles.forEach(function(url) {
 });
 
 app.post('/addNewFarm', function(req, res, next) {
-	var farm = req.body;
+	var farm = req.body.farm;
+	var forced = req.body.forced;
 	var db = 'autocueillette_farms';
 	dbtools.checkDbExistence(farm, db, function(resp) {
 		if (resp.exists) {
 			res.send({status: 'exists'});
-		} else if (resp.closeFarms) {
-			res.send({status: 'confirm', farms: resp.closeFarms});
+		} else if (resp.closeFarms && !forced) {
+			res.send({status: 'confirm', closeFarms: resp.closeFarms});
 		} else {
 			dbtools.updateDb(farm, db);
 			res.send({status: 'update'});

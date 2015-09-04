@@ -1,8 +1,6 @@
 (function() {
 	'strict mode';
-	newFarmFormController.$inject = [
-		'$scope', '$http', 'searchService', '$timeout', '$modal', '$state'
-	];
+	newFarmFormController.$inject = ['$scope', '$http', 'searchService', '$timeout', '$modal', '$state'];
 	angular.module('app')
 	.controller('NewFarmFormController', newFarmFormController);
 
@@ -56,11 +54,14 @@
 			
 		}
 
-		function submit() {
+		function submit(forced) {
 			var req = {
 				method: 'post',
 				url: '/addNewFarm',
-				data: newFarmCtrl.farm
+				data: {
+					farm: newFarmCtrl.farm,
+					forced: forced
+				}
 			};
 			$http(req).then(function(res) {
 				console.log('ok', res.data);
@@ -69,48 +70,50 @@
 						announceExistence();
 						break;
 					case 'confirm':
-						confirm();
+						confirm(res.data.closeFarms);
 						break;
 					case 'update':
 						update();
 						break;
 				}
-			}, function() {
-				console.log('error');
+			}, function(err) {
+				console.log('error:', err);
 			});
-			function announceExistence() {
-				var modalInstance = $modal.open({
-					animation: false,
-					templateUrl: 'components/newFarm/farmExistsAlert.tpl.html',
-					controller: 'ModalController',
-					resolve: {
-					}
-				});
-
-				modalInstance.result.then(function (result) {
-					switch (result) {
-						case 'other farm':
-							$state.go('newFarm.fillAddress');
-							$scope.search = {};
-							newFarmCtrl.farm = {};
-							break;
-						case 'go home':
-							$state.transitionTo('index');
-							break;
-					}
-				}, function (reason) {
-					console.log(reason);
-				});
-			}
-				
-			function confirm() {
-				console.log('need confirm');
-			}
-			function update() {
-				console.log('update');
-			}
-			console.log('submit!');
 		}
+
+		function announceExistence() {
+			var modalInstance = $modal.open({
+				animation: false,
+				templateUrl: 'components/newFarm/farmExistsAlert.tpl.html',
+				controller: 'ModalController',
+				resolve: {
+				}
+			});
+
+			modalInstance.result.then(function (result) {
+				switch (result) {
+					case 'other farm':
+						$state.go('newFarm.fillAddress');
+						$scope.search = {};
+						newFarmCtrl.farm = {};
+						break;
+					case 'go home':
+						goHome();
+						break;
+				}
+			}, function (reason) {
+				console.log(reason);
+			});
+		}
+
+		function confirm(closeFarms) {
+			newFarmCtrl.closeFarms = closeFarms;
+			console.log('need confirm');
+		}
+		function update() {
+			console.log('update');
+		}
+		console.log('submit!');
 
 		function OSMMap() {
 			var image, style;
@@ -159,7 +162,7 @@
 				ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]])
 			);
 		};
-		
+
 		function resetFarmAddress(suggestion) {
 			var address = suggestion.address;
 			var farm = newFarmCtrl.farm;
@@ -169,7 +172,7 @@
 			farm.formattedAddress = address.formattedAddress;
 			farm.coordinates = suggestion.geocodePoints[0].coordinates;
 		}
-		
+
 		function markChosenAddress(index) {
 			var links = document.getElementsByClassName('farm-suggestion');
 			[].forEach.call(links, function(link) {
