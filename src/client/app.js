@@ -1,8 +1,8 @@
 (function startAngular() {
-	var app = angular.module('app',['ui.router', 'templates-app', 'ui.bootstrap']);
-	
+	var app = angular.module('app', ['ui.router', 'templates-app', 'ui.bootstrap']);
+
 	app.run(function($rootScope) {
-		angular.element(window).on("resize", function() {
+		angular.element(window).on('resize', function() {
 			$rootScope.$apply();
 		});
 	});

@@ -1,4 +1,4 @@
-(function () {
+(function() {
 	'use strict';
 
 	angular.module('app')
@@ -15,14 +15,14 @@
 				var values = str.split(':');
 				var height = parseFloat(values[0]);
 				var width = parseFloat(values[1]);
-				var ratio = height/width;
+				var ratio = height / width;
 				scope.$watch(function() {
 					return element[0].clientWidth;
 				}, function(newWidth) {
 					var newHeight = newWidth * ratio;
 					element.css('height', newHeight + 'px');
 				});
-			} catch(err) {
+			} catch (err) {
 			}
 		}
 	}

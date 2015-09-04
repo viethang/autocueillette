@@ -1,6 +1,6 @@
 (function() {
 	'use strict';
-	
+
 	angular.module('app')
 	.controller('ModalController', modalCtrl);
 	modalCtrl.$inject = ['$scope', '$modalInstance'];

@@ -44,7 +44,7 @@ angular.module('app')
 		controller: 'SearchFarmController as searchFarmCtrl'
 	})
 	.state('searchFarm.showFarms', {
-		templateUrl:'components/searchFarm/showFarms.tpl.html'
+		templateUrl: 'components/searchFarm/showFarms.tpl.html'
 	})
 	.state('farmInfo', {
 		url: '/farmInfo/:farmId',
@@ -73,7 +73,7 @@ angular.module('app')
 			'editDetails': {
 				templateUrl: 'components/farmInfo/editDetails.tpl.html'
 			},
-			'general':  {
+			'general': {
 				templateUrl: 'components/farmInfo/generalInfo.tpl.html'
 			}
 		}

@@ -9,16 +9,16 @@
 			bingSearch: bingSearch
 		};
 		return service;
-		
+
 		function bingSearch(searchStr, callback) {
-			var request = "http://dev.virtualearth.net/REST/v1/Locations?query=" +
+			var request = 'http://dev.virtualearth.net/REST/v1/Locations?query=' +
 				encodeURIComponent(searchStr) +
-				"&jsonp=JSON_CALLBACK&key=" + BingKey + 
-				"&mkt=fr-fr";
+				'&jsonp=JSON_CALLBACK&key=' + BingKey +
+				'&mkt=fr-fr';
 			$http.jsonp(request)
 			.success(function(response) {
 				console.log(response);
-				if ((response.resourceSets.length === 1) & 
+				if ((response.resourceSets.length === 1) &
 					(response.resourceSets[0].resources.length === 0)
 				) {
 					console.log('No result found');

@@ -15,11 +15,11 @@
 		farmInfoCtrl.addProduct = addProduct;
 		farmInfoCtrl.removeProduct = removeProduct;
 		farmInfoCtrl.submitDetails = submitDetails;
-		
+
 		function editAddress() {
 			$state.go('farmInfo.editAddress');
 		}
-		
+
 		function editDetails() {
 			$state.go('farmInfo.editDetails');
 		}
@@ -41,7 +41,7 @@
 			farmInfoCtrl.farm.products.push({});
 		}
 		function removeProduct(index) {
-			farmInfoCtrl.farm.products.splice(index,1);
+			farmInfoCtrl.farm.products.splice(index, 1);
 		}
 		function submitDetails() {
 			var req = {
@@ -53,7 +53,7 @@
 				if (res.data.err) {
 					console.log('err', err.message);
 					return;
-				}					
+				}
 				console.log('update success');
 			}, function(err) {
 				console.log(err);

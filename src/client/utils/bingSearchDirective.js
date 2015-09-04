@@ -1,10 +1,10 @@
 /*bingSearchDirective.js*/
-/*usage: 
+/*usage:
 * <bing-search ng-model = 'searchStr' option = 'options'
-* results = 'results' on-complete = 'callback'></bing-search>
+* result = 'result' on-complete = 'callback'></bing-search>
 */
 
-(function () {
+(function() {
 	'use strict';
 
 	angular.module('app')

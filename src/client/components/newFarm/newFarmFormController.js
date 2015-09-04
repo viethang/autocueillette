@@ -52,7 +52,7 @@
 				}
 				showSuggestions();
 			});
-			
+
 		}
 
 		function submit(forced) {
@@ -91,7 +91,7 @@
 				}
 			});
 
-			modalInstance.result.then(function (result) {
+			modalInstance.result.then(function(result) {
 				switch (result) {
 					case 'other farm':
 						$state.go('newFarm.fillAddress');
@@ -102,7 +102,7 @@
 						goHome();
 						break;
 				}
-			}, function (reason) {
+			}, function(reason) {
 				console.log(reason);
 			});
 		}
@@ -163,7 +163,6 @@
 				ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]])
 			);
 		};
-
 		function resetFarmAddress(suggestion) {
 			var address = suggestion.address;
 			var farm = newFarmCtrl.farm;
