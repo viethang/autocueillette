@@ -9,7 +9,6 @@ var dbtools = require('./dbtools');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 app.use('/assets', express.static('assets'));
 app.use('/vendor', express.static('vendor'));
 app.use('/src/client', express.static('src/client'));
@@ -17,12 +16,6 @@ app.use('/src/client', express.static('src/client'));
 var serverReversedPath = '../..';
 
 var servedFiles = ['/index.html', '/templates-app.js', '/templates-common.js'];
-
-function serveFile(url) {
-	app.get(url, function(req, res, next) {
-		res.sendFile(path.join(__dirname, serverReversedPath, url));
-	});
-}
 
 servedFiles.forEach(function(url) {
 	serveFile(url);
@@ -62,3 +55,8 @@ app.use(function(err, req, res) {
 
 http.createServer(app).listen(8000);
 
+function serveFile(url) {
+	app.get(url, function(req, res, next) {
+		res.sendFile(path.join(__dirname, serverReversedPath, url));
+	});
+}
