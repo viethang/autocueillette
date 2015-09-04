@@ -46,5 +46,37 @@ angular.module('app')
 	})
 	.state('searchFarm.showFarms', {
 		templateUrl:'components/searchFarm/showFarms.tpl.html'
+	})
+	.state('farmInfo', {
+		url: '/farmInfo/:farmId',
+		templateUrl: 'components/farmInfo/farmInfo.tpl.html',
+		controller: 'FarmInfoController as farmInfoCtrl'
+	})
+	.state('farmInfo.view', {
+		views: {
+			'general': {
+				templateUrl: 'components/farmInfo/generalInfo.tpl.html'
+			},
+			'detailed': {
+				templateUrl: 'components/farmInfo/detailedInfo.tpl.html'
+			}
+		}
+	})
+	.state('farmInfo.editAddress', {
+		views: {
+			'editAddress': {
+				templateUrl: 'components/farmInfo/editAddress.tpl.html'
+			}
+		}
+	})
+	.state('farmInfo.editDetails', {
+		views: {
+			'editDetails': {
+				templateUrl: 'components/farmInfo/editDetails.tpl.html'
+			},
+			'general':  {
+				templateUrl: 'components/farmInfo/generalInfo.tpl.html'
+			}
+		}
 	});
 }]);

@@ -44,6 +44,28 @@ app.post('/addNewFarm', function(req, res, next) {
 	});
 });
 
+app.post('/getFarm', function(req, res) {
+	var id = req.body.id;
+	dbtools.getFarm(id, function(err, body) {
+		if (!err) {
+			res.send(body);
+		} else {
+			console.log('Get farm error:', err);
+		}
+	});
+});
+
+app.post('/updateFarm', function(req, res) {
+	var farm = req.body;
+	dbtools.updateFarm(farm, function(err) {
+		if (err) {
+			res.send({err: {msg: err.message}});
+			return;
+		}
+		dbtools.solrIndex(farm, farm._id);
+	});
+});
+
 app.use(function(req, res) {
 	console.log(req.url, 'File not found! Send index.html');
 	res.sendFile(path.join(__dirname, serverReversedPath, '/index.html'));

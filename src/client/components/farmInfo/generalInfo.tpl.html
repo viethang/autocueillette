@@ -1,0 +1,19 @@
+<div name = 'generalInfo'>
+	<div class = 'row'>
+		<table class = 'col-md-6'>
+			<tr>
+				<td class = 'col-md-3'>Name</td>
+				<td class = 'col-md-9' 
+				ng-bind = 'farmInfoCtrl.farm.name'></td>
+			</tr>
+			<tr>
+				<td>Address</td>
+				<td ng-bind = 'farmInfoCtrl.farm.formattedAddress'>
+			</tr>
+		</table>
+	</div>
+	<div class = 'row' id = 'map'></div>
+	<div  class = 'row'>
+	<button ng-click = 'farmInfoCtrl.editAddress()'>Edit</button>
+	</div>
+<div>

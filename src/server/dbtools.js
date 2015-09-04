@@ -1,5 +1,6 @@
 var http = require('http');
 var nano = require('nano')('http://localhost:5984');
+var request = require('request');
 
 function checkDbExistence(doc, dbName, callback) {
 	var res = {};
@@ -116,6 +117,23 @@ function solrIndex(farm, id) {
 	post.end();
 }
 
+function getFarm(id, callback) {
+	var url = 'http://localhost:5984/autocueillette_farms/' + id;
+	var options = {
+		url: url,
+		method: 'get'
+	};
+	request(options, function(err, res, body) {
+		callback(err, body);
+	});
+}
+
+function updateFarm(farm, callback) {
+	var db = nano.db.use('autocueillette_farms');
+	db.insert(farm, callback);
+}
 module.exports.checkDbExistence = checkDbExistence;
 module.exports.updateDb = updateDb;
 module.exports.solrIndex = solrIndex;
+module.exports.getFarm = getFarm;
+module.exports.updateFarm = updateFarm;
