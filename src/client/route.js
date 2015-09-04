@@ -10,9 +10,7 @@ angular.module('app')
 	.state('newFarm', {
 		url: '/newFarm',
 		templateUrl: 'components/newFarm/newFarmForm.tpl.html',
-		controller: function($state) {
-			$state.transitionTo('newFarm.fillAddress');
-		}
+		controller: 'NewFarmFormController as newFarmCtrl'
 	})
 	.state('newFarm.fillAddress', {
 		views: {
@@ -42,7 +40,8 @@ angular.module('app')
 	})
 	.state('searchFarm', {
 		url: '/searchFarm',
-		templateUrl: 'components/searchFarm/searchFarmForm.tpl.html'
+		templateUrl: 'components/searchFarm/searchFarmForm.tpl.html',
+		controller: 'SearchFarmController as searchFarmCtrl'
 	})
 	.state('searchFarm.showFarms', {
 		templateUrl:'components/searchFarm/showFarms.tpl.html'

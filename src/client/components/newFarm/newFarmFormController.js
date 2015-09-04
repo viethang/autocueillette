@@ -6,6 +6,7 @@
 
 	function newFarmFormController($scope, $http, searchService, $timeout, $modal, $state) {
 		/* jshint validthis: true*/
+		$state.transitionTo('newFarm.fillAddress');
 		var newFarmCtrl = this;
 		var map = new OSMMap();
 		$scope.search = {};
