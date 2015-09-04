@@ -17,6 +17,7 @@
 		newFarmCtrl.showSuggestions = showSuggestions;
 		newFarmCtrl.localize = localize;
 		newFarmCtrl.addFarm = submit;
+		newFarmCtrl.goHome = goHome;
 
 		function showDetails(suggestion, index) {
 			var coordinates = suggestion.geocodePoints[0].coordinates;
@@ -175,6 +176,10 @@
 				angular.element(link).removeClass('chosen');
 			});
 			angular.element(links[index]).addClass('chosen');
+		}
+
+		function goHome() {
+			$state.transitionTo('index');
 		}
 	}
 })();
