@@ -1,3 +1,32 @@
-<div>
-	Editing address.
+<div name = 'editContact'>
+	<div class = 'form-group row no-gutter'>
+	<label class = 'control-label col-md-3'>Name</label>
+	<div class = 'col-md-9'>
+		<input id = 'name'
+			class = 'form-control'
+			type = 'text'
+			ng-model = 'farmInfoCtrl.farm.name'/>
+	</div>
+</div>
+<div class = 'form-group row no-gutter'>
+	<label class = 'control-label col-md-3'>Telephone</label>
+	<div class = 'col-md-9'>
+		<input class = 'form-control'
+			name = 'tel'
+			type = 'text'
+			ng-model = 'farmInfoCtrl.farm.tel'/>
+	</div>
+</div>
+<div class = 'form-group row no-gutter'>
+	<label class = 'control-label col-md-3'>Address</label>
+	<div class = 'col-md-9'>
+		<input class = 'form-control'
+			ng-model = 'farmInfoCtrl.farm.formattedAddress'></input>
+	</div>
+</div>
+<div class = 'row no-gutter'>
+	<div class = 'col-md-12 text-right'>
+		<button ng-click = 'farmInfoCtrl.save()'>Save</button>
+	</div>
+</div>
 </div>
