@@ -1,14 +1,14 @@
 (function() {
 	'strict mode';
-	newFarmFormController.$inject = ['$scope', '$http', 'searchService', '$timeout', '$modal', '$state', 'OSMServices'];
+	newFarmFormController.$inject = ['$scope', '$http', 'searchService', '$timeout', '$modal', '$state', 'OLServices'];
 	angular.module('app')
 	.controller('NewFarmFormController', newFarmFormController);
 
-	function newFarmFormController($scope, $http, searchService, $timeout, $modal, $state, OSMServices) {
+	function newFarmFormController($scope, $http, searchService, $timeout, $modal, $state, OLServices) {
 		/* jshint validthis: true*/
 		$state.transitionTo('newFarm.fillAddress');
 		var newFarmCtrl = this;
-		var map = new OSMServices.OSMMap();
+		var map = new OLServices.OLMap();
 		$scope.search = {};
 		newFarmCtrl.farm = {};
 		newFarmCtrl.farmSuggestion = [];

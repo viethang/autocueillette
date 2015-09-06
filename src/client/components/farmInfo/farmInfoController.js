@@ -3,11 +3,11 @@
 
 	angular.module('app')
 	.controller('FarmInfoController', farmInfoController);
-	function farmInfoController($state, $stateParams, $http, OSMServices, $timeout, searchService) {
+	function farmInfoController($state, $stateParams, $http, OLServices, $timeout, searchService) {
 		/* jshint validthis: true*/
 		var farmId = $stateParams.farmId;
 		var farmInfoCtrl = this;
-		var map = new OSMServices.OSMMap();
+		var map = new OLServices.OLMap();
 		var formattedAddress;
 		farmInfoCtrl.farm = {products: [{}]};
 		getFarm(farmId, farmInfoCtrl.farm)
@@ -128,5 +128,5 @@
 			$state.go('farmInfo.view');
 		}
 	}
-	farmInfoController.$inject = ['$state', '$stateParams', '$http', 'OSMServices', '$timeout', 'searchService'];
+	farmInfoController.$inject = ['$state', '$stateParams', '$http', 'OLServices', '$timeout', 'searchService'];
 })();

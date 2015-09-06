@@ -1,26 +1,36 @@
 (function() {
 	angular.module('app')
-	.factory('OSMServices', OSMServices);
-	OSMServices.$inject = [];
-	function OSMServices() {
+	.factory('OLServices', OLServices);
+	OLServices.$inject = [];
+	function OLServices() {
 		var service = {
-			OSMMap: OSMMap
+			OLMap: OLMap
 		};
 
-		function OSMMap() {
-			var image, style;
+		function OLMap() {
 			this.coordinates = [];
-			image = new ol.style.Circle({
-						radius: 5,
+			var image = new ol.style.Circle({
+				radius: 5,
 				fill: null,
 				stroke: new ol.style.Stroke({
 					color: 'red',
 					width: 2
 				})
 			});
-
-			style = new ol.style.Style({
+			var style = new ol.style.Style({
 				image: image
+			});
+
+			this.image2 = new ol.style.Circle({
+				radius: 5,
+				fill: null,
+				stroke: new ol.style.Stroke({
+					color: 'blue',
+					width: 2
+				})
+			});
+			var style2 = new ol.style.Style({
+				image: this.image2
 			});
 
 			this.centerFeature = new ol.Feature(
@@ -28,6 +38,11 @@
 					ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]])
 				)
 			);
+
+			this.interestPointSource = new ol.source.Vector({
+				features: []
+			});
+
 			this.map = new ol.Map({
 				renderer: 'canvas',
 				layers: [
@@ -39,6 +54,10 @@
 							features: [this.centerFeature]
 						}),
 						style: style
+					}),
+					new ol.layer.Vector({
+						source: this.interestPointSource,
+						style: style2
 					})
 				],
 				view: new ol.View({
@@ -48,13 +67,42 @@
 			});
 		}
 
-		OSMMap.prototype.resetView = function(coordinates) {
+		OLMap.prototype.resetView = function(coordinates) {
 			this.coordinates = coordinates;
 			this.map.getView().setCenter(ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]]));
 			this.centerFeature.getGeometry().setCoordinates(
 				ol.proj.fromLonLat([this.coordinates[1], this.coordinates[0]])
 			);
 		};
+
+
+		OLMap.prototype.addPoint = function(coordinates, label) {
+			var f = new ol.Feature(new ol.geom.Point(
+				ol.proj.fromLonLat([coordinates[1], coordinates[0]])
+			));
+			var style = new ol.style.Style({
+				image: this.image2,
+				text: new ol.style.Text({
+					text: label,
+					stroke: new ol.style.Stroke({
+						color: 'black'
+					})
+				})
+			});
+			f.setStyle(style);
+			this.interestPointSource.addFeature(f);
+		};
+
+
+		OLMap.prototype.fit = function() {
+			var extent1 = this.interestPointSource.getExtent();
+			var extent2 = ol.extent.boundingExtent([this.centerFeature.getGeometry().getCoordinates()]);
+			ol.extent.extend(extent1, extent2);
+			ol.extent.buffer(extent1, 5);
+			this.map.getView().fit(extent1, this.map.getSize());
+		};
+
+
 		return service;
 	}
 })();
