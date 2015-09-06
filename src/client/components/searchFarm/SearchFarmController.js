@@ -1,12 +1,15 @@
 (function() {
 	'use strict';
 
-	searchFarmController.$inject = ['$scope', '$http', '$state', 'searchService'];
+	searchFarmController.$inject = ['$scope', '$http', '$state', 'searchService', 'OLServices', '$timeout'];
 	angular.module('app')
 	.controller('SearchFarmController', searchFarmController);
-	function searchFarmController($scope, $http, $state, searchService) {
+	function searchFarmController($scope, $http, $state, searchService, OLServices, $timeout) {
 		/* jshint validthis: true*/
+		$state.go('searchFarm.search');
 		var searchFarmCtrl = this;
+		var map = new OLServices.OLMap();
+		var center;
 		searchFarmCtrl.searchForm = {};
 		searchFarmCtrl.search = search;
 		searchFarmCtrl.showFarm = showFarm;
@@ -40,9 +43,9 @@
 			console.log('More than one result');
 		}
 		function searchIndex(suggestion, product) {
-			var coordinates = suggestion.geocodePoints[0].coordinates;
+			center = suggestion.geocodePoints[0].coordinates;
 			var data = {
-				coordinates: coordinates,
+				coordinates: center,
 				product: product
 			};
 			var req = {
@@ -53,7 +56,8 @@
 			$http(req).then(function(res) {
 				var results = res.data.response.docs;
 				searchFarmCtrl.results = results;
-				$state.go('searchFarm.showFarms');
+				$state.go('searchFarm.showResult');
+				showMap(results);
 			}, function(err) {
 				console.log(err);
 			});
@@ -61,6 +65,20 @@
 		
 		function showFarm(farm) {
 			$state.go('farmInfo', {farmId: farm.id});
+		}
+		
+		function showMap(results) {
+			$timeout(function() {
+				map.map.setTarget('map_search');
+				map.resetView(center);
+				results.forEach(function(result) {
+					var tmp = result.coordinates.split(',');
+					var point = [parseFloat(tmp[0]), parseFloat(tmp[1])];
+					map.addPoint(point, result.short_address);
+					console.log(point);
+				});
+				map.fit();
+			});
 		}
 	}
 })();

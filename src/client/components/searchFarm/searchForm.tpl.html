@@ -1,0 +1,13 @@
+<div name = 'searchForm'>
+<form>
+	<label>Where</label>
+	<input name = 'place'
+		ng-model = 'searchFarmCtrl.searchForm.place'/> 
+	<br/>
+	<label>Product(s)</label>
+	<input name = 'product'
+		ng-model = 'searchFarmCtrl.searchForm.product'
+		placeholder = 'Ex: salade "haricot vert"'/>
+</form>
+<button ng-click = 'searchFarmCtrl.search()'> Search</button>
+</div>

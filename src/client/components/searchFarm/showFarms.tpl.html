@@ -1,6 +1,12 @@
-<div>
-	<span>Farm showed jlkjl!</span>
+<div name = 'searchResult'>
+	<p>Result(s)</p>
 	<div ng-repeat = 'farm in searchFarmCtrl.results'>
-		<a href = '' ng-click = 'searchFarmCtrl.showFarm(farm)'>{{farm}}</a>
+		<a href = '' ng-click = 'searchFarmCtrl.showFarm(farm)'>{{($index + 1) + ". " + (farm.name || farm.short_address)}}</a>
+		<div>
+			<span>Product(s): {{farm.product}}</span>
+		</div>
+		<div>
+			<span>Distance {{farm._dist_| number:2}}</span>
+		</div>
 	</div>
 </div>

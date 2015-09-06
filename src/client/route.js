@@ -43,8 +43,25 @@ angular.module('app')
 		templateUrl: 'components/searchFarm/searchFarmForm.tpl.html',
 		controller: 'SearchFarmController as searchFarmCtrl'
 	})
-	.state('searchFarm.showFarms', {
-		templateUrl: 'components/searchFarm/showFarms.tpl.html'
+	.state('searchFarm.search', {
+		views: {
+			'searchForm': {
+				templateUrl: 'components/searchFarm/searchForm.tpl.html'
+			}
+		}
+	})
+	.state('searchFarm.showResult', {
+		views: {
+			'searchForm': {
+				templateUrl: 'components/searchFarm/searchForm.tpl.html'
+			},
+			'searchResult': {
+				templateUrl: 'components/searchFarm/showFarms.tpl.html'
+			},
+			'map': {
+				templateUrl: 'components/searchFarm/map.tpl.html'
+			}
+		}
 	})
 	.state('farmInfo', {
 		url: '/farmInfo/:farmId',
