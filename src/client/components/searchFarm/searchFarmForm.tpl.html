@@ -1,8 +1,12 @@
 <div>
 	<div class = 'row'>
-		Find a farm
+		<div class = 'col-md-2'>
+			<span>Find a farm</span>
+		</div>
+		<div ui-view = 'searchForm' class = 'col-md-10'></div>
+	</div>
+	<div class = 'row'>
 		<div class = 'col-md-6'>
-			<div ui-view = 'searchForm'></div>
 			<div ui-view = 'searchResult'></div>
 		</div>
 		<div class = 'col-md-6'>
