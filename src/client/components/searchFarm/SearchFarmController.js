@@ -15,9 +15,16 @@
 		searchFarmCtrl.showFarm = showFarm;
 
 		function search() {
+			var tries = 0;
 			searchService.bingSearch(searchFarmCtrl.searchForm.place, function(response) {
 				switch (response.status) {
 					case 'NR':
+						if (tries < 10) {
+							tries++;
+							console.log(tries);
+							search();
+							return;
+						}
 						alertAddressNotExist();
 						break;
 					case 'ERR':
