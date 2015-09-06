@@ -125,10 +125,24 @@ function updateFarm(farm, callback) {
 
 function searchIndex(data, callback) {
 	var coordinates = convertCoordinates(data.coordinates);
-	var product = data.product;
+	var product = data.product.match(/\w+|"(?:\\"|[^"])+"/g); /*Split string 'salade "haricot vert"' into ['salade', 'haricot vert']*/
+	var d = 50; /*default radius = 50km*/
 	var url ='http://localhost:8983/solr/autocueillette/select?';
-	var qs = {q: 'product:' + product,
-			wt: 'json'
+	var q = '';
+	for (var i = 0; i < product.length - 1; i++) {
+		q += 'product:' + product[i] + ' ';
+	}
+	q += 'product:' + product[product.length - 1];
+
+	var qs = {
+		q: q,
+		fq:'{!geofilt}',
+		sort: 'geodist() asc',
+		fl: '_dist_:geodist() id coordinates name short_address product',
+		pt: coordinates,
+		sfield: 'coordinates',
+		d:'50',
+		wt: 'json'
 	};
 	var options = {
 		method: 'get',
