@@ -3,22 +3,17 @@
 
 	angular.module('app')
 	.controller('FarmInfoController', farmInfoController);
-	function farmInfoController($state, $stateParams, $http, OLServices, $timeout, searchService) {
+	function farmInfoController($state, $stateParams, $http, OLServices, $timeout, searchService, $element, $scope) {
 		/* jshint validthis: true*/
 		var farmId = $stateParams.farmId;
 		console.log($stateParams);
 		var farmInfoCtrl = this;
 		var map = new OLServices.OLMap();
 		var formattedAddress;
-		farmInfoCtrl.farm = {products: [{}]};
+		$scope.edit = {};
+		farmInfoCtrl.farm = {};
 		getFarm(farmId, farmInfoCtrl.farm)
 		.then(function() {
-			if ($stateParams.update) {
-				console.log('$stateParams.update = true');
-				$state.go('farmInfo.editDetails', {farmId: farmId});
-			} else {
-				$state.go('farmInfo.view');
-			}
 			var coordinates = farmInfoCtrl.farm.coordinates;
 			formattedAddress = farmInfoCtrl.farm.formattedAddress;
 			$timeout(function() {
@@ -26,19 +21,24 @@
 				map.resetView(coordinates);
 			});
 		});
-		farmInfoCtrl.editAddress = editAddress;
-		farmInfoCtrl.editDetails = editDetails;
 		farmInfoCtrl.addProduct = addProduct;
 		farmInfoCtrl.removeProduct = removeProduct;
 		farmInfoCtrl.save = save;
+		
+		farmInfoCtrl.inputKeyup = function(evt, name) {
+			if (evt.keyCode === 13) {
+				$scope.edit[name] = false;
+				save();
+			}
+		};
 
-		function editAddress() {
-			$state.go('farmInfo.editAddress');
-		}
-
-		function editDetails() {
-			$state.go('farmInfo.editDetails');
-		}
+		$scope.focus = function(name) {
+			$scope.edit[name] = true;
+			$timeout(function() {
+				document.getElementById('info.'+ name).focus();
+			});
+		}; 
+		
 		function getFarm(id, target) {
 			var req = {
 				method: 'post',
@@ -115,5 +115,5 @@
 			$state.go('farmInfo.view');
 		}
 	}
-	farmInfoController.$inject = ['$state', '$stateParams', '$http', 'OLServices', '$timeout', 'searchService'];
+	farmInfoController.$inject = ['$state', '$stateParams', '$http', 'OLServices', '$timeout', 'searchService', '$element', '$scope'];
 })();

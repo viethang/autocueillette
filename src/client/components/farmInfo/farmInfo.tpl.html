@@ -1,10 +1,53 @@
-<div name = 'farmInfo'>
+<div = 'farmInfo'>
 	<div class = 'row'>
 		<div class = 'col-md-6'>
-			<div ui-view = 'general' ></div>
-			<div ui-view = 'detailed'></div>
-			<div ui-view = 'editAddress'></div>
-			<div ui-view = 'editDetails'></div>
+			<div class = 'form-group row'>
+				<label class = 'col-md-3 text-right'>Name:</label>
+				<div class = 'col-md-9'>
+					<span ng-hide = 'edit.name' ng-bind = 'farmInfoCtrl.farm.name'
+						ng-click = 'focus("name")'></span>
+					<input ng-show = 'edit.name' id = 'info.name'
+						ng-model = 'farmInfoCtrl.farm.name'
+						ng-keyup = 'farmInfoCtrl.inputKeyup($event,"name")'
+						ng-blur = 'edit.name = false'/>
+				</div>
+			</div>
+			<div class = 'form-group row'>
+				<label class = 'col-md-3 text-right'>Telephone:</label>
+				<div class = 'col-md-9'>
+					<span ng-bind = 'farmInfoCtrl.farm.tel' ng-click = 'focus("tel")' ng-hide = 'edit.tel'></span>
+					<input ng-show = 'edit.tel' id = 'info.tel'
+						ng-model = 'farmInfoCtrl.farm.tel'
+						ng-keyup = 'farmInfoCtrl.inputKeyup($event, "tel")'
+						ng-blur = 'edit.tel = false'/>
+				</div>
+			</div>
+			<div class = 'form-group row'>
+				<label class = 'col-md-3 text-right'>Address:</label>
+				<div class = 'col-md-9'>
+					<span ng-bind = 'farmInfoCtrl.farm.formattedAddress'
+						ng-hide = 'edit.address'
+						ng-click = 'focus("address")'></span>
+					<input ng-show = 'edit.address' id = 'info.address'
+						ng-keyup = 'farmInfoCtrl.inputKeyup($event, "address")'
+						ng-model = 'farmInfoCtrl.farm.formattedAddress'
+						ng-blur = 'edit.address = false'/>
+				</div>
+			</div>
+			<div class = 'row form-group'>
+				<label class = 'col-md-3 text-right'>Product(s):</label>
+				<div class = 'col-md-9'>
+					<span ng-bind = 'farmInfoCtrl.farm.product'
+						ng-hide = 'edit.product'
+						ng-click = 'focus("product")'></span>
+					<a href = '' ng-hide = 'edit.product||farmInfoCtrl.farm.product'
+						ng-click = 'focus("product")'>Add product</a>
+					<input ng-show = 'edit.product' id = 'info.product'
+						ng-keyup = 'farmInfoCtrl.inputKeyup($event, "product")'
+						ng-model = 'farmInfoCtrl.farm.product'
+						ng-blur = 'edit.product = false'/>
+				</div>
+			</div>
 		</div>
 		<div class = 'col-md-6'>
 			<div id = 'map1' aspect-ratio = '1:2'></div>
