@@ -80,16 +80,6 @@
 			var f = new ol.Feature(new ol.geom.Point(
 				ol.proj.fromLonLat([coordinates[1], coordinates[0]])
 			));
-			var style = new ol.style.Style({
-				image: this.image2,
-				text: new ol.style.Text({
-					text: label,
-					stroke: new ol.style.Stroke({
-						color: 'black'
-					})
-				})
-			});
-			f.setStyle(style);
 			this.interestPointSource.addFeature(f);
 		};
 
@@ -98,7 +88,7 @@
 			var extent1 = this.interestPointSource.getExtent();
 			var extent2 = ol.extent.boundingExtent([this.centerFeature.getGeometry().getCoordinates()]);
 			ol.extent.extend(extent1, extent2);
-			ol.extent.buffer(extent1, 5);
+			//ol.extent.buffer(extent1, 10050);
 			this.map.getView().fit(extent1, this.map.getSize());
 		};
 
