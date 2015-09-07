@@ -18,8 +18,9 @@ function checkDbExistence(doc, dbName, callback) {
 				if (result.length === 0)
 					res = {exists: false};
 				for (var i = 0; i < result.length; i++) {
-					if (result[i].value.formattedAddress === doc.formattedAddress) {
-						res = {exists: true};
+					var farm = result[i].value;
+					if (farm.formattedAddress === doc.formattedAddress) {
+						res = {exists: true, id: farm._id};
 					}
 				}
 				if (!res.exists) {

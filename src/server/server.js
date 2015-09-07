@@ -27,7 +27,10 @@ app.post('/addNewFarm', function(req, res, next) {
 	var db = 'autocueillette_farms';
 	dbtools.checkDbExistence(farm, db, function(resp) {
 		if (resp.exists) {
-			res.send({status: 'exists'});
+			res.send({
+				status: 'exists',
+				id: resp.id
+			});
 		} else if (resp.closeFarms && !forced) {
 			res.send({status: 'confirm', closeFarms: resp.closeFarms});
 		} else {
