@@ -41,16 +41,16 @@
 			searchService.bingSearch(searchStr, function(response) {
 				switch (response.status) {
 					case 'NR':
-						console.log('No result found');
+						handleNoResult();
 						break;
 					case 'ERR':
 						console.log('Error! Try again.');
 						break;
 					case 'OK':
 						newFarmCtrl.farmSuggestion = response.result;
+						showSuggestions();
 						break;
 				}
-				showSuggestions();
 			});
 
 		}
@@ -74,7 +74,11 @@
 						confirm(res.data.closeFarms);
 						break;
 					case 'update':
-						update();
+						console.log('in update');
+						update(res.data.id);
+						break;
+					default:
+						alertError();
 						break;
 				}
 			}, function(err) {
@@ -86,22 +90,15 @@
 			var modalInstance = $modal.open({
 				animation: false,
 				templateUrl: 'components/newFarm/farmExistsAlert.tpl.html',
-				controller: 'ModalController',
+				controller: 'ModalController as modalCtrl',
 				resolve: {
 				}
 			});
 
-			modalInstance.result.then(function(result) {
-				switch (result) {
-					case 'other farm':
-						$state.go('newFarm.fillAddress');
-						$scope.search = {};
-						newFarmCtrl.farm = {};
-						break;
-					case 'go home':
-						goHome();
-						break;
-				}
+			modalInstance.result.then(function(msg) {
+				$state.go('newFarm.fillAddress');
+				$scope.search = {};
+				newFarmCtrl.farm = {};
 			}, function(reason) {
 				console.log(reason);
 			});
@@ -109,10 +106,9 @@
 
 		function confirm(closeFarms) {
 			newFarmCtrl.closeFarms = closeFarms;
-			console.log('need confirm');
 		}
-		function update() {
-			console.log('update');
+		function update(id) {
+			$state.go('farmInfo', {farmId: id, update: true});
 		}
 
 		function resetFarmAddress(suggestion) {

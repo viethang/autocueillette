@@ -6,13 +6,19 @@
 	function farmInfoController($state, $stateParams, $http, OLServices, $timeout, searchService) {
 		/* jshint validthis: true*/
 		var farmId = $stateParams.farmId;
+		console.log($stateParams);
 		var farmInfoCtrl = this;
 		var map = new OLServices.OLMap();
 		var formattedAddress;
 		farmInfoCtrl.farm = {products: [{}]};
 		getFarm(farmId, farmInfoCtrl.farm)
 		.then(function() {
-			$state.go('farmInfo.view');
+			if ($stateParams.update) {
+				console.log('$stateParams.update = true');
+				$state.go('farmInfo.editDetails', {farmId: farmId});
+			} else {
+				$state.go('farmInfo.view');
+			}
 			var coordinates = farmInfoCtrl.farm.coordinates;
 			formattedAddress = farmInfoCtrl.farm.formattedAddress;
 			$timeout(function() {
