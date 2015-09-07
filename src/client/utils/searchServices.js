@@ -11,6 +11,10 @@
 		};
 		return service;
 		function bingSearch(searchStr, callback) {
+			if (!searchStr) {
+				callback({status: 'NR'});
+				return;
+			}
 			var request = 'http://dev.virtualearth.net/REST/v1/Locations?query=' +
 				encodeURIComponent(searchStr) +
 				'&jsonp=JSON_CALLBACK&key=' + BingKey +
