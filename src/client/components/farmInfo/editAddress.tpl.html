@@ -1,35 +1,35 @@
 <div name = 'editContact'>
 	<div class = 'form-group row'>
-	<label class = 'control-label col-md-3 text-right'>Name</label>
-	<div class = 'col-md-9'>
-		<input id = 'name'
-			class = 'form-control'
-			type = 'text'
-			ng-model = 'farmInfoCtrl.farm.name'/>
-	</div>
-</div>
-<div class = 'form-group row'>
-	<label class = 'control-label col-md-3 text-right'>Telephone</label>
-	<div class = 'col-md-9'>
-		<input class = 'form-control'
-			type = 'text'
-			ng-model = 'farmInfoCtrl.farm.tel'/>
-	</div>
-</div>
-<div class = 'form-group row'>
-	<label class = 'col-md-3 text-right'>Address</label>
-	<div class = 'col-md-9'>
-		<input ng-show = 'editAddr' class = 'form-control'
-			ng-model = 'farmInfoCtrl.farm.formattedAddress'/>
-		<div ng-hide = 'editAddr'>
-			<span ng-bind = 'farmInfoCtrl.farm.formattedAddress'></span>
-			<a href = '' ng-click = 'editAddr = !editAddr'>Edit</span>
+		<label class = 'control-label col-md-3 text-right'>Name</label>
+		<div class = 'col-md-9'>
+			<input id = 'name'
+				class = 'form-control'
+				type = 'text'
+				ng-model = 'farmInfoCtrl.farm.name'/>
 		</div>
 	</div>
-</div>
-<div class = 'row'>
-	<div class = 'col-md-12 text-right'>
-		<button ng-click = 'farmInfoCtrl.save()'>Save</button>
+	<div class = 'form-group row'>
+		<label class = 'control-label col-md-3 text-right'>Telephone</label>
+		<div class = 'col-md-9'>
+			<input class = 'form-control'
+				type = 'text'
+				ng-model = 'farmInfoCtrl.farm.tel'/>
+		</div>
 	</div>
-</div>
+	<div class = 'form-group row'>
+		<label class = 'col-md-3 text-right'>Address</label>
+		<div class = 'col-md-9'>
+			<input ng-show = 'editAddr' class = 'form-control'
+				ng-model = 'farmInfoCtrl.farm.formattedAddress'/>
+			<div ng-hide = 'editAddr'>
+				<span ng-bind = 'farmInfoCtrl.farm.formattedAddress'></span>
+				<a href = '' ng-click = 'editAddr = !editAddr'>Edit</a>
+			</div>
+		</div>
+	</div>
+	<div class = 'row'>
+		<div class = 'col-md-12 text-right'>
+			<button ng-click = 'farmInfoCtrl.save()'>Save</button>
+		</div>
+	</div>
 </div>

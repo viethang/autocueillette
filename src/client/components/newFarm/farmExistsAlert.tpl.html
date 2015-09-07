@@ -6,7 +6,8 @@
 		This farm is already in our database.
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-primary" type="button" ng-click="addNewFarm()">Add another farm</button>
-		<button class="btn btn-warning" type="button" ng-click="goHome()">Back to homepage</button>
+		<button class="btn btn-primary" type="button" ng-click="modalCtrl.close('close')">OK</button>
+		<button class = "btn btn-primary" type = 'button'
+			ng-click = 'modalCtrl.close("update")'>Update it</button>
 	</div>
 </div>

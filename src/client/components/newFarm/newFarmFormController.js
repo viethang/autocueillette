@@ -114,7 +114,6 @@
 		function update() {
 			console.log('update');
 		}
-		console.log('submit!');
 
 		function resetFarmAddress(suggestion) {
 			var address = suggestion.address;
@@ -122,7 +121,7 @@
 			farm.city = address.locality;
 			farm.canton = address.adminDistrict;
 			farm.streetLine = address.addressLine;
-			farm.formattedAddress = address.streetLine + ', ' + farm.city + ', ' + farm.canton;
+			farm.formattedAddress = farm.streetLine + ', ' + farm.city + ', ' + farm.canton;
 			farm.coordinates = suggestion.geocodePoints[0].coordinates;
 		}
 
@@ -136,6 +135,16 @@
 
 		function goHome() {
 			$state.transitionTo('index');
+		}
+
+		function handleNoResult() {
+			var modalInstance = $modal.open({
+				animation: false,
+				templateUrl: 'components/newFarm/addressNotExists.alert.tpl.html',
+				controller: 'ModalController as modalCtrl',
+				resolve: {
+				}
+			});
 		}
 	}
 })();

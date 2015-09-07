@@ -2,15 +2,14 @@
 	'use strict';
 
 	angular.module('app')
-	.controller('ModalController', modalCtrl);
-	modalCtrl.$inject = ['$scope', '$modalInstance'];
+	.controller('ModalController', modalController);
+	modalController.$inject = ['$scope', '$modalInstance'];
 
-	function modalCtrl($scope, $modalInstance) {
-		$scope.addNewFarm = function() {
-			$modalInstance.close('other farm');
-		};
-		$scope.goHome = function() {
-			$modalInstance.close('go home');
+	function modalController($scope, $modalInstance) {
+		/*jshint validthis: true*/
+		var modalCtrl = this;
+		modalCtrl.close = function(msg) {
+			$modalInstance.close(msg);
 		};
 	}
 })();
