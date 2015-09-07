@@ -81,12 +81,10 @@ function solrIndex(farm, id) {
 	var coordinates = convertCoordinates(farm.coordinates);
 	var name = farm.name;
 	var short_addr = farm.formattedAddress; // FIXME
-	var product = [];
-	if (farm.products) {
-		for (var i = 0; i < farm.products.length; i++) {
-			product.push(farm.products[i].name);
-		}
-	}
+	//var product = farm.product.split(/[ ,]+/);
+	var product = farm.product.split(',').map(function(item) {
+		return item.trim();
+	});
 	var doc = [{
 		id: id,
 		farm_name: name,
