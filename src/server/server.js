@@ -34,7 +34,7 @@ app.post('/addNewFarm', function(req, res, next) {
 			dbtools.updateDb(farm, db, function(err, body) {
 				if (!err) {
 					dbtools.solrIndex(farm, body.id);
-					res.send({status: 'update'});
+					res.send({status: 'update', id: body.id});
 				} else {
 					console.log('Error', err);
 					res.send({status: 'error'});
