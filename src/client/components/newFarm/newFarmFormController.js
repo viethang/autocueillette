@@ -17,6 +17,7 @@
 		newFarmCtrl.localize = localize;
 		newFarmCtrl.addFarm = submit;
 		newFarmCtrl.goHome = goHome;
+		newFarmCtrl.edit = edit;
 
 		function showDetails(suggestion, index) {
 			var coordinates = suggestion.geocodePoints[0].coordinates;
@@ -68,7 +69,7 @@
 				console.log('ok', res.data);
 				switch (res.data.status) {
 					case 'exists':
-						announceExistence();
+						announceExistence(res.data.id);
 						break;
 					case 'confirm':
 						confirm(res.data.closeFarms);
@@ -86,7 +87,7 @@
 			});
 		}
 
-		function announceExistence() {
+		function announceExistence(id) {
 			var modalInstance = $modal.open({
 				animation: false,
 				templateUrl: 'components/newFarm/farmExistsAlert.tpl.html',
@@ -96,9 +97,11 @@
 			});
 
 			modalInstance.result.then(function(msg) {
-				$state.go('newFarm.fillAddress');
-				$scope.search = {};
-				newFarmCtrl.farm = {};
+				if (msg === 'update') {
+					$state.go('farmInfo.editDetails', {farmId: id, update: true});
+				} else {
+					$state.go('index');
+				}
 			}, function(reason) {
 				console.log(reason);
 			});
@@ -141,6 +144,11 @@
 				resolve: {
 				}
 			});
+		}
+		
+		function edit(closeFarm) {
+			var id = closeFarm.id;
+			$state.go('farmInfo.editDetails', {farmId: id, update: true});
 		}
 	}
 })();
