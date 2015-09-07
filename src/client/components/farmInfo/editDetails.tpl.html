@@ -8,19 +8,21 @@
 				ng-model = 'farmInfoCtrl.farm.openHours'
 				disable-emitter/>
 	</div>
-	<div ng-repeat = 'product in farmInfoCtrl.farm.products' class = 'row no-gutter'>
-			<label class = 'col-md-2'>Product {{$index + 1}}</label>
-			<input type = 'text'
-					class = 'col-md-3'
-					name = 'product'
-					ng-model = 'product.name'
-					disable-emitter/>
-			<div class = 'col-md-3'><label>Available</label>
-				<input type = 'checkbox'/>
-			</div>
-			<div class = 'col-md-3'><label class = 'col-md-6'>Price</label>
+	<div ng-repeat = 'product in farmInfoCtrl.farm.products' class = 'row'>
+			<div class = 'col-md-5'>
+				<label class = 'col-md-5'>Product {{$index + 1}}</label>
 				<input type = 'text'
-					class = 'col-md-6'
+						class = 'col-md-7'
+						name = 'product'
+						ng-model = 'product.name'
+					disable-emitter/>
+			</div>
+			<div class = 'col-md-2'><label>Available</label>
+				<input type = 'checkbox' ng-model = 'product.available'/>
+			</div>
+			<div class = 'col-md-4'><label class = 'col-md-5'>Price</label>
+				<input type = 'text'
+					class = 'col-md-7'
 					ng-model = 'product.price'
 					disable-emitter/>
 			</div>
@@ -39,7 +41,7 @@
 	
 	<div>
 		<button type = 'button'
-			ng-click = 'farmInfoCtrl.submitDetails()'>
+			ng-click = 'farmInfoCtrl.save()'>
 			Save
 		</button>
 	</div>

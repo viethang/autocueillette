@@ -1,6 +1,6 @@
 <div name = 'editContact'>
-	<div class = 'form-group row no-gutter'>
-	<label class = 'control-label col-md-3'>Name</label>
+	<div class = 'form-group row'>
+	<label class = 'control-label col-md-3 text-right'>Name</label>
 	<div class = 'col-md-9'>
 		<input id = 'name'
 			class = 'form-control'
@@ -8,23 +8,26 @@
 			ng-model = 'farmInfoCtrl.farm.name'/>
 	</div>
 </div>
-<div class = 'form-group row no-gutter'>
-	<label class = 'control-label col-md-3'>Telephone</label>
+<div class = 'form-group row'>
+	<label class = 'control-label col-md-3 text-right'>Telephone</label>
 	<div class = 'col-md-9'>
 		<input class = 'form-control'
-			name = 'tel'
 			type = 'text'
 			ng-model = 'farmInfoCtrl.farm.tel'/>
 	</div>
 </div>
-<div class = 'form-group row no-gutter'>
-	<label class = 'control-label col-md-3'>Address</label>
+<div class = 'form-group row'>
+	<label class = 'col-md-3 text-right'>Address</label>
 	<div class = 'col-md-9'>
-		<input class = 'form-control'
-			ng-model = 'farmInfoCtrl.farm.formattedAddress'></input>
+		<input ng-show = 'editAddr' class = 'form-control'
+			ng-model = 'farmInfoCtrl.farm.formattedAddress'/>
+		<div ng-hide = 'editAddr'>
+			<span ng-bind = 'farmInfoCtrl.farm.formattedAddress'></span>
+			<a href = '' ng-click = 'editAddr = !editAddr'>Edit</span>
+		</div>
 	</div>
 </div>
-<div class = 'row no-gutter'>
+<div class = 'row'>
 	<div class = 'col-md-12 text-right'>
 		<button ng-click = 'farmInfoCtrl.save()'>Save</button>
 	</div>

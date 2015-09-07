@@ -14,7 +14,7 @@
 		.then(function() {
 			$state.go('farmInfo.view');
 			var coordinates = farmInfoCtrl.farm.coordinates;
-			var formattedAddress = farmInfoCtrl.farm.formattedAddress;
+			formattedAddress = farmInfoCtrl.farm.formattedAddress;
 			$timeout(function() {
 				map.map.setTarget('map1');
 				map.resetView(coordinates);
@@ -24,7 +24,6 @@
 		farmInfoCtrl.editDetails = editDetails;
 		farmInfoCtrl.addProduct = addProduct;
 		farmInfoCtrl.removeProduct = removeProduct;
-		farmInfoCtrl.submitDetails = submitDetails;
 		farmInfoCtrl.save = save;
 
 		function editAddress() {
@@ -54,25 +53,8 @@
 		function removeProduct(index) {
 			farmInfoCtrl.farm.products.splice(index, 1);
 		}
-		function submitDetails() {
-			var req = {
-				method: 'post',
-				url: '/updateFarm',
-				data: farmInfoCtrl.farm
-			};
-			$http(req).then(function(res) {
-				if (res.data.err) {
-					console.log('err', err.message);
-					return;
-				}
-				console.log('update success');
-			}, function(err) {
-				console.log(err);
-			});
-		}
 
 		function save() {
-			console.log('saving');
 			if (formattedAddress === farmInfoCtrl.farm.formattedAddress) {
 				update(farmInfoCtrl.farm);
 			} else {
@@ -107,21 +89,20 @@
 			farm.city = address.locality;
 			farm.canton = address.adminDistrict;
 			farm.streetLine = address.addressLine;
-			farm.formattedAddress = address.formattedAddress;
+			farm.formattedAddress = (farm.streetLine? farm.streetLine + ', ' : '') + farm.city + ', ' + farm.canton;
 			farm.coordinates = result.geocodePoints[0].coordinates;
 			map.resetView(farm.coordinates);
 			update(farm);
+			formattedAddress = farm.formattedAddress;
 		}
 
 		function update(farm) {
-			console.log('updating');
 			var req = {
 				method: 'post',
 				url: '/updateFarm',
 				data: farm
 			};
 			$http(req).then(function(res) {
-				console.log('Farm updated');
 			}, function(err) {
 				console.log('update error');
 			});

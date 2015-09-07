@@ -1,19 +1,24 @@
 <div name = 'generalInfo'>
 	<div class = 'row'>
-		<table>
-			<tr class = 'row'>
-				<td class = 'col-md-3'>Name</td>
-				<td class = 'col-md-9'
-				ng-bind = 'farmInfoCtrl.farm.name'></td>
-			</tr>
-			<tr class = 'row'>
-				<td class = 'col-md-3'>Address</td>
-				<td class = 'col-md-9'
-				ng-bind = 'farmInfoCtrl.farm.formattedAddress'></td>
-			</tr>
-		</table>
+		<span>Contact</span>
+		<a href = '' ng-click = 'farmInfoCtrl.editAddress()'>Edit</a>
 	</div>
-	<div  class = 'row'>
-	<button ng-click = 'farmInfoCtrl.editAddress()'>Edit</button>
+	<div class = 'form-group row'>
+		<label class = 'col-md-3 text-right'>Name:</label>
+		<div class = 'col-md-9'>
+			<span ng-bind = 'farmInfoCtrl.farm.name'></span>
+		</div>
+	</div>
+	<div class = 'form-group row'>
+		<label class = 'col-md-3 text-right'>Telephone:</label>
+		<div class = 'col-md-9'>
+			<span ng-bind = 'farmInfoCtrl.farm.tel'></span>
+		</div>
+	</div>
+	<div class = 'form-group row'>
+		<label class = 'col-md-3 text-right'>Address:</label>
+		<div class = 'col-md-9'>
+			<span ng-bind = 'farmInfoCtrl.farm.formattedAddress'></span>
+		</div>
 	</div>
 <div>

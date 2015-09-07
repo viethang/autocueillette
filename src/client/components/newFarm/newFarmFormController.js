@@ -122,7 +122,7 @@
 			farm.city = address.locality;
 			farm.canton = address.adminDistrict;
 			farm.streetLine = address.addressLine;
-			farm.formattedAddress = address.formattedAddress;
+			farm.formattedAddress = address.streetLine + ', ' + farm.city + ', ' + farm.canton;
 			farm.coordinates = suggestion.geocodePoints[0].coordinates;
 		}
 
