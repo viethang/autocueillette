@@ -1,8 +1,7 @@
 (function startAngular() {
-	var app = angular.module('app', ['ui.router', 'templates-app', 'ui.bootstrap']);
+	var app = angular.module('app', ['ui.router', 'templates-app', 'ui.bootstrap', 'ngSanitize']);
 
 	app.run(['$rootScope', '$state', function($rootScope, $state) {
-		$state.go('index');
 		angular.element(window).on('resize', function() {
 			$rootScope.$apply();
 		});
