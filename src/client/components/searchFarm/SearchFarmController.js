@@ -24,7 +24,10 @@
 			searchService.bingSearch(place, function(response) {
 				switch (response.status) {
 					case 'ERR':
-						console.log('Error! Try again.');
+						alert('components/common/alertError.html');
+						$timeout(function() {
+							searchFarmCtrl.searchAlert = null;
+						}, 2000);
 						break;
 					case 'OK':
 						if (response.result.length > 1) {
@@ -63,7 +66,10 @@
 				$scope.show.map = true;
 				showMap(results);
 			}, function(err) {
-				console.log(err);
+				alert('components/common/alertError.html');
+				$timeout(function() {
+					searchFarmCtrl.searchAlert = null;
+				}, 2000);
 			});
 		}
 
