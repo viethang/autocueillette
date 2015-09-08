@@ -12,6 +12,9 @@
 		searchFarmCtrl.searchForm = {};
 		searchFarmCtrl.search = search;
 		$scope.show = {};
+		searchFarmCtrl.showFarm = function(farm) {
+			$state.go('farmInfo', {farmId: farm.id});
+		};
 
 		searchFarmCtrl.choose = function(place) {
 			searchFarmCtrl.searchForm.place = place;
