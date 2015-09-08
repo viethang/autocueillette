@@ -1,0 +1,47 @@
+<div>
+	<div class = 'row'>
+		<div class = 'col-md-2'>
+			<span>Find a farm</span>
+		</div>
+		<div class = 'col-md-10'>
+			<form name = 'searchForm'>
+				<div class = 'form-group col-md-5'>
+					<label class = 'col-md-3 text-right'>Where?</label>
+					<input name = 'place' class = 'col-md-9'
+						ng-model = 'searchFarmCtrl.searchForm.place'/>
+				</div>
+				<div class = 'form-group col-md-5'>
+					<label class = 'col-md-3 text-right'>What?</label>
+					<input name = 'product' class = 'col-md-9'
+						ng-model = 'searchFarmCtrl.searchForm.product'
+						placeholder = 'Ex: salade "haricot vert"'/>
+				</div>
+				<div class = 'col-md-2 '>
+					<button ng-click = 'searchFarmCtrl.search()'> Search</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class = 'row'>
+		<div class = 'col-md-6'>
+			<div name = 'searchResult'>
+				<p>Result(s)</p>
+				<ol>
+					<li ng-repeat = 'farm in searchFarmCtrl.results'>
+						<a href = '' ng-click = 'searchFarmCtrl.showFarm(farm)'>{{(farm.name || farm.short_address)}}</a>
+						<div>
+							<span>Product(s): {{farm.product.join(', ')}}</span>
+						</div>
+						<div>
+							<span>Distance: {{farm._dist_| number:2}}km</span>
+						</div>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div class = 'col-md-6'>
+			<div id = 'map_search' aspect-ratio = '1:2'></div>
+		</div>
+	</div>
+</div>
+

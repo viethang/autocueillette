@@ -2,10 +2,16 @@ angular.module('app')
 .config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
 		function($stateProvider, $urlRouterProvider, $locationProvider) {
 	$locationProvider.html5Mode(true);
-	$urlRouterProvider.otherwise('/index.html');
+	$urlRouterProvider.otherwise('/');
 	$stateProvider
 	.state('index', {
-		url: ''
+		url: '',
+		views: {
+			'search': {
+				templateUrl: 'components/searchFarm/searchFarm.tpl.html',
+				controller: 'SearchFarmController as searchFarmCtrl'
+			}
+		}
 	})
 	.state('newFarm', {
 		url: '/newFarm',
@@ -40,28 +46,8 @@ angular.module('app')
 	})
 	.state('searchFarm', {
 		url: '/searchFarm',
-		templateUrl: 'components/searchFarm/searchFarmForm.tpl.html',
+		templateUrl: 'components/searchFarm/searchFarm.tpl.html',
 		controller: 'SearchFarmController as searchFarmCtrl'
-	})
-	.state('searchFarm.search', {
-		views: {
-			'searchForm': {
-				templateUrl: 'components/searchFarm/searchForm.tpl.html'
-			}
-		}
-	})
-	.state('searchFarm.showResult', {
-		views: {
-			'searchForm': {
-				templateUrl: 'components/searchFarm/searchForm.tpl.html'
-			},
-			'searchResult': {
-				templateUrl: 'components/searchFarm/showFarms.tpl.html'
-			},
-			'map': {
-				templateUrl: 'components/searchFarm/map.tpl.html'
-			}
-		}
 	})
 	.state('farmInfo', {
 		url: '/farmInfo/:farmId/:update',

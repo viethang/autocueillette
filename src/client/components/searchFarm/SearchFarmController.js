@@ -6,13 +6,12 @@
 	.controller('SearchFarmController', searchFarmController);
 	function searchFarmController($scope, $http, $state, searchService, OLServices, $timeout) {
 		/* jshint validthis: true*/
-		$state.go('searchFarm.search');
 		var searchFarmCtrl = this;
 		var map = new OLServices.OLMap();
 		var center;
 		searchFarmCtrl.searchForm = {};
 		searchFarmCtrl.search = search;
-		searchFarmCtrl.showFarm = showFarm;
+		$scope.show = {};
 
 		function search() {
 			var place = searchFarmCtrl.searchForm.place || 'Lausanne, Suisse';
@@ -57,29 +56,22 @@
 			$http(req).then(function(res) {
 				var results = res.data.response.docs;
 				searchFarmCtrl.results = results;
-				$state.go('searchFarm.showResult');
+				$scope.show.map = true;
 				showMap(results);
 			}, function(err) {
 				console.log(err);
 			});
 		}
-		
-		function showFarm(farm) {
-			$state.go('farmInfo', {farmId: farm.id});
-		}
-		
+
 		function showMap(results) {
-			$timeout(function() {
-				map.map.setTarget('map_search');
-				map.resetView(center);
-				results.forEach(function(result) {
-					var tmp = result.coordinates.split(',');
-					var point = [parseFloat(tmp[0]), parseFloat(tmp[1])];
-					map.addPoint(point, result.short_address);
-					console.log(point);
-				});
-				map.fit();
+			map.map.setTarget('map_search');
+			map.resetView(center);
+			results.forEach(function(result) {
+				var tmp = result.coordinates.split(',');
+				var point = [parseFloat(tmp[0]), parseFloat(tmp[1])];
+				map.addPoint(point, result.short_address);
 			});
+			map.fit();
 		}
 	}
 })();
