@@ -1,0 +1,13 @@
+<div class="alert alert-warning alert-dismissible" role="alert">
+	<button type="button" class="close"
+		ng-click = 'searchFarmCtrl.searchAlert = null;'>&times;</button>
+	<p> Several places correspond to 
+		<strong ng-bind = 'searchFarmCtrl.searchForm.place'></strong>. Which one is your place?
+	</p>
+	<ul>
+		<li ng-repeat = 'place in searchFarmCtrl.places'>
+			<a href = '' ng-bind = 'place'
+				ng-click = 'searchFarmCtrl.choose(place)'></a>
+		</li>
+	</ul>
+</div>

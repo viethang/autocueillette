@@ -13,34 +13,38 @@
 		searchFarmCtrl.search = search;
 		$scope.show = {};
 
+		searchFarmCtrl.choose = function(place) {
+			searchFarmCtrl.searchForm.place = place;
+			search();
+		};
+
 		function search() {
+			searchFarmCtrl.searchAlert = null;
 			var place = searchFarmCtrl.searchForm.place || 'Lausanne, Suisse';
 			searchService.bingSearch(place, function(response) {
 				switch (response.status) {
-					case 'NR':
-						alertAddressNotExist();
-						break;
 					case 'ERR':
 						console.log('Error! Try again.');
 						break;
 					case 'OK':
 						if (response.result.length > 1) {
-							chooseAddress();
+							searchFarmCtrl.places = [];
+							response.result.forEach(function(res) {
+								var address = res.address;
+								var place = [address.locality, address.adminDistrict, address.countryRegion].join(', ');
+								searchFarmCtrl.places.push(place);
+							});
+						alert('components/searchFarm/multiAddr.alert.tpl.html');
 						} else {
 							searchIndex(response.result[0], searchFarmCtrl.searchForm.product);
-							console.log('searchIndex');
 						}
 						break;
 				}
 			});
 		}
 
-		function alertAddressNotExist() {
-			console.log('not exist');
-		}
-		
-		function chooseAddress() {
-			console.log('More than one result');
+		function alert(templateUrl) {
+			searchFarmCtrl.searchAlert = templateUrl;
 		}
 		function searchIndex(suggestion, product) {
 			center = suggestion.geocodePoints[0].coordinates;
