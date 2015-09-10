@@ -1,0 +1,13 @@
+<div class="alert alert-info" role="alert">
+	<p> Several places correspond to 
+		<strong ng-bind = 'search.searchStr'></strong>. Which one is your place?
+	</p>
+	<ul>
+		<li ng-repeat = 'place in newFarmCtrl.places'>
+			<a href = '' ng-bind = 'place'
+				ng-click = 'newFarmCtrl.showDetails($index)'></a>
+			<button class = 'btn btn-link' type = 'button'
+				ng-click = 'newFarmCtrl.selectAddr($index)'>Select</button>
+		</li>
+	</ul>
+</div>

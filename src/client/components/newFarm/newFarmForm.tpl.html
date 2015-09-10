@@ -1,13 +1,122 @@
-<div>
-	<div class = 'row'>
-		<div class = 'col-md-6'>
-			<div ui-view = 'simpleForm'></div>
-			<div ui-view = 'parsedAddress'></div>
-			<div ui-view = 'addFarmButton'></div>
+<div class = 'container'>
+	<div name = 'newFarm' ng-if = '!show.finished'>
+		<div class = 'row'>
+			<div class = 'row'>
+				<div class = 'col-md-4'>
+					Step 1: Enter the farm's address and verify the location.
+				</div>
+				<div class = 'col-md-4'>
+					Step 2: More details on the farm.
+				</div>
+			</div>
+			<br/>
+			<div class = 'form-group row'>
+				<label class = 'col-md-2 text-right'>Address</label>
+				<div class = 'col-md-5'>
+					<bing-search 
+						class = 'col-md-12'
+						ng-model = 'search.searchStr'
+						result = 'newFarmCtrl.addrSuggestions'
+						on-complete = 'newFarmCtrl.verifyAddress(search.searchStr)'
+						ng-click = 'show.searchAlert = false'></bing-search>
+				</div>
+				<div class = 'col-md-2'>
+					<button type = 'button' class = 'btn btn-primary'
+						ng-click = 'newFarmCtrl.verifyAddress(search.searchStr)'>Verify on map</button>
+				</div>
+			</div>
 		</div>
-		<div class = 'col-md-6'>
-			<div ui-view = 'map'></div>
-			<div ui-view = 'closeFarms'></div>
+		<div class = 'row'>
+			<div class = 'col-md-6'>
+				<div  ng-if = 'show.searchAlert'
+					ng-include = 'alertTpl'>
+				</div>
+				<br/>
+				<div ng-if = 'show.parsedAddress' name = 'parsedAddress'>
+					<div class = 'row'>
+						<div class = 'col-md-6 row'>
+							<label>Country: </label>
+							<span ng-bind = 'newFarmCtrl.farm.country'></span>
+						</div>
+						<div class = 'col-md-6 row'>
+							<label>Canton: </label>
+							<span ng-bind = 'newFarmCtrl.farm.canton'></span>
+						</div>
+						
+					</div>
+					<div class = 'row'>
+						<div class = 'col-md-6 row'>
+							<label>City/Commune: </label>
+							<span ng-bind = 'newFarmCtrl.farm.city'></span>
+						</div>
+						<div class = 'col-md-6 row'>
+							<label>Street/road: </label>
+							<span ng-bind-html = 'newFarmCtrl.farm.streetLine || alert.street'></span>
+						</div>
+					</div>
+					<br/>
+					<div class = 'row' ng-if = 'show.confirm'>
+						<p>
+						Please confirm this address and go to step 2 to provide some more details on this farm.
+						</p>
+						<button type = 'button' class = 'btn btn-primary btn-sm'
+						ng-click = 'newFarmCtrl.goNext()'>Confirm, go to step 2</button>
+						<button type = 'button' class = 'btn btn-warning btn-sm'
+						ng-click = 'newFarmCtrl.cancelAddr()'>Cancel</button>
+					</div>
+				</div>
+				
+				<div name = 'moreInfo' ng-if = 'show.moreInfo'>
+					<div class = 'row'>
+						<p>Tell us some more useful information on this farm.</p>
+						<div class = 'form-group row'>
+							<label class = 'col-md-2'>Name</label>
+							<div class = 'col-md-10'>
+								<input class = 'col-md-6'
+									type = 'text'
+									ng-model = 'newFarmCtrl.farm.name'/>
+								<div class = 'col-md-6 deemphasize'>
+									<span>Farm or owner's name</span>
+								</div>
+							</div>
+						</div>
+						<div class = 'form-group row'>
+							<label class = 'col-md-2'>Telephone</label>
+							<div class = 'col-md-10'>
+								<input name = 'tel'
+									class = 'col-md-6'
+									type = 'text'
+									ng-model = 'newFarmCtrl.farm.tel'/>
+								<div class = 'col-md-6 deemphasized'>
+									<span>Useful to phone the farm owner before going</span>
+								</div>
+							</div>
+						</div>
+						<div class = 'form-group row'>
+							<label class = 'col-md-2'>Product(s)</label>
+							<div class = 'col-md-10'>
+								<input name = 'tel'
+									class = 'col-md-12'
+									type = 'text'
+									ng-model = 'newFarmCtrl.farm.tel'
+									placeholder = 'Example: haricot vert, salade, petit poid'/>
+							</div>
+						</div>
+						<button type = 'button' class = 'btn btn-primary'
+							ng-click = 'newFarmCtrl.submit()'>Ok, share it</button>
+					</div>
+				</div>
+			</div>
+			<div class = 'col-md-6' ng-if = 'show.map'>
+				<div class = 'col-md-12'>
+					<div id = 'map' aspect-ratio = '1:2'></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div name = 'thank' ng-if = 'show.finished'>
+		<div class = 'row'>
+			<p> Thank you for having share this farm with us!</p>
 		</div>
 	</div>
 </div>

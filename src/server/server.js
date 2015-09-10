@@ -22,27 +22,16 @@ servedFiles.forEach(function(url) {
 });
 
 app.post('/addNewFarm', function(req, res, next) {
-	var farm = req.body.farm;
-	var forced = req.body.forced;
+	var farm = req.body;
 	var db = 'autocueillette_farms';
-	dbtools.checkDbExistence(farm, db, function(resp) {
-		if (resp.exists) {
-			res.send({
-				status: 'exists',
-				id: resp.id
-			});
-		} else if (resp.closeFarms && !forced) {
-			res.send({status: 'confirm', closeFarms: resp.closeFarms});
+	dbtools.updateDb(farm, db, function(err, body) {
+		if (!err) {
+			console.log('update no error');
+			dbtools.solrIndex(farm, body.id);
+			res.send({id: body.id});
 		} else {
-			dbtools.updateDb(farm, db, function(err, body) {
-				if (!err) {
-					dbtools.solrIndex(farm, body.id);
-					res.send({status: 'update', id: body.id});
-				} else {
-					console.log('Error', err);
-					res.send({status: 'error'});
-				}
-			});
+			res.send({err: err});
+			console.log('update error', err);
 		}
 	});
 });
@@ -80,6 +69,17 @@ app.post('/searchIndex', function(req, res) {
 	});
 });
 
+app.post('/newFarm/checkDb', function(req, res) {
+	var farm = req.body;
+	dbtools.checkFarmInDb(farm, function(err, body) {
+		if (!err) {
+			res.send(body);
+		}
+		else {
+			res.send({err: err});
+		}
+	});
+});
 app.use(function(req, res) {
 	console.log(req.url, 'File not found! Send index.html');
 	res.sendFile(path.join(__dirname, serverReversedPath, '/index.html'));

@@ -11,10 +11,6 @@
 		};
 		return service;
 		function bingSearch(searchStr, callback) {
-			if (!searchStr) {
-				callback({status: 'NR'});
-				return;
-			}
 			var request = 'http://dev.virtualearth.net/REST/v1/Locations?query=' +
 				encodeURIComponent(searchStr) +
 				'&jsonp=JSON_CALLBACK&key=' + BingKey +
@@ -26,8 +22,7 @@
 					(response.resourceSets[0].resources.length === 0)
 				) {
 					if (tries < 5) {
-						console.log('try bing again');
-						console.log(tries);
+						console.log('try: ', tries);
 						tries++;
 						bingSearch(searchStr, callback);
 						return;

@@ -22,7 +22,7 @@ angular.module('app')
 	.state('newFarm', {
 		url: '/newFarm',
 		templateUrl: 'components/newFarm/newFarmForm.tpl.html',
-		controller: 'NewFarmFormController as newFarmCtrl'
+		controller: 'NewFarmController as newFarmCtrl'
 	})
 	.state('newFarm.confirm', {
 		templateUrl: 'components/newFarm/confirmFarm.tpl.html'

@@ -7,36 +7,34 @@ function convertCoordinates(coordinates) {
 	return coordinates[0] + ',' + coordinates[1];
 }
 
-
-function checkDbExistence(doc, dbName, callback) {
-	var res = {};
-	var db = nano.db.use(dbName);
-	db.view('farms', 'by_location', {keys: [[doc.city, doc.canton]]},
+function checkFarmInDb(farm, callback) {
+	var db = nano.db.use('autocueillette_farms');
+	var res = {exists: 0};
+	db.view('farms', 'by_location', {keys: [[farm.city, farm.canton]]},
 		function(err, body) {
 			if (!err) {
 				var result = body.rows;
-				if (result.length === 0)
-					res = {exists: false};
 				for (var i = 0; i < result.length; i++) {
-					var farm = result[i].value;
+					var doc = result[i].value;
 					if (farm.formattedAddress === doc.formattedAddress) {
-						res = {exists: true, id: farm._id};
+						res.exists = 1;
+						res.id = doc._id;
 					}
 				}
-				if (!res.exists) {
+				if (res.exists !== 1) {
 					var closeFarms = findCloseFarms(doc, result);
 					if (closeFarms.length > 0) {
+						res.exists = 0;
 						res.closeFarms = closeFarms;
 					}
 				}
-				if (callback) {
-					callback(res);
-				}
+			}
+			if (callback) {
+				callback(err, res);
 			}
 		}
 	);
 }
-
 
 function findCloseFarms(doc, list) {
 	var radius = 1; //km
@@ -44,7 +42,7 @@ function findCloseFarms(doc, list) {
 	list.forEach(function(item) {
 		var distance = getStraightDistance(doc.coordinates, item.value.coordinates);
 		if (distance < radius)
-			closeFarms.push(item);
+			closeFarms.push(item.value);
 	});
 	return closeFarms;
 }
@@ -53,8 +51,8 @@ function findCloseFarms(doc, list) {
 function updateDb(doc, dbName, callback) {
 	var db = nano.db.use(dbName);
 	db.insert(doc, callback);
+	console.log('dbtool doc', doc);
 }
-
 
 function getStraightDistance(x, y) {
 	var R = 6371; //earth's radius
@@ -81,10 +79,10 @@ function solrIndex(farm, id) {
 	var coordinates = convertCoordinates(farm.coordinates);
 	var name = farm.name;
 	var short_addr = farm.formattedAddress; // FIXME
-	//var product = farm.product.split(/[ ,]+/);
-	var product = farm.product.split(',').map(function(item) {
-		return item.trim();
-	});
+	var product = farm.product? 
+		farm.product.split(',').map(function(item) {
+		return item.trim()}) 
+		: [];
 	var doc = [{
 		id: id,
 		farm_name: name,
@@ -153,9 +151,9 @@ function searchIndex(data, callback) {
 	});
 }
 
-module.exports.checkDbExistence = checkDbExistence;
 module.exports.updateDb = updateDb;
 module.exports.solrIndex = solrIndex;
 module.exports.getFarm = getFarm;
 module.exports.updateFarm = updateFarm;
 module.exports.searchIndex = searchIndex;
+module.exports.checkFarmInDb = checkFarmInDb;
