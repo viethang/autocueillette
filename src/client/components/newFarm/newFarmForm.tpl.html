@@ -1,31 +1,30 @@
 <div class = 'container'>
 	<div name = 'newFarm' ng-if = '!show.finished'>
 		<div class = 'row'>
-			<div class = 'row'>
-				<div class = 'col-md-4'>
-					Step 1: Enter the farm's address and verify the location.
-				</div>
-				<div class = 'col-md-4'>
-					Step 2: More details on the farm.
-				</div>
-			</div>
-			<br/>
-			<div class = 'form-group row'>
-				<label class = 'col-md-2 text-right'>Address</label>
-				<div class = 'col-md-5'>
-					<bing-search 
-						class = 'col-md-12'
-						ng-model = 'search.searchStr'
-						result = 'newFarmCtrl.addrSuggestions'
-						on-complete = 'newFarmCtrl.verifyAddress(search.searchStr)'
-						ng-click = 'show.searchAlert = false'></bing-search>
-				</div>
-				<div class = 'col-md-2'>
-					<button type = 'button' class = 'btn btn-primary'
-						ng-click = 'newFarmCtrl.verifyAddress(search.searchStr)'>Verify on map</button>
-				</div>
+				<h4><strong> Share a farm address? It is so simple!</strong>
+				</h4>
+				<p>
+				Just enter the address, verify the location and give some information on the farm.
 			</div>
 		</div>
+		<br/><br/>
+		<div class = 'row block-center'>
+			<div class = 'row'>
+				<label class = 'col-md-2 text-right'>Address</label>
+				<form ng-submit = 'newFarmCtrl.verifyAddress(search.searchStr)'>
+					<div class="input-group col-md-7">
+						<input type="text" class="form-control"
+							ng-model = 'search.searchStr'
+							ng-change = 'reset()'/>
+						<span class="input-group-btn">
+							<input class="btn btn-primary" type="submit" 
+								value = 'Verify'/>
+						</span>
+					</div>
+				</form>
+			</div>
+		</div>
+		<br/>
 		<div class = 'row'>
 			<div class = 'col-md-6'>
 				<div  ng-if = 'show.searchAlert'
@@ -62,7 +61,7 @@
 						<button type = 'button' class = 'btn btn-primary btn-sm'
 						ng-click = 'newFarmCtrl.goNext()'>Confirm, go to step 2</button>
 						<button type = 'button' class = 'btn btn-warning btn-sm'
-						ng-click = 'newFarmCtrl.cancelAddr()'>Cancel</button>
+						ng-click = 'newFarmCtrl.reload()'>Cancel</button>
 					</div>
 				</div>
 				
@@ -98,7 +97,7 @@
 								<input name = 'tel'
 									class = 'col-md-12'
 									type = 'text'
-									ng-model = 'newFarmCtrl.farm.tel'
+									ng-model = 'newFarmCtrl.farm.product'
 									placeholder = 'Example: haricot vert, salade, petit poid'/>
 							</div>
 						</div>

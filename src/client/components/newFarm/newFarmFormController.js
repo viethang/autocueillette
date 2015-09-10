@@ -26,18 +26,19 @@
 		ctrl.reload = function() {
 			$state.go('newFarm', {}, {reload: true});
 		};
-		
+		$scope.reset = function() {
+			for (var prop in $scope.show) {
+				$scope.show[prop] = false;
+			}
+		};
 		$scope.alert = {};
 		$scope.alert.street = '<span class = "text-danger">No street specified yet</span>';
 
 		function selectAddr(index) {
 			var info = ctrl.addrSuggestions[index];
-			$scope.show.searchAlert = false;
-			$scope.show.parsedAddress = true;
-			$scope.show.confirm = true;
 			resetFarmAddress(info);
 			$scope.search.searchStr = ctrl.farm.formattedAddress;
-			showMap();
+			checkDb(ctrl.farm);
 		}
 
 		function showDetails(index) {
@@ -94,8 +95,7 @@
 						alertCloseFarms(res.data.closeFarms);
 						return;
 					}
-					showMap();
-					$scope.show.submit = true;
+					handleUniqueResult();
 					return;
 				}
 				alertExistence(res.data.id);
@@ -141,6 +141,12 @@
 
 		function handleNoResult() {
 			alert('components/newFarm/addressNotExists.alert.tpl.html');
+		}
+
+		function handleUniqueResult() {
+			showMap();
+			$scope.show.parsedAddress = true;
+			$scope.show.confirm = true;
 		}
 
 		function showMap() {
