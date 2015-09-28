@@ -3,42 +3,35 @@
 
 	angular.module('app')
 	.controller('FarmInfoController', farmInfoController);
-	function farmInfoController($state, $stateParams, $http, OLServices, $timeout, searchService, $element, $scope) {
+	function farmInfoController($state, $stateParams, $http, OLServices, $timeout, searchService, $scope, $anchorScroll, $location) {
 		/* jshint validthis: true*/
 		var farmId = $stateParams.farmId;
-		console.log($stateParams);
 		var farmInfoCtrl = this;
 		var map = new OLServices.OLMap();
-		var formattedAddress;
-		$scope.edit = {};
+		$location.hash('');
+		$scope.mode = {};
+		$scope.editor = {};
 		farmInfoCtrl.farm = {};
 		getFarm(farmId, farmInfoCtrl.farm)
 		.then(function() {
-			var coordinates = farmInfoCtrl.farm.coordinates;
-			formattedAddress = farmInfoCtrl.farm.formattedAddress;
+			var farm = farmInfoCtrl.farm;
+			var coordinates = farm.coordinates;
 			$timeout(function() {
 				map.map.setTarget('map1');
 				map.resetView(coordinates);
 			});
+			$scope.edit = {
+				tel: farm.tel,
+				name: farm.name,
+				product: farm.product
+			};
 		});
-		farmInfoCtrl.addProduct = addProduct;
-		farmInfoCtrl.removeProduct = removeProduct;
-		farmInfoCtrl.save = save;
-		
-		farmInfoCtrl.inputKeyup = function(evt, name) {
-			if (evt.keyCode === 13) {
-				$scope.edit[name] = false;
-				save();
-			}
-		};
+		farmInfoCtrl.sendComment = sendComment;
+		farmInfoCtrl.getSenderInfo = getSenderInfo;
+		farmInfoCtrl.getEditorInfo = getEditorInfo;
+		farmInfoCtrl.edit = edit;
+		farmInfoCtrl.cancelEdit = cancelEdit;
 
-		$scope.focus = function(name) {
-			$scope.edit[name] = true;
-			$timeout(function() {
-				document.getElementById('info.'+ name).focus();
-			});
-		}; 
-		
 		function getFarm(id, target) {
 			var req = {
 				method: 'post',
@@ -53,53 +46,18 @@
 				console.log(err);
 			});
 		}
-		function addProduct() {
-			farmInfoCtrl.farm.products.push({});
-		}
-		function removeProduct(index) {
-			farmInfoCtrl.farm.products.splice(index, 1);
-		}
 
-		function save() {
-			if (formattedAddress === farmInfoCtrl.farm.formattedAddress) {
-				update(farmInfoCtrl.farm);
-			} else {
-				var searchStr = farmInfoCtrl.farm.formattedAddress;
-				searchService.bingSearch(searchStr, function(response) {
-					switch (response.status) {
-						case 'NR':
-							console.log('No result found');
-							break;
-						case 'ERR':
-							console.log('Error! Try again.');
-							break;
-						case 'OK':
-							if (response.result.length > 1) {
-								alertMultipleResults(response.result);
-							} else {
-								confirmAddress(response.result[0]);
-							}
-							break;
-					}
-				});
+		function sendComment(comment) {
+			if (!farmInfoCtrl.farm.comments) {
+				farmInfoCtrl.farm.comments = [];
 			}
-		}
-
-		function alertMultipleResults(result) {
-			console.log('Multiple results', result);
-		}
-
-		function confirmAddress(result) {
-			var address = result.address;
-			var farm = farmInfoCtrl.farm;
-			farm.city = address.locality;
-			farm.canton = address.adminDistrict;
-			farm.streetLine = address.addressLine;
-			farm.formattedAddress = (farm.streetLine? farm.streetLine + ', ' : '') + farm.city + ', ' + farm.canton;
-			farm.coordinates = result.geocodePoints[0].coordinates;
-			map.resetView(farm.coordinates);
-			update(farm);
-			formattedAddress = farm.formattedAddress;
+			farmInfoCtrl.farm.comments.push({
+				text: comment.text,
+				date: new Date(),
+				senderName: comment.senderName
+			});
+			update(farmInfoCtrl.farm);
+			$state.go('farmInfo', {farmId: farmInfoCtrl.farm._id}, {reload: true});
 		}
 
 		function update(farm) {
@@ -112,8 +70,69 @@
 			}, function(err) {
 				console.log('update error');
 			});
-			$state.go('farmInfo.view');
+		}
+
+		function getSenderInfo() {
+			if (!$scope.newComment.text) {
+				return;
+			}
+			$scope.getSenderInfo = true;
+			$location.hash('senderInfo');
+			$anchorScroll();
+		}
+
+		function getEditorInfo() {
+			var farm = farmInfoCtrl.farm;
+			if (($scope.edit.name === farm.name) &&
+				($scope.edit.tel === farm.tel) &&
+				($scope.edit.product === farm.product) &&
+				(!$scope.edit.comment)) {
+				return;
+			}
+			$scope.getEditorInfo = true;
+			$location.hash('editorInfo');
+			$anchorScroll();
+		}
+
+		function edit() {
+			var farm = farmInfoCtrl.farm;
+			var farmCopy = angular.copy(farm);
+			farm.name = $scope.edit.name;
+			farm.tel = $scope.edit.tel;
+			farm.product = $scope.edit.product;
+			var same = true;
+			for (var prop in farm) {
+				if (farm[prop] !== farmCopy[prop]) {
+					same = false;
+					break;
+				}
+			}
+			if (!same) {
+				if (!farm.history) {
+					farm.history = [];
+				}
+				var trace = {
+					editor: $scope.editor.name,
+					date: new Date(),
+					oldInfo: farmCopy,
+					newInfo: farm
+				};
+				farm.history.push(trace);
+			}
+			if ($scope.edit.comment) {
+				farm.comments.push({
+					text: $scope.edit.comment,
+					date: new Date(),
+					senderName: $scope.editor.name
+				});
+			}
+			update(farm);
+			$state.go('farmInfo', {farmId: farmInfoCtrl.farm._id}, {reload: true});
+		}
+
+		function cancelEdit() {
+			$state.go('farmInfo', {farmId: farmInfoCtrl.farm._id}, {reload: true});
 		}
 	}
-	farmInfoController.$inject = ['$state', '$stateParams', '$http', 'OLServices', '$timeout', 'searchService', '$element', '$scope'];
+	farmInfoController.$inject = ['$state', '$stateParams', '$http', 'OLServices', '$timeout', 'searchService', '$scope', '$anchorScroll', '$location'];
 })();
