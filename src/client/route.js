@@ -24,14 +24,6 @@ angular.module('app')
 		templateUrl: 'components/newFarm/newFarmForm.tpl.html',
 		controller: 'NewFarmController as newFarmCtrl'
 	})
-	.state('newFarm.confirm', {
-		templateUrl: 'components/newFarm/confirmFarm.tpl.html'
-	})
-	.state('searchFarm', {
-		url: '/searchFarm',
-		templateUrl: 'components/searchFarm/searchFarm.tpl.html',
-		controller: 'SearchFarmController as searchFarmCtrl'
-	})
 	.state('farmInfo', {
 		url: '/farmInfo/:farmId',
 		templateUrl: 'components/farmInfo/farmInfo.tpl.html',
