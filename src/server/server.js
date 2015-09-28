@@ -24,6 +24,7 @@ servedFiles.forEach(function(url) {
 app.post('/addNewFarm', function(req, res, next) {
 	var farm = req.body;
 	var db = 'autocueillette_farms';
+	farm.type = 'farm';
 	dbtools.updateDb(farm, db, function(err, body) {
 		if (!err) {
 			console.log('update no error');
@@ -49,6 +50,7 @@ app.post('/getFarm', function(req, res) {
 
 app.post('/updateFarm', function(req, res) {
 	var farm = req.body;
+	farm.type = 'farm';
 	dbtools.updateFarm(farm, function(err) {
 		if (err) {
 			res.send({err: {msg: err.message}});
