@@ -43,8 +43,13 @@
 				features: []
 			});
 
+			var scaleLineControl = new ol.control.ScaleLine();
 			this.map = new ol.Map({
 				renderer: 'canvas',
+				controls: ol.control.defaults({
+					}).extend([
+						scaleLineControl
+				]),
 				layers: [
 					new ol.layer.Tile({
 						source: new ol.source.OSM()
