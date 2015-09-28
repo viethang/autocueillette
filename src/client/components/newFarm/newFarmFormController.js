@@ -26,6 +26,14 @@
 		ctrl.reload = function() {
 			$state.go('newFarm', {}, {reload: true});
 		};
+
+		ctrl.anotherFarm = function() {
+			$scope.alertTpl = null;
+			$scope.show.searchAlert = false;
+			$scope.show.moreInfo = true;
+			showMap();
+			$scope.show.parsedAddress = true;
+		};
 		$scope.reset = function() {
 			for (var prop in $scope.show) {
 				$scope.show[prop] = false;
