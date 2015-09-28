@@ -17,7 +17,6 @@
 				'&mkt=fr-fr';
 			$http.jsonp(request)
 			.success(function(response) {
-				console.log(response);
 				if ((response.resourceSets.length === 1) &&
 					(response.resourceSets[0].resources.length === 0)
 				) {
