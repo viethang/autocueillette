@@ -2,16 +2,17 @@
   "name": "ng-boilerplate",
   "version": "0.3.2",
   "devDependencies": {
-    "angular": "~1.4",
-    "angular-mocks": "~1.2",
+    "angular": "1.4.6",
+    "angular-mocks": "1.4.6",
     "bootstrap": "~3.1",
     "angular-bootstrap": "~0.13.3",
     "angular-ui-router": "~0.2.15",
     "livereload-js": "~2.2.1",
-    "OpenLayers": "~3.8.2"
+    "OpenLayers": "~3.8.2",
+    "angular-sanitize": "~1.4.5"
   },
   "dependencies": {},
   "resolutions": {
-    "angular": ">= 1.0.8"
+    "angular": ">= 1.4.6"
   }
 }

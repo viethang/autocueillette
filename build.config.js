@@ -14,7 +14,7 @@ module.exports = {
 	'!src/client/*.spec.js','!src/client/*.spec.js' ],
     jsunit: [ 'src/client/**/*.spec.js' ],
 
-	 atpl: [ 'src/client/**/*.tpl.html' ],
+	atpl: [ 'src/client/**/*.tpl.html' ],
     ctpl: [ 'src/common/**/*.tpl.html' ],
 
     html: [ 'src/index.html' ],
@@ -37,7 +37,8 @@ module.exports = {
       'vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js',
       'vendor/angular-ui-router/release/angular-ui-router.js',
       'vendor/angular-ui-utils/modules/route/route.js',
-	  'vendor/openlayers/ol.js'
+	  'vendor/openlayers/ol-debug.js',
+	  'vendor/angular-sanitize/angular-sanitize.min.js'
     ],
     css: [
 		'vendor/bootstrap/dist/css/bootstrap.css',

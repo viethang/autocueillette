@@ -397,7 +397,7 @@ module.exports = function ( grunt ) {
 				files: [
 					'<%= app_files.jsunit %>'
 				],
-				tasks: [ 'jshint:test'
+				tasks: [ 'jshint:test', 'karma:unit'
 				],
 				options: {
 					livereload: false
@@ -454,7 +454,7 @@ module.exports = function ( grunt ) {
 		* before watching for changes.
 		*/
 	grunt.renameTask( 'watch', 'delta' );
-	grunt.registerTask( 'watch', [ 'build', 'start-server', 'delta'] );
+	grunt.registerTask( 'watch', [ 'build', 'start-server', 'karma:unit', 'delta'] );
 	grunt.registerTask('e2e-test', ['connect:test', 'protractor:e2e']);
 	/**
 		* The default task is to build and compile.
@@ -467,7 +467,7 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'build', [
 		'clean', 'html2js', 'jshint', 'less:build', 'sass:build',
 		'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
-		'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'copy:build_server', 'index:build'
+		'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'copy:build_server', 'index:build', 'karmaconfig', 'karma:continuous'
 	]);
 
 	/**

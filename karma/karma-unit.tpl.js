@@ -7,21 +7,23 @@ module.exports = function ( karma ) {
     files: [
       <% scripts.forEach( function ( file ) { %>'<%= file %>',
       <% }); %>
-      'src/**/*.js'
+	'vendor/angular-mocks/angular-mocks.js',
+      'src/client/**/*.js',
+      'src/server/**/*.js'
     ],
     exclude: [
       'src/assets/**/*.js',
 		'src/server/**/*.js'
     ],
     frameworks: [ 'jasmine' ],
-    plugins: [ 'karma-jasmine', 'karma-firefox-launcher' ],
+    plugins: [ 'karma-jasmine', 'karma-phantomjs-launcher'],
     reporters: 'dots',
     port: 9018,
     runnerPort: 9100,
     urlRoot: '/',
     autoWatch: false,
     browsers: [
-      'Firefox'
+      'PhantomJS'
     ]
   });
 };
