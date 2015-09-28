@@ -143,7 +143,7 @@
 			farm.canton = address.adminDistrict;
 			farm.country = address.countryRegion;
 			farm.streetLine = address.addressLine;
-			farm.formattedAddress = farm.streetLine? (farm.streetLine + ', ') : '' + farm.city + ', ' + farm.canton + ', '+ farm.country;
+			farm.formattedAddress = (farm.streetLine? (farm.streetLine + ', ') : '') + farm.city + ', ' + farm.canton + ', '+ farm.country;
 			farm.coordinates = suggestion.geocodePoints[0].coordinates;
 		}
 
