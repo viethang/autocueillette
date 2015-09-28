@@ -3,6 +3,13 @@ var nano = require('nano')('http://localhost:5984');
 var request = require('request');
 
 
+module.exports.updateDb = updateDb;
+module.exports.solrIndex = solrIndex;
+module.exports.getFarm = getFarm;
+module.exports.updateFarm = updateFarm;
+module.exports.searchIndex = searchIndex;
+module.exports.checkFarmInDb = checkFarmInDb;
+
 function convertCoordinates(coordinates) {
 	return coordinates[0] + ',' + coordinates[1];
 }
@@ -150,10 +157,3 @@ function searchIndex(data, callback) {
 		callback(err, body);
 	});
 }
-
-module.exports.updateDb = updateDb;
-module.exports.solrIndex = solrIndex;
-module.exports.getFarm = getFarm;
-module.exports.updateFarm = updateFarm;
-module.exports.searchIndex = searchIndex;
-module.exports.checkFarmInDb = checkFarmInDb;
