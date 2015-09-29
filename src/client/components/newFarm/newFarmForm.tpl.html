@@ -3,24 +3,25 @@
 		<div class = 'row'>
 			<h4><strong> Share a farm address? It is so simple!</strong>
 			</h4>
-			<p>Just enter the address, verify the location and give some information on the farm.</p>
+			<p>Just enter the address in the box below, verify the location and give some information on the farm.</p>
 		</div>
-		<br/><br/>
-		<div class = 'row block-center'>
-			<div class = 'row'>
-				<label class = 'col-md-2 text-right'>Address</label>
-				<form ng-submit = 'newFarmCtrl.verifyAddress(search.searchStr)'>
-					<div class="input-group col-md-7">
-						<input type="text" class="form-control"
-							ng-model = 'search.searchStr'
+		<br/>
+		<div class = 'row'>
+			<form ng-submit = 'newFarmCtrl.verifyAddress(search.searchStr)'>
+				<div class = 'row'>
+					<div class = 'col-md-6'>
+						<div class = 'form-group' >
+							<input type="text" class="form-control" ng-model = 'search.searchStr'
 							ng-change = 'reset()'/>
-						<span class="input-group-btn">
-							<input class="btn btn-primary" type="submit" 
-								value = 'Verify'/>
-						</span>
+						</div>
+						<div>
+							<input class="btn btn-primary" type="submit"
+							value = 'Verify location'
+							ng-class = '{disabled: verifyBtnDisable}'/>
+						</div>
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
 		<br/>
 		<div class = 'row'>
@@ -30,6 +31,9 @@
 				</div>
 				<br/>
 				<div ng-if = 'show.parsedAddress' name = 'parsedAddress'>
+					<p>
+						Please confirm this address and go to next step to provide some more details on this farm.
+						</p>
 					<div class = 'row'>
 						<div class = 'col-md-6 row'>
 							<label>Country: </label>
@@ -53,12 +57,9 @@
 					</div>
 					<br/>
 					<div class = 'row' ng-if = 'show.confirm'>
-						<p>
-						Please confirm this address and go to step 2 to provide some more details on this farm.
-						</p>
 						<button type = 'button' class = 'btn btn-primary btn-sm'
-						ng-click = 'newFarmCtrl.goNext()'>Confirm, go to step 2</button>
-						<button type = 'button' class = 'btn btn-warning btn-sm'
+						ng-click = 'newFarmCtrl.goNext()'>Confirm, go to next step</button>
+						<button type = 'button' class = 'btn btn-default btn-sm'
 						ng-click = 'newFarmCtrl.reload()'>Cancel</button>
 					</div>
 				</div>

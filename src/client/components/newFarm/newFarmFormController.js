@@ -38,12 +38,14 @@
 			for (var prop in $scope.show) {
 				$scope.show[prop] = false;
 			}
+			$scope.verifyBtnDisable = false;
 		};
 		$scope.alert = {};
 		$scope.alert.street = '<span class = "text-danger">No street specified yet</span>';
 
 		function selectAddr(index) {
 			var info = ctrl.addrSuggestions[index];
+			removeAlert();
 			resetFarmAddress(info);
 			$scope.search.searchStr = ctrl.farm.formattedAddress;
 			checkDb(ctrl.farm);
@@ -60,6 +62,7 @@
 			if (!searchStr) {
 				return;
 			}
+			$scope.verifyBtnDisable = true;
 			searchService.bingSearch(searchStr, function(response) {
 				switch (response.status) {
 					case 'NR':
@@ -168,6 +171,11 @@
 		function alert(templateUrl) {
 			$scope.alertTpl = templateUrl;
 			$scope.show.searchAlert = true;
+		}
+
+		function removeAlert() {
+			$scope.alertTpl = null;
+			$scope.show.searchAlert = false;
 		}
 
 		function submit() {
