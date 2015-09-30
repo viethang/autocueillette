@@ -90,73 +90,71 @@
 		</div>
 	</div>
 	<div class = 'row' ng-show = 'mode.edit'>
-		<div class = 'col-md-8 col-sm-12'>
+		<div class = 'col-md-6 col-sm-12'>
 			<div class = 'form-group row'>
 				<label class = 'col-md-3 col-sm-3 text-right'>Address:</label>
 				<div class = 'col-md-9 col-sm-9'>
-					<span class = 'col-md-7 col-sm-7'
-					ng-bind = 'farmInfoCtrl.farm.formattedAddress'></span>
-					<a class = 'col-md-5 col-sm-5'>Report incorrect address</a>
+					<div><span ng-bind = 'farmInfoCtrl.farm.formattedAddress'></span></div>
+					<div><a href = '' ng-click = 'reportBadAddr()'> Report incorrect address</a></div>
 				</div>
 			</div>
 			<div class = 'form-group row'>
 				<label class = 'col-md-3 col-sm-3 text-right'>Name:</label>
 				<div class = 'col-md-9 col-sm-9'>
 					<input ng-model = 'edit.name'
-					class = 'col-md-7 col-sm-7'/>
+					class = 'form-control'/>
 				</div>
 			</div>
 			<div class = 'form-group row'>
 				<label class = 'col-md-3 col-sm-3 text-right'>Telephone:</label>
 				<div class = 'col-md-9 col-sm-9'>
 					<input ng-model = 'edit.tel'
-					class = 'col-md-7 col-sm-7'/>
+					class = 'form-control'/>
 				</div>
 			</div>
 			<div class = 'row form-group'>
 				<label class = 'col-md-3 col-sm-3 text-right'>Product(s):</label>
 				<div class = 'col-md-9 col-sm-9'>
 					<input ng-model = 'edit.product'
-					class = 'col-md-7 col-sm-7'/>
+					class = 'form-control'/>
 				</div>
 			</div>
-			<div class = 'row form-group'>
+			<!--<div class = 'row form-group'>
 				<label class = 'col-md-3 col-sm-3 text-right'>Comments:</label>
 				<div class = 'col-md-9 col-sm-9'>
-					<textarea ng-model = 'edit.comment' class = 'col-md-7 col-sm-7' style = 'height: 100px'></textarea>
-					<span class = 'col-md-5 col-sm-5 deemphasize'>Open hours, product quality or any advice to others.
+					<textarea ng-model = 'edit.comment' class = 'form-control' style = 'height: 100px'></textarea>
+					<div> <span class = 'deemphasize'>Open hours, product quality or any advice to others.</span>
+					</div>
+				</div>
+			</div>-->
+			<br/>
+			<div class = 'row text-center'>
+				<p>Would you like to post this under a name? Leave these fields blank if you would like to post anonymously.</p>
+			</div>
+			<div class = 'row form-group'>
+				<label class = 'col-md-3 col-sm-3 text-right'>Your usename: </label>
+				<div class = 'col-md-9 col-sm-9'>
+					<input class = 'form-control' ng-model = 'editor.name'/>
 				</div>
 			</div>
 			<div class = 'row form-group'>
-				<div class = 'col-md-9 col-md-offset-3 col-sm-9 col-sm-offset-3'>
-					<div class = 'col-md-7 col-sm-7'>
-						<div class = 'row'>
-							<button class = 'btn btn-primary'
-							ng-click = 'farmInfoCtrl.getEditorInfo()'>OK</button>
-							<button class = 'btn btn-default'
-							ng-click = 'farmInfoCtrl.cancelEdit()'>Cancel</button>
-						</div>
+				<label class = 'col-md-3 col-sm-3 text-right'>Email:</label>
+				<div class = 'col-md-9 col-sm-9'>
+					<input class = 'form-control' ng-model = 'editor.email'/>
+					<div>
+						<span class = 'deemphasize'>Email will not be public. Fill this if you would like to use the same name next time.
+						</span>
 					</div>
 				</div>
 			</div>
-			<div class = 'row' ng-show = 'getEditorInfo' id = 'editorInfo'>
-				<p>Would you like to post this under a name? Leave these fields blank if you would like to post anonymously.</p>
-				<div class = 'row form-group'>
-					<label class = 'col-md-3 col-sm-3 text-right'>Your usename: </label>
-					<div class = 'col-md-9 col-sm-9'>
-						<input class = 'col-md-7 col-sm-7' ng-model = 'editor.name'/>
-					</div>
+			<div class = 'row'>
+				<div class =  'col-md-2 col-sm-2 col-md-offset-3 col-sm-offset-3'>
+					<button class = 'btn btn-primary btn-block'
+					ng-click = 'farmInfoCtrl.sendUpdate()'>Send</button>
 				</div>
-				<div class = 'row form-group'>
-					<label class = 'col-md-3 col-sm-3 text-right'>Email:</label>
-					<div class = 'col-md-9 col-sm-9'>
-						<input class = 'col-md-7 col-sm-7' ng-model = 'editor.email'/>
-						<span class = 'col-md-5 col-sm-5 deemphasize'>Will not be public. Fill this if you would like to use the same name next time.
-					</div>
-				</div>
-				<div class = 'row'>
-					<button class = 'btn btn-primary'
-					ng-click = 'farmInfoCtrl.edit()'>Finish</button>
+				<div class = 'col-md-2 col-sm-2'>
+					<button class = 'btn btn-default btn-block'
+					ng-click = 'farmInfoCtrl.cancelEdit()'>Cancel</button>
 				</div>
 			</div>
 		</div>
