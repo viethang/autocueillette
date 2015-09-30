@@ -29,7 +29,7 @@
 		farmInfoCtrl.sendComment = sendComment;
 		farmInfoCtrl.getSenderInfo = getSenderInfo;
 		farmInfoCtrl.getEditorInfo = getEditorInfo;
-		farmInfoCtrl.edit = edit;
+		farmInfoCtrl.sendUpdate = sendUpdate;
 		farmInfoCtrl.cancelEdit = cancelEdit;
 
 		function getFarm(id, target) {
@@ -68,7 +68,7 @@
 			};
 			$http(req).then(function(res) {
 			}, function(err) {
-				console.log('update error');
+				console.log('update error', err);
 			});
 		}
 
@@ -94,9 +94,10 @@
 			$anchorScroll();
 		}
 
-		function edit() {
+		function sendUpdate() {
 			var farm = farmInfoCtrl.farm;
 			var farmCopy = angular.copy(farm);
+			delete farmCopy.history;
 			farm.name = $scope.edit.name;
 			farm.tel = $scope.edit.tel;
 			farm.product = $scope.edit.product;
@@ -114,8 +115,7 @@
 				var trace = {
 					editor: $scope.editor.name,
 					date: new Date(),
-					oldInfo: farmCopy,
-					newInfo: farm
+					oldInfo: farmCopy
 				};
 				farm.history.push(trace);
 			}
