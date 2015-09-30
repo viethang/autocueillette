@@ -50,13 +50,17 @@ app.post('/getFarm', function(req, res) {
 
 app.post('/updateFarm', function(req, res) {
 	var farm = req.body;
+	var db = 'autocueillette_farms';
 	farm.type = 'farm';
-	dbtools.updateFarm(farm, function(err) {
-		if (err) {
-			res.send({err: {msg: err.message}});
-			return;
+	dbtools.updateDb(farm, db, function(err, body) {
+		if (!err) {
+			console.log('update no error');
+			dbtools.solrIndex(farm, body.id);
+			res.send({id: body.id});
+		} else {
+			res.send({err: err});
+			console.log('update error', err);
 		}
-		dbtools.solrIndex(farm, farm._id);
 	});
 });
 
