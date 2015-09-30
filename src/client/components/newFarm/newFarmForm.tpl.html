@@ -1,7 +1,7 @@
 <div class = 'container'>
 	<div name = 'newFarm' ng-if = '!show.finished'>
 		<div class = 'row'>
-			<h4><strong> Share a farm address? It is so simple!</strong>
+			<h4> Share a farm address?
 			</h4>
 			<p>Just enter the address in the box below, verify the location and give some information on the farm.</p>
 		</div>
@@ -31,9 +31,12 @@
 				</div>
 				<br/>
 				<div ng-if = 'show.parsedAddress' name = 'parsedAddress'>
-					<p>
+					<div class = 'row'>
+						<p ng-if = 'show.confirm'>
 						Please confirm this address and go to next step to provide some more details on this farm.
 						</p>
+						<h4>Address</h4>
+					</div>
 					<div class = 'row'>
 						<div class = 'col-md-6 row'>
 							<label>Country: </label>
@@ -58,10 +61,11 @@
 					<br/>
 					<div class = 'row' ng-if = 'show.confirm'>
 						<button type = 'button' class = 'btn btn-primary btn-sm'
-						ng-click = 'newFarmCtrl.goNext()'>Confirm, go to next step</button>
+						ng-click = 'newFarmCtrl.goNext()'>Confirm, next!</button>
 						<button type = 'button' class = 'btn btn-default btn-sm'
 						ng-click = 'newFarmCtrl.reload()'>Cancel</button>
 					</div>
+					<br/>
 				</div>
 				
 				<div name = 'moreInfo' ng-if = 'show.moreInfo'>
@@ -105,6 +109,7 @@
 					</div>
 				</div>
 			</div>
+			<br/>
 			<div class = 'col-md-6' ng-if = 'show.map'>
 				<div class = 'col-md-12'>
 					<div id = 'map' aspect-ratio = '1:2'></div>
