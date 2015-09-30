@@ -128,8 +128,7 @@
 			ctrl.addrSuggestions = result;
 			ctrl.places = result.map(function(res) {
 				var address = res.address;
-				var str = address.addressLine? (address.addressLine + ', ') : '';
-				str += address.locality + ', '+ address.adminDistrict + ', ' + address.countryRegion;
+				var str = [address.addressLine, address.locality, address.adminDistrict, address.countryRegion].filter(Boolean).join(', ');
 				return str;
 			});
 		}
@@ -146,7 +145,7 @@
 			farm.canton = address.adminDistrict;
 			farm.country = address.countryRegion;
 			farm.streetLine = address.addressLine;
-			farm.formattedAddress = (farm.streetLine? (farm.streetLine + ', ') : '') + farm.city + ', ' + farm.canton + ', '+ farm.country;
+			farm.formattedAddress = [farm.streetLine, farm.city, farm.canton, farm.country].filter(Boolean).join(', ');
 			farm.coordinates = suggestion.geocodePoints[0].coordinates;
 		}
 
