@@ -37,5 +37,13 @@ angular.module('app')
 		url: '/farmInfo/:farmId',
 		templateUrl: 'components/farmInfo/farmInfo.tpl.html',
 		controller: 'FarmInfoController as farmInfoCtrl'
+	})
+	.state('farmInfo.view', {
+		url: '/view',
+		templateUrl: 'components/farmInfo/farmInfo.view.tpl.html'
+	})
+	.state('farmInfo.edit', {
+		url: '/edit',
+		templateUrl: 'components/farmInfo/farmInfo.edit.tpl.html'
 	});
 }]);

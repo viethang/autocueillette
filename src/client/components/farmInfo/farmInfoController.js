@@ -31,6 +31,10 @@
 		farmInfoCtrl.getEditorInfo = getEditorInfo;
 		farmInfoCtrl.sendUpdate = sendUpdate;
 		farmInfoCtrl.cancelEdit = cancelEdit;
+		farmInfoCtrl.toEditMode = function() {
+			$state.go('farmInfo.edit', {farmId: farmId}, {reload: true});
+		};
+		farmInfoCtrl.reportBadAddr = reportBadAddr;
 
 		function getFarm(id, target) {
 			var req = {
@@ -57,7 +61,7 @@
 				senderName: comment.senderName
 			});
 			update(farmInfoCtrl.farm);
-			$state.go('farmInfo', {farmId: farmInfoCtrl.farm._id}, {reload: true});
+			$state.go('farmInfo.view', {farmId: farmInfoCtrl.farm._id}, {reload: true});
 		}
 
 		function update(farm) {
@@ -131,7 +135,10 @@
 		}
 
 		function cancelEdit() {
-			$state.go('farmInfo', {farmId: farmInfoCtrl.farm._id}, {reload: true});
+			$state.go('farmInfo.view', {farmId: farmInfoCtrl.farm._id}, {reload: true});
+		}
+
+		function reportBadAddr() {
 		}
 	}
 	farmInfoController.$inject = ['$state', '$stateParams', '$http', 'OLServices', '$timeout', 'searchService', '$scope', '$anchorScroll', '$location'];

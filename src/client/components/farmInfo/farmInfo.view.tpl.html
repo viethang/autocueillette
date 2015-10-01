@@ -1,0 +1,82 @@
+<div class = 'col-md-6'>
+	<div class = 'col-md-8 col-sm-8'>
+		<div class = 'form-group row'>
+			<label class = 'col-md-3 col-sm-3'>Name:</label>
+			<div class = 'col-md-9 col-sm-9'>
+				<span ng-bind = 'farmInfoCtrl.farm.name'></span>
+			</div>
+		</div>
+		<div class = 'form-group row'>
+			<label class = 'col-md-3 col-sm-3'>Telephone:</label>
+			<div class = 'col-md-9 col-sm-9'>
+				<span ng-bind = 'farmInfoCtrl.farm.tel'></span>
+			</div>
+		</div>
+		<div class = 'form-group row'>
+			<label class = 'col-md-3 col-sm-3'>Address:</label>
+			<div class = 'col-md-9 col-sm-9'>
+				<span ng-bind = 'farmInfoCtrl.farm.formattedAddress'></span>
+			</div>
+		</div>
+		<div class = 'row form-group'>
+			<label class = 'col-md-3 col-sm-3'>Product(s):</label>
+			<div class = 'col-md-9 col-sm-9'>
+				<span ng-bind = 'farmInfoCtrl.farm.product'></span>
+			</div>
+		</div>
+	</div>
+	<div class = 'col-md-4 col-sm-4'>
+		<div class =  'alert alert-warning small'>
+			<p>Are these informations correct and up to date? <br/> Help us to 
+			<a href = ''
+				ng-click = 'farmInfoCtrl.toEditMode()'>update it</a> or <a href ='' ng-click = 'famrInfoCtrl.reportBadAddr()'>report incorrect address</a>.</p>
+		</div>
+	</div>
+	<div id = 'map1' aspect-ratio = '1:2' class = 'col-md-12 col-sm-12'></div>
+</div>
+</div>
+<div class = 'col-md-6 col-sm-12'>
+<div class = 'col-md-11 col-md-offset-1 col-sm-11'>
+	<h4>Comments</h4>
+	<br/>
+	<div name = 'comments' class = 'panel panel-info row' style = 'max-height: 250px; overflow-Y: auto'
+		ng-show = 'farmInfoCtrl.farm.comments.length'>
+		<div class = 'panel-body'>
+			<div ng-repeat = 'comment in farmInfoCtrl.farm.comments|orderBy:"-date" : reverse'>
+				<div class = 'panel panel-info'>
+					<div class = 'panel-header'>
+						<span ng-bind = 'comment.senderName || "anonymous"'></span>
+						<span>{{comment.date|date:"MM/dd/yyyy 'at' h:mma"}}</span>
+					</div>
+					<div class = 'panel-body'>
+						<p ng-bind-html = 'comment.text'></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class = 'row' id = 'postComment'>
+		<div>
+			<p>Would like to share your experience on this farm, it products or any advice with others?</p>
+			<textarea placeholder = 'Write your comment here' style = 'width: 100%; height: 100px'
+			ng-model = 'newComment.text'></textarea>
+			<button class = 'btn btn-primary'
+			ng-click = 'farmInfoCtrl.getSenderInfo()'>OK</button>
+			<div ng-show = 'getSenderInfo' id = 'senderInfo'>
+				<p>Would you like to post this comment under a name? Leave these fields blank if you would like to post comment anonymously.</p>
+				<div class = 'row form-group'>
+					<label class = 'col-md-3 col-sm-3'>Your usename: </label>
+					<input class = 'col-md-9 col-sm-9' ng-model = 'newComment.senderName'/>
+				</div>
+				<div class = 'row form-group'>
+					<label class = 'col-md-3 col-sm-3'>Email:</label>
+					<input class = 'col-md-9 col-sm-9' ng-model = 'newComment.senderEmail'/>
+				</div>
+				<div class = 'row'>
+					<button class = 'btn btn-primary'
+					ng-click = 'farmInfoCtrl.sendComment(newComment)'>Send my comment</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
