@@ -19,6 +19,15 @@ angular.module('app')
 			}
 		}
 	})
+	.state('search', {
+		url: '/search/:place/:product',
+		views: {
+			'search': {
+				templateUrl: 'components/searchFarm/searchFarm.tpl.html',
+				controller: 'SearchFarmController as searchFarmCtrl'
+			}
+		}
+	})
 	.state('newFarm', {
 		url: '/newFarm',
 		templateUrl: 'components/newFarm/newFarmForm.tpl.html',
