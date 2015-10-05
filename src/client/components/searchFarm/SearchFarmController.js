@@ -73,11 +73,11 @@
 			};
 			var req = {
 				method: 'post',
-				url: '/searchIndex',
+				url: '/searchFarms',
 				data: data
 			};
 			$http(req).then(function(res) {
-				var results = res.data.response.docs;
+				var results = res.data;
 				searchFarmCtrl.results = results;
 				$scope.show.map = true;
 				showMap(results);

@@ -4,7 +4,7 @@
 	Is it not one of these?</p>
 	<ul>
 		<li ng-repeat = 'closeFarm in newFarmCtrl.closeFarms'>
-			<span ng-bind = 'closeFarm.formattedAddress'></span>
+			<span ng-bind = 'newFarmCtrl.format(closeFarm)'></span>
 			<a href = ''  ng-click = 'detailed = true'>See details</a>
 			<div ng-show = 'detailed' class = 'text-sm'>
 				<div class = 'row'>
@@ -25,7 +25,7 @@
 					</div>
 					<div class = 'col-md-6 row'>
 						<label>Street/road: </label>
-						<span ng-bind-html = 'closeFarm.streetLine || alert.street'></span>
+						<span ng-bind-html = 'closeFarm.street || alert.street'></span>
 					</div>
 				</div>
 				<div class = 'row'>

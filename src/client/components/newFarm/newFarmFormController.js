@@ -11,12 +11,15 @@
 		$scope.search = {};
 		$scope.show = {};
 		ctrl.farm = {};
+                ctrl.format = function(farm) {
+                    return [farm.street, farm.city, farm.canton, farm.country].filter(Boolean).join(', ');
+                };
 		ctrl.verifyAddress = verifyAddress;
 		ctrl.showDetails = showDetails;
 		ctrl.selectAddr = selectAddr;
 		ctrl.addrSuggestions = {};
 		ctrl.gotoFarm = function(id) {
-			$state.go('farmInfo', {farmId: id});
+			$state.go('farmInfo.view', {farmId: id});
 		};
 		ctrl.goNext = function() {
 			$scope.show.confirm = false;
@@ -47,7 +50,7 @@
 			var info = ctrl.addrSuggestions[index];
 			removeAlert();
 			resetFarmAddress(info);
-			$scope.search.searchStr = ctrl.farm.formattedAddress;
+			$scope.search.searchStr = ctrl.format(ctrl.farm);
 			checkDb(ctrl.farm);
 		}
 
@@ -113,14 +116,14 @@
 			}, function(err){console.log('err', err);});
 		}
 
-		function alertCloseFarms(closeFarms) {
-			ctrl.closeFarms = closeFarms;
-			alert('components/newFarm/closeFarms.alert.tpl.html');
-			showMap();
-			closeFarms.forEach(function(closeFarm) {
-				map.addPoint(closeFarm.coordinates);
-			});
-		}
+                function alertCloseFarms(closeFarms) {
+                    ctrl.closeFarms = closeFarms;
+                    alert('components/newFarm/closeFarms.alert.tpl.html');
+                    showMap();
+                    closeFarms.forEach(function(closeFarm) {
+                        map.addPoint([closeFarm.lat, closeFarm.lon]);
+                    });
+                }
 
 		function alertMultiAddr(result) {
 			alert('components/newFarm/multiAddr.alert.tpl.html');
@@ -138,16 +141,17 @@
 			$scope.id = id;
 		}
 
-		function resetFarmAddress(suggestion) {
-			var address = suggestion.address;
-			var farm = ctrl.farm;
-			farm.city = address.locality;
-			farm.canton = address.adminDistrict;
-			farm.country = address.countryRegion;
-			farm.streetLine = address.addressLine;
-			farm.formattedAddress = [farm.streetLine, farm.city, farm.canton, farm.country].filter(Boolean).join(', ');
-			farm.coordinates = suggestion.geocodePoints[0].coordinates;
-		}
+                function resetFarmAddress(suggestion) {
+                    var address = suggestion.address;
+                    var farm = ctrl.farm;
+                    farm.city = address.locality;
+                    farm.canton = address.adminDistrict;
+                    farm.country = address.countryRegion;
+                    farm.street = address.addressLine;
+                    var coordinates = suggestion.geocodePoints[0].coordinates;
+                    farm.lat = coordinates[0];
+                    farm.lon = coordinates[1];
+                }
 
 		function handleNoResult() {
 			alert('components/newFarm/addressNotExists.alert.tpl.html');
@@ -163,7 +167,7 @@
 			$scope.show.map = true;
 			$timeout(function() {
 				map.map.setTarget('map');
-				map.resetView(ctrl.farm.coordinates);
+				map.resetView([ctrl.farm.lat, ctrl.farm.lon]);
 			});
 		}
 

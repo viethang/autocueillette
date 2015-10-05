@@ -14,17 +14,16 @@
 		farmInfoCtrl.farm = {};
 		getFarm(farmId, farmInfoCtrl.farm)
 		.then(function() {
-			var farm = farmInfoCtrl.farm;
-			var coordinates = farm.coordinates;
-			$timeout(function() {
-				map.map.setTarget('map1');
-				map.resetView(coordinates);
-			});
-			$scope.edit = {
-				tel: farm.tel,
-				name: farm.name,
-				product: farm.product
-			};
+                    var farm = farmInfoCtrl.farm;
+                    $timeout(function() {
+                        map.map.setTarget('map1');
+                        map.resetView([farm.lat, farm.lon]);
+                    });
+                    $scope.edit = {
+                        name: farm.name,
+                        phone: farm.phone,
+                        products: farm.products
+                    };
 		});
 		farmInfoCtrl.sendComment = sendComment;
 		farmInfoCtrl.getSenderInfo = getSenderInfo;
@@ -61,7 +60,7 @@
 				senderName: comment.senderName
 			});
 			update(farmInfoCtrl.farm);
-			$state.go('farmInfo.view', {farmId: farmInfoCtrl.farm._id}, {reload: true});
+			$state.go('farmInfo.view', {farmId: farmInfoCtrl.farm.id}, {reload: true});
 		}
 
 		function update(farm) {
@@ -88,7 +87,7 @@
 		function getEditorInfo() {
 			var farm = farmInfoCtrl.farm;
 			if (($scope.edit.name === farm.name) &&
-				($scope.edit.tel === farm.tel) &&
+				($scope.edit.phone === farm.phone) &&
 				($scope.edit.product === farm.product) &&
 				(!$scope.edit.comment)) {
 				return;
@@ -103,7 +102,7 @@
 			var farmCopy = angular.copy(farm);
 			delete farmCopy.history;
 			farm.name = $scope.edit.name;
-			farm.tel = $scope.edit.tel;
+			farm.phone = $scope.edit.phone;
 			farm.product = $scope.edit.product;
 			var same = true;
 			for (var prop in farm) {
