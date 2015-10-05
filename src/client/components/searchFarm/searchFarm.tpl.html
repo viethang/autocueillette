@@ -1,66 +1,66 @@
 <div name = 'searchFarm'>
-	<div class = 'row'>
-		<div class = 'col-md-12'>
-			<h4>
-			Find a farm</h4>
-		</div>
-		<div class = 'form-inline col-md-6'>
-			<div class = 'input-group'>
-				<div class = 'input-group-addon'>Where:</div>
-				<input name = 'place'
-				class = 'form-control'
-				ng-model = 'searchFarmCtrl.searchForm.place'/>
-				<div class = 'input-group-addon' style = 'padding-top:0; padding-bottom:0'>
-					<select >
-						<option>Switzerland</option>
-					</select>
-				</div>
-			</div>
-		</div>
-		<div class = 'form-inline col-md-5'>
-			<div class = 'input-group'>
-				<div class = 'input-group-addon'>What:</div>
-				<input name = 'product' class = 'form-control' ng-model = 'searchFarmCtrl.searchForm.product'
-				placeholder = 'Ex: salade "haricot vert"'/>
-			</div>
-		</div>
-		<div class = 'col-md-1'>
-			<button type = 'button'
-			class = 'btn btn-primary btn-block active'
-			ng-click = 'searchFarmCtrl.search(searchFarmCtrl.searchForm.place, searchFarmCtrl.searchForm.product)'> Search</button>
-		</div>
-	</div>
-	<br/>
-	<div class = 'row'>
-		<div class = 'col-md-6'>
-			<div ng-include = 'searchFarmCtrl.searchAlert'></div>
-		</div>
-	</div>
-        <div class = 'row'>
-            <div class = 'col-md-6'>
-                <div name = 'searchResult' ng-if = 'searchFarmCtrl.results'>
-                    <div ng-if = '!searchFarmCtrl.results.length'                 class = 'alert alert-warning'>
-                        <p>No farm corresponds to your search!</p>
-                    </div>
-                    <div ng-if = 'searchFarmCtrl.results.length'>
-                        <h4>Results</h4>
-                        <ol>
-                            <li ng-repeat = 'farm in searchFarmCtrl.results'>
-                                <a href = '' ng-click = 'searchFarmCtrl.showFarm(farm)'>{{(farm.name || farm.short_address)}}</a>
-                                <div>
-                                    <span>Products: {{farm.product.join(', ')}}</span>
-                                </div>
-                                <div>
-                                    <span>Distance: {{farm.distance/1000| number:2}}km</span>
-                                </div>
-                            </li>
-                        </ol>
-                    </div>
+    <div class = 'row'>
+        <div class = 'col-md-12'>
+            <h4>
+            Find a farm</h4>
+        </div>
+        <div class = 'form-inline col-md-6'>
+            <div class = 'input-group'>
+                <div class = 'input-group-addon'>Where:</div>
+                <input name = 'place'
+                class = 'form-control'
+                ng-model = 'searchFarmCtrl.searchForm.place'/>
+                <div class = 'input-group-addon' style = 'padding-top:0; padding-bottom:0'>
+                    <select >
+                        <option>Switzerland</option>
+                    </select>
                 </div>
             </div>
-            <div class = 'col-md-6 col-sm-6'>
-                <div id = 'map_search' aspect-ratio = '1:2'></div>
+        </div>
+        <div class = 'form-inline col-md-5'>
+            <div class = 'input-group'>
+                <div class = 'input-group-addon'>What:</div>
+                <input name = 'product' class = 'form-control' ng-model = 'searchFarmCtrl.searchForm.product'
+                placeholder = 'Ex: salade "haricot vert"'/>
             </div>
         </div>
+        <div class = 'col-md-1'>
+            <button type = 'button'
+            class = 'btn btn-primary btn-block active'
+            ng-click = 'searchFarmCtrl.search(searchFarmCtrl.searchForm.place, searchFarmCtrl.searchForm.product)'> Search</button>
+        </div>
+    </div>
+    <br/>
+    <div class = 'row'>
+        <div class = 'col-md-6'>
+            <div ng-include = 'searchFarmCtrl.searchAlert'></div>
+        </div>
+    </div>
+    <div class = 'row'>
+        <div class = 'col-md-6'>
+            <div name = 'searchResult' ng-if = 'searchFarmCtrl.results'>
+                <div ng-if = '!searchFarmCtrl.results.length'                 class = 'alert alert-warning'>
+                    <p>No farm corresponds to your search!</p>
+                </div>
+                <div ng-if = 'searchFarmCtrl.results.length'>
+                    <h4>Results</h4>
+                    <ol>
+                        <li ng-repeat = 'farm in searchFarmCtrl.results'>
+                            <a href = '' ng-click = 'searchFarmCtrl.showFarm(farm)'>{{(farm.name || farm.short_address)}}</a>
+                            <div>
+                                <span>Products: {{farm.product.join(', ')}}</span>
+                            </div>
+                            <div>
+                                <span>Distance: {{farm.distance/1000| number:2}}km</span>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class = 'col-md-6 col-sm-6'>
+            <div id = 'map_search' aspect-ratio = '1:2'></div>
+        </div>
+    </div>
 </div>
 

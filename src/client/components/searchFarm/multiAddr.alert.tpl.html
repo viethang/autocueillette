@@ -1,13 +1,13 @@
 <div class="alert alert-info alert-dismissible" role="alert">
-	<button type="button" class="close"
-		ng-click = 'searchFarmCtrl.searchAlert = null;'>&times;</button>
-	<p> Several places correspond to 
-		<strong ng-bind = 'searchFarmCtrl.searchForm.place'></strong>. Which one are you looking for?
-	</p>
-	<ul>
-		<li ng-repeat = 'place in searchFarmCtrl.places track by $index'>
-			<a href = '' ng-bind = 'place.formattedAddress'
-				ng-click = 'searchFarmCtrl.choose(place)'></a>
-		</li>
-	</ul>
+    <button type="button" class="close"
+    ng-click = 'searchFarmCtrl.searchAlert = null;'>&times;</button>
+    <p> Several places correspond to
+        <strong ng-bind = 'searchFarmCtrl.searchForm.place'></strong>. Which one are you looking for?
+    </p>
+    <ul>
+        <li ng-repeat = 'place in searchFarmCtrl.places track by $index'>
+            <a href = '' ng-bind = 'place.formattedAddress'
+            ng-click = 'searchFarmCtrl.choose(place)'></a>
+        </li>
+    </ul>
 </div>

@@ -1,51 +1,50 @@
 <div class = 'panel panel-info'>
-	<div class = 'panel-body'>
-	<p>Your suggested farm is close to the following existing farms.
-	Is it not one of these?</p>
-	<ul>
-		<li ng-repeat = 'closeFarm in newFarmCtrl.closeFarms'>
-			<span ng-bind = 'newFarmCtrl.format(closeFarm)'></span>
-			<a href = ''  ng-click = 'detailed = true'>See details</a>
-			<div ng-show = 'detailed' class = 'text-sm'>
-				<div class = 'row'>
-					<div class = 'col-md-6 row'>
-						<label>Country: </label>
-						<span ng-bind = 'closeFarm.country'></span>
-					</div>
-					<div class = 'col-md-6 row'>
-						<label>Canton: </label>
-						<span ng-bind = 'closeFarm.canton'></span>
-					</div>
-					
-				</div>
-				<div class = 'row'>
-					<div class = 'col-md-6 row'>
-						<label>City/Commune: </label>
-						<span ng-bind = 'closeFarm.city'></span>
-					</div>
-					<div class = 'col-md-6 row'>
-						<label>Street/road: </label>
-						<span ng-bind-html = 'closeFarm.street || alert.street'></span>
-					</div>
-				</div>
-				<div class = 'row'>
-					<label>Products:</label>
-					<span ng-bind = 'farm.product'></span>
-				</div>
-				<div class = 'row'>
-					<p>Are these informations correct and up to date?
-						Help us to <a href = '' ng-click = 'newFarmCtrl.gotoFarm(closeFarm._id)'>update it</a>
-					</p>
-				</div>
-			</div>
-		</li>
-	</ul>
-	<div>
-		<a href = '' 
-			ng-click = 'newFarmCtrl.anotherFarm()'>
-			No, it is another farm
-		</a>
-		<a href = '' ng-click = 'newFarmCtrl.reload()'>Yes, cancel</a>
-	</div>
-	</div>
+    <div class = 'panel-body'>
+        <p>Your suggested farm is close to the following existing farms.
+        Is it not one of these?</p>
+        <ul>
+            <li ng-repeat = 'closeFarm in newFarmCtrl.closeFarms'>
+                <span ng-bind = 'newFarmCtrl.format(closeFarm)'></span>
+                <a href = ''  ng-click = 'detailed = true'>See details</a>
+                <div ng-show = 'detailed' class = 'text-sm'>
+                    <div class = 'row'>
+                        <div class = 'col-md-6 row'>
+                            <label>Country: </label>
+                            <span ng-bind = 'closeFarm.country'></span>
+                        </div>
+                        <div class = 'col-md-6 row'>
+                            <label>Canton: </label>
+                            <span ng-bind = 'closeFarm.canton'></span>
+                        </div>
+                    </div>
+                    <div class = 'row'>
+                        <div class = 'col-md-6 row'>
+                            <label>City/Commune: </label>
+                            <span ng-bind = 'closeFarm.city'></span>
+                        </div>
+                        <div class = 'col-md-6 row'>
+                            <label>Street/road: </label>
+                            <span ng-bind-html = 'closeFarm.street || alert.street'></span>
+                        </div>
+                    </div>
+                    <div class = 'row'>
+                        <label>Products:</label>
+                        <span ng-bind = 'farm.product'></span>
+                    </div>
+                    <div class = 'row'>
+                        <p>Are these informations correct and up to date?
+                            Help us to <a href = '' ng-click = 'newFarmCtrl.gotoFarm(closeFarm.id)'>update it</a>
+                        </p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div>
+            <a href = '' 
+            ng-click = 'newFarmCtrl.anotherFarm()'>
+                No, it is another farm
+            </a>
+            <a href = '' ng-click = 'newFarmCtrl.reload()'>Yes, cancel</a>
+        </div>
+    </div>
 </div>

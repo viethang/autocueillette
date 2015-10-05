@@ -1,12 +1,12 @@
 <div class="alert alert-info" role="alert">
-	<p> Several places correspond to 
-		<strong ng-bind = 'search.searchStr'></strong>. Please select.
-	</p>
-	<ul>
-		<li ng-repeat = 'place in newFarmCtrl.places track by $index'>
-			<a href = '' ng-bind = 'place' class = 'col-md-8'
-				ng-click = 'newFarmCtrl.showDetails($index)'></a>
-			<a href = '' class = 'col-md-4' ng-click = 'newFarmCtrl.selectAddr($index)'>Select</a>
-		</li>
-	</ul>
+    <p> Several places correspond to
+        <strong ng-bind = 'search.searchStr'></strong>. Please select.
+    </p>
+    <ul>
+        <li ng-repeat = 'place in newFarmCtrl.places track by $index'>
+            <a href = '' ng-bind = 'place' class = 'col-md-8'
+            ng-click = 'newFarmCtrl.showDetails($index)'></a>
+            <a href = '' class = 'col-md-4' ng-click = 'newFarmCtrl.selectAddr($index)'>Select</a>
+        </li>
+    </ul>
 </div>
