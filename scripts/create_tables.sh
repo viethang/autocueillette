@@ -43,5 +43,9 @@ CREATE TABLE farm_archive (
   date timestamp
 );
 
-
+CREATE TABLE contributor (
+  name varchar(20) PRIMARY KEY,
+  email varchar(50),
+  date timestamp
+);
 EOF

@@ -11,6 +11,8 @@ module.exports.addFarmToArchive = addFarmToArchive;
 module.exports.getFarmHistory = getFarmHistory;
 module.exports.postComment = postComment;
 module.exports.getComments = getComments;
+module.exports.checkContributor = checkContributor;
+module.exports.addContributor = addContributor;
 
 function getFarm(id, callback) {
     pg.connect(conString, function(err, client, done) {
@@ -161,8 +163,8 @@ function addFarmToArchive(farm, callback) {
             console.log('connection error', err);
             return;
         }
-        client.query('INSERT INTO farm_archive (name, phone, city, canton, country, products,author, coordinates, lat, lon, date, farm_id) VALUES ($1::text, $2::text, $3::text, $4::text, $5::text, $6::text, $7::text, ST_SetSRID(ST_Point($8::float, $9::float),4326)::geography, $8::float, $9::float, now(), $10);', [
-        farm.name, farm.phone, farm.city, farm.canton, farm.country, farm.product, farm.author || 'anonymous', farm.lat, farm.lon, farm.id], function(err, result) {
+        client.query('INSERT INTO farm_archive (name, phone, city, canton, country, products, author, coordinates, lat, lon, date, farm_id) VALUES ($1::text, $2::text, $3::text, $4::text, $5::text, $6::text, $7::text, ST_SetSRID(ST_Point($8::float, $9::float),4326)::geography, $8::float, $9::float, now(), $10);', [
+        farm.name, farm.phone, farm.city, farm.canton, farm.country, farm.products, farm.author, farm.lat, farm.lon, farm.id], function(err, result) {
             done();
             if (err) {
                 callback(err);
@@ -228,5 +230,59 @@ function getComments(id, callback) {
             }
             callback(false, result.rows);
         });
+    });
+}
+
+function checkContributor(name, email, callback) {
+    pg.connect(conString, function(err, client, done) {
+        if(err) {
+            callback(err);
+            console.log('connection error', err);
+            return;
+        }
+        client.query('SELECT * FROM contributor WHERE name = $1', [name], function(err, result) {
+            done();
+            if (err) {
+                callback(err);
+                console.log('select query error', err);
+                return;
+            }
+            if (!result.rows.length) {
+                callback(false, {status: 'available'});
+                return;
+            }
+            if (result.rows[0].email !== email) {
+                callback(false, {status: 'invalid'});
+                return;
+            }
+            callback(false, {status: 'valid'});
+        });
+    });
+}
+
+function addContributor(name, email, callback) {
+    checkContributor(name, email, function(err, result) {
+        if (err) {
+            callback({err: err});
+            return;
+        }
+        if (result.status === 'available') {
+            pg.connect(conString, function(err, client, done) {
+                if(err) {
+                    callback(err);
+                    console.log('connection error', err);
+                    return;
+                }
+                client.query('INSERT INTO contributor (name, email, date) VALUES($1::text, $2::text, now())', [name, email], function(err, result) {
+                    done();
+                    if (err) {
+                        callback(err);
+                        console.log('select query error', err);
+                        return;
+                    }
+                    callback();
+                });
+            });
+        }
     });
 }

@@ -146,6 +146,30 @@ app.post('/postComment', function(req, res) {
     });
 });
 
+app.post('/checkContributor', function(req, res) {
+    var name = req.body.name;
+    var email = req.body.email;
+    pgtools.checkContributor(name, email, function(err, body) {
+        if (err) {
+            res.send({err: err});
+            return;
+        }
+        res.send(body);
+    });
+});
+
+app.post('/addContributor', function(req, res) {
+    var name = req.body.name;
+    var email = req.body.email;
+    pgtools.addContributor(name, email, function(err, body) {
+        if (err) {
+            res.send({err: err});
+            return;
+        }
+        res.send();
+    });
+});
+
 app.use(function(req, res) {
     console.log(req.url, 'File not found! Send index.html');
     res.sendFile(path.join(__dirname, serverReversedPath, '/index.html'));

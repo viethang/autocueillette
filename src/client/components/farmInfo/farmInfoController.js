@@ -116,13 +116,53 @@
 
         function sendUpdate() {
             var farm = farmInfoCtrl.farm;
+            var author = $scope.edit.author;
+            var email = $scope.edit.email;
             farm.name = $scope.edit.name;
             farm.phone = $scope.edit.phone;
             farm.products = $scope.edit.products;
             farm.author = $scope.edit.author;
-            update(farm);
+            checkContributor(author, email)
+            .then(function(res) {
+                if (res.data.err) {
+                    console.log('error', res.data.err);
+                    return;
+                }
+                if (res.data.status === 'invalid') {
+                    /*TODO: alert invalid identity*/
+                    console.log('invalid identity');
+                    return;
+                }
+                if (res.data.status === 'available') {
+                    addContributor(author, email);
+                }
+                update(farm);
+            }, function(err) {
+                console.log('error', err);
+            });
             /*TODO: thanks*/
             $state.go('farmInfo.view', {farmId: farmInfoCtrl.farm.id}, {reload: true});
+        }
+
+        function checkContributor(name, email) {
+            var req = {
+                method: 'post',
+                url: '/checkContributor',
+                data: {name: name, email: email}
+            };
+            return $http(req);
+        }
+
+        function addContributor(name, email) {
+            var req = {
+                method: 'post',
+                url: '/addContributor?',
+                data: {name: name, email: email}
+            };
+            $http(req).then(function(res) {
+            }, function(err) {
+                console.log('error', err);
+            });
         }
 
         function cancelEdit() {
