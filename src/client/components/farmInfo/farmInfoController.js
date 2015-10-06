@@ -47,7 +47,6 @@
             return $http(req).then(function(res) {
                 if (!res.data.err) {
                     var farmInfo = res.data.farmInfo;
-                    console.log(farmInfo);
                     for (var key in farmInfo) {
                         target[key] = farmInfo[key];
                     }
@@ -72,13 +71,13 @@
 
         function update(farm) {
             var req = {
-                    method: 'post',
-                    url: '/updateFarm',
-                    data: farm
+                method: 'post',
+                url: '/updateFarm',
+                data: farm
             };
             $http(req).then(function(res) {
             }, function(err) {
-                    console.log('update error', err);
+                console.log('update error', err);
             });
         }
 
