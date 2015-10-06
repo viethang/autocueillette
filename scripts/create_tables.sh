@@ -35,6 +35,7 @@ CREATE TABLE farm_archive (
   city varchar(50),
   canton varchar(50),
   country varchar(50),
+  products text,
   coordinates geography(POINT, 4326),
   lat float,
   lon float,
