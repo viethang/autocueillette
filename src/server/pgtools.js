@@ -78,10 +78,15 @@ function searchFarms(data, callback) {
         var lat = data.coordinates[0];
         var lon = data.coordinates[1];
         var query;
+        var dist = 50000; /*default search radius*/
         if (data.products) {
             products = data.products.match(/\w+|"(?:\\"|[^"])+"/g); /*Split string 'salade "haricot vert"' into ['salade', 'haricot vert']*/
+            products = products.map(function(product) {
+                return product.replace(/\"/g, '\'');
+            }); /*replace " by ' to use in to_tsquery*/ 
             query = products.join('|');
-            client.query('SELECT * FROM farm WHERE to_tsvector(products) @@ to_tsquery($1) ORDER BY ts_rank_cd(to_tsvector(products), to_tsquery($1)) DESC', [query], function(err, result) {
+            /*Order search result according to relevance in products then to the distance*/ 
+            client.query('SELECT * FROM farm, ST_DISTANCE(coordinates, ST_Point($1, $2)) distance WHERE to_tsvector(products) @@ to_tsquery($3) AND distance < $4 ORDER BY ts_rank_cd(to_tsvector(products), to_tsquery($3)) DESC, distance ASC', [lat, lon, query, dist], function(err, result) {
                 done();
                 if (err) {
                     callback(err);
@@ -92,8 +97,8 @@ function searchFarms(data, callback) {
             });
             return;
         }
-        /*If no product specified, search for all farm in a radius of 50km*/ 
-        client.query('SELECT * FROM farm, ST_DISTANCE(coordinates, ST_Point($1, $2)) distance WHERE distance < 50000', [lat, lon], function(err, result) {
+        /*If no product specified, search for all farm in a radius of dist, order by distance*/ 
+        client.query('SELECT * FROM farm, ST_DISTANCE(coordinates, ST_Point($1, $2)) distance WHERE distance < $3 ORDER BY distance ASC', [lat, lon, dist], function(err, result) {
             done();
             if (err) {
                 callback(err);
