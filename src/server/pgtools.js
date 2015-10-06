@@ -81,7 +81,7 @@ function searchFarms(data, callback) {
         if (data.products) {
             products = data.products.match(/\w+|"(?:\\"|[^"])+"/g); /*Split string 'salade "haricot vert"' into ['salade', 'haricot vert']*/
             query = products.join('|');
-            client.query('SELECT * FROM farm WHERE to_tsvector(products) @@ ts_query($1) ORDER BY ts_rank_cd(to_tsvector(products), ts_query($1)) DESC', [query], function(err, result) {
+            client.query('SELECT * FROM farm WHERE to_tsvector(products) @@ to_tsquery($1) ORDER BY ts_rank_cd(to_tsvector(products), to_tsquery($1)) DESC', [query], function(err, result) {
                 done();
                 if (err) {
                     callback(err);

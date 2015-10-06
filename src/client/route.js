@@ -46,4 +46,5 @@ angular.module('app')
 		url: '/edit',
 		templateUrl: 'components/farmInfo/farmInfo.edit.tpl.html'
 	});
+        url: '/search/:place/:products',
 }]);

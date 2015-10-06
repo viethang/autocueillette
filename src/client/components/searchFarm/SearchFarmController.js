@@ -9,16 +9,18 @@
         var searchFarmCtrl = this;
         var map = new OLServices.OLMap();
         var center;
-        console.log('state = search');
+        searchFarmCtrl.format = function(farm) {
+            return [farm.street, farm.city, farm.canton, farm.country].filter(Boolean).join(', ');
+        };
         searchFarmCtrl.searchForm = {};
         searchFarmCtrl.searchForm.place = $stateParams.place;
-        searchFarmCtrl.searchForm.product = $stateParams.product;
-        if (searchFarmCtrl.searchForm.place || searchFarmCtrl.searchForm.product) {
-            search(searchFarmCtrl.searchForm.place, searchFarmCtrl.searchForm.product);
+        searchFarmCtrl.searchForm.products = $stateParams.products;
+        if (searchFarmCtrl.searchForm.place || searchFarmCtrl.searchForm.products) {
+            search(searchFarmCtrl.searchForm.place, searchFarmCtrl.searchForm.products);
         }
-        searchFarmCtrl.search = function (place, product) {
+        searchFarmCtrl.search = function (place, products) {
             place = place || 'lausanne, suisse';
-            $state.go('search', {place: place, product: product});
+            $state.go('search', {place: place, products: products});
         };
         $scope.show = {};
         searchFarmCtrl.showFarm = function(farm) {
@@ -27,12 +29,12 @@
 
         searchFarmCtrl.choose = function(place) {
             searchFarmCtrl.searchForm.place = place.formattedAddress;
-            $state.go('search', {place: place.formattedAddress, product:  searchFarmCtrl.searchForm.product});
-            searchIndex(place, searchFarmCtrl.searchForm.product);
+            $state.go('search', {place: place.formattedAddress, products:  searchFarmCtrl.searchForm.products});
+            searchIndex(place, searchFarmCtrl.searchForm.products);
             searchFarmCtrl.searchAlert = null;
         };
 
-        function search(place, product) {
+        function search(place, products) {
             searchFarmCtrl.searchAlert = null;
             searchService.bingSearch(place, function(response) {
                 switch (response.status) {
@@ -55,7 +57,7 @@
                             });
                             alert('components/searchFarm/multiAddr.alert.tpl.html');
                         } else {
-                            searchFarms(response.result[0], product);
+                            searchFarms(response.result[0], products);
                         }
                         break;
                 }
@@ -65,11 +67,11 @@
         function alert(templateUrl) {
             searchFarmCtrl.searchAlert = templateUrl;
         }
-        function searchFarms(suggestion, product) {
+        function searchFarms(suggestion, products) {
             center = suggestion.geocodePoints[0].coordinates;
             var data = {
                 coordinates: center,
-                product: product
+                products: products
             };
             var req = {
                 method: 'post',
@@ -90,13 +92,10 @@
         }
 
         function showMap(results) {
-            console.log('show map');
             map.map.setTarget('map_search');
             map.resetView(center);
-            results.forEach(function(result) {
-                var tmp = result.coordinates.split(',');
-                var point = [parseFloat(tmp[0]), parseFloat(tmp[1])];
-                map.addPoint(point, result.short_address);
+            results.forEach(function(farm) {
+                map.addPoint([farm.lat, farm.lon]);
             });
             map.fit();
         }

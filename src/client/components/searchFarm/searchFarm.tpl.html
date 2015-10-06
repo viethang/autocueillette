@@ -46,9 +46,9 @@
                     <h4>Results</h4>
                     <ol>
                         <li ng-repeat = 'farm in searchFarmCtrl.results'>
-                            <a href = '' ng-click = 'searchFarmCtrl.showFarm(farm)'>{{(farm.name || farm.short_address)}}</a>
+                            <a href = '' ng-click = 'searchFarmCtrl.showFarm(farm)'>{{farm.name || searchFarmCtrl.format(farm)}}</a>
                             <div>
-                                <span>Products: {{farm.product.join(', ')}}</span>
+                                <span>Products: {{farm.products}}</span>
                             </div>
                             <div>
                                 <span>Distance: {{farm.distance/1000| number:2}}km</span>

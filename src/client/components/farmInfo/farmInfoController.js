@@ -95,7 +95,7 @@
             var farm = farmInfoCtrl.farm;
             if (($scope.edit.name === farm.name) &&
                 ($scope.edit.phone === farm.phone) &&
-                ($scope.edit.product === farm.product) &&
+                ($scope.edit.products === farm.products) &&
                 (!$scope.edit.comment)) {
                 return;
             }
@@ -110,7 +110,7 @@
             delete farmCopy.history;
             farm.name = $scope.edit.name;
             farm.phone = $scope.edit.phone;
-            farm.product = $scope.edit.product;
+            farm.products = $scope.edit.products;
             var same = true;
             for (var prop in farm) {
                 if (farm[prop] !== farmCopy[prop]) {
