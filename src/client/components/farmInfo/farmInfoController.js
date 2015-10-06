@@ -76,7 +76,7 @@
             }, function(err) {
                 console.log('send comment error', err);
             });
-                
+
             $state.go('farmInfo.view', {farmId: farmInfoCtrl.farm.id}, {reload: true});
         }
 
@@ -130,6 +130,7 @@
                 }
                 if (res.data.status === 'invalid') {
                     /*TODO: alert invalid identity*/
+                    $scope.invalidIdentity = true;
                     console.log('invalid identity');
                     return;
                 }
@@ -137,11 +138,11 @@
                     addContributor(author, email);
                 }
                 update(farm);
+
+                $state.go('farmInfo.view', {farmId: farmInfoCtrl.farm.id}, {reload: true});
             }, function(err) {
                 console.log('error', err);
             });
-            /*TODO: thanks*/
-            $state.go('farmInfo.view', {farmId: farmInfoCtrl.farm.id}, {reload: true});
         }
 
         function checkContributor(name, email) {

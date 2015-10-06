@@ -113,7 +113,7 @@
                     return;
                 }
                 alertExistence(res.data.id);
-            }, function(err){console.log('err', err);});
+            }, function(err) {console.log('err', err);});
         }
 
         function alertCloseFarms(closeFarms) {

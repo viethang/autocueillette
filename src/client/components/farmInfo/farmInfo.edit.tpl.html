@@ -3,7 +3,7 @@
         <div class = 'form-group row'>
             <label class = 'col-md-3 col-sm-3 text-right'>Address:</label>
             <div class = 'col-md-9 col-sm-9'>
-                <div><span ng-bind = 'farmInfoCtrl.farm.formattedAddress'></span></div>
+                <div><span ng-bind = 'farmInfoCtrl.format(farmInfoCtrl.farm)'></span></div>
                 <div><a href = '' ng-click = 'reportBadAddr()'> Report incorrect address</a></div>
             </div>
         </div>
@@ -35,13 +35,15 @@
         <div class = 'row form-group'>
             <label class = 'col-md-3 col-sm-3 text-right'>Your usename: </label>
             <div class = 'col-md-9 col-sm-9'>
-                <input class = 'form-control' ng-model = 'editor.name'/>
+                <input class = 'form-control' ng-model = 'edit.author'/>
+                <span ng-show = 'invalidIdentity'
+                class = 'text-danger'>*This name is already used by someone. Enter the right e-mail to use this again or choose another name.</span>
             </div>
         </div>
         <div class = 'row form-group'>
-            <label class = 'col-md-3 col-sm-3 text-right'>Email:</label>
+            <label class = 'col-md-3 col-sm-3 text-right'>E-mail:</label>
             <div class = 'col-md-9 col-sm-9'>
-                <input class = 'form-control' ng-model = 'editor.email'/>
+                <input class = 'form-control' ng-model = 'edit.email'/>
                 <div>
                     <span class = 'deemphasize'>Email will not be public. Fill this if you would like to use the same name next time.
                     </span>

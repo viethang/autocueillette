@@ -18,7 +18,7 @@
         if (searchFarmCtrl.searchForm.place || searchFarmCtrl.searchForm.products) {
             search(searchFarmCtrl.searchForm.place, searchFarmCtrl.searchForm.products);
         }
-        searchFarmCtrl.search = function (place, products) {
+        searchFarmCtrl.search = function(place, products) {
             place = place || 'lausanne, suisse';
             $state.go('search', {place: place, products: products});
         };
@@ -29,7 +29,7 @@
 
         searchFarmCtrl.choose = function(place) {
             searchFarmCtrl.searchForm.place = place.formattedAddress;
-            $state.go('search', {place: place.formattedAddress, products:  searchFarmCtrl.searchForm.products});
+            $state.go('search', {place: place.formattedAddress, products: searchFarmCtrl.searchForm.products});
             searchIndex(place, searchFarmCtrl.searchForm.products);
             searchFarmCtrl.searchAlert = null;
         };
