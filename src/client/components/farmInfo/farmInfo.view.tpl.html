@@ -74,16 +74,16 @@
     <br/>
     <div name = 'comments' class = 'panel panel-info row' 
     style = 'max-height: 250px; overflow-Y: auto'
-    ng-show = 'farmInfoCtrl.farm.comments.length'>
+    ng-show = 'farmInfoCtrl.comments.length'>
         <div class = 'panel-body'>
-            <div ng-repeat = 'comment in farmInfoCtrl.farm.comments|orderBy:"-date" : reverse'>
+            <div ng-repeat = 'comment in farmInfoCtrl.comments|orderBy:"-date" : reverse'>
                 <div class = 'panel panel-info'>
                     <div class = 'panel-header'>
-                        <span ng-bind = 'comment.senderName || "anonymous"'></span>
+                        <span ng-bind = 'comment.author || "anonymous"'></span>
                         <span>{{comment.date|date:"MM/dd/yyyy 'at' h:mma"}}</span>
                     </div>
                     <div class = 'panel-body'>
-                        <p ng-bind-html = 'comment.text'></p>
+                        <p ng-bind-html = 'comment.message'></p>
                     </div>
                 </div>
             </div>

@@ -13,6 +13,7 @@
         var map = new OLServices.OLMap();
         $location.hash('');
         $scope.mode = {};
+        $scope.newComment = {};
         $scope.editor = {};
         farmInfoCtrl.farm = {};
         getFarm(farmId, farmInfoCtrl.farm)
@@ -27,6 +28,9 @@
                 phone: farm.phone,
                 products: farm.products
             };
+        })
+        .then(function() {
+            getComments(farmId);
         });
         farmInfoCtrl.sendComment = sendComment;
         farmInfoCtrl.getSenderInfo = getSenderInfo;
@@ -60,15 +64,21 @@
         }
 
         function sendComment(comment) {
-            if (!farmInfoCtrl.farm.comments) {
-                farmInfoCtrl.farm.comments = [];
-            }
-            farmInfoCtrl.farm.comments.push({
-                text: comment.text,
-                date: new Date(),
-                senderName: comment.senderName
+            var req = {
+                method: 'post',
+                url: '/postComment',
+                data: {
+                    id: farmInfoCtrl.farm.id,
+                    message: comment.text,
+                    author: comment.senderName,
+                    email: comment.senderEmail
+                }
+            };
+            $http(req).then(function(res) {
+            }, function(err) {
+                console.log('send comment error', err);
             });
-            update(farmInfoCtrl.farm);
+                
             $state.go('farmInfo.view', {farmId: farmInfoCtrl.farm.id}, {reload: true});
         }
 
@@ -137,6 +147,21 @@
                 $scope.showHistory = true;
             }, function(err) {
                 console.log(err);
+            });
+        }
+
+        function getComments(farmId) {
+            var req = {
+                method: 'get',
+                url: '/getComments?id=' + farmId
+            };
+            return $http(req).then(function(res) {
+                if (res.data.err) {
+                    return;
+                }
+                farmInfoCtrl.comments = res.data;
+            }, function(err) {
+                console.log('get comments error', err);
             });
         }
     }

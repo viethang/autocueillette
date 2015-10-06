@@ -9,6 +9,8 @@ module.exports.updateFarm = updateFarm;
 module.exports.addNewFarm = addNewFarm;
 module.exports.addFarmToArchive = addFarmToArchive;
 module.exports.getFarmHistory = getFarmHistory;
+module.exports.postComment = postComment;
+module.exports.getComments = getComments;
 
 function getFarm(id, callback) {
     pg.connect(conString, function(err, client, done) {
@@ -136,7 +138,7 @@ function addNewFarm(farm, callback) {
     pg.connect(conString, function(err, client, done) {
         if(err) {
             callback(err);
-            console.log('add new farm error', err);
+            console.log('connection error', err);
             return;
         }
         client.query('INSERT INTO farm (name, phone, city, canton, country, products,author, coordinates, lat, lon, date) VALUES ($1::text, $2::text, $3::text, $4::text, $5::text, $6::text, $7::text, ST_SetSRID(ST_Point($8::float, $9::float),4326)::geography, $8::float, $9::float, now()) returning id;', [
@@ -180,6 +182,44 @@ function getFarmHistory(id, callback) {
             return;
         }
         client.query('SELECT * FROM farm_archive WHERE farm_id = $1', [id], function(err, result) {
+            done();
+            if (err) {
+                callback(err);
+                console.log('select query error', err);
+                return;
+            }
+            callback(false, result.rows);
+        });
+    });
+}
+
+function postComment(body, callback) {
+    pg.connect(conString, function(err, client, done) {
+        if(err) {
+            callback(err);
+            console.log('connection error', err);
+            return;
+        }
+        client.query('INSERT INTO farm_comment (farm_id, message, author, date) VALUES($1, $2::text, $3::text, now()) returning id', [body.id, body.message, body.author], function(err, result) {
+            done();
+            if (err) {
+                callback(err);
+                console.log('insert query error', err);
+                return;
+            }
+            callback(false, result.rows[0].id);
+        });
+    });
+}
+
+function getComments(id, callback) {
+    pg.connect(conString, function(err, client, done) {
+        if(err) {
+            callback(err);
+            console.log('connection error', err);
+            return;
+        }
+        client.query('SELECT * FROM farm_comment WHERE farm_id = $1', [id], function(err, result) {
             done();
             if (err) {
                 callback(err);

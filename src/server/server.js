@@ -123,6 +123,29 @@ app.get('/getFarmHistory', function(req, res) {
     });
 });
 
+app.get('/getComments', function(req, res) {
+    var id = req.query.id;
+    pgtools.getComments(id, function(err, rows) {
+        if (err) {
+            res.send({err: err});
+            return;
+        }
+        res.send(rows);
+        console.log('get comments success');
+    });
+});
+
+app.post('/postComment', function(req, res) {
+    pgtools.postComment(req.body, function(err, comment_id) {
+        if (err) {
+        res.send({err: err});
+            return;
+        }
+        res.send({comment_id: comment_id});
+        console.log('post comment success', comment_id);
+    });
+});
+
 app.use(function(req, res) {
     console.log(req.url, 'File not found! Send index.html');
     res.sendFile(path.join(__dirname, serverReversedPath, '/index.html'));
