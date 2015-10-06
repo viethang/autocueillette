@@ -10,21 +10,21 @@
         <div class = 'form-group row'>
             <label class = 'col-md-3 col-sm-3 text-right'>Name:</label>
             <div class = 'col-md-9 col-sm-9'>
-                <input ng-model = 'edit.name'
+                <input ng-model = 'farmInfoCtrl.edit.name'
                 class = 'form-control'/>
             </div>
         </div>
         <div class = 'form-group row'>
             <label class = 'col-md-3 col-sm-3 text-right'>Telephone:</label>
             <div class = 'col-md-9 col-sm-9'>
-                    <input ng-model = 'edit.phone'
+                    <input ng-model = 'farmInfoCtrl.edit.phone'
                     class = 'form-control'/>
             </div>
         </div>
         <div class = 'row form-group'>
             <label class = 'col-md-3 col-sm-3 text-right'>Product(s):</label>
             <div class = 'col-md-9 col-sm-9'>
-                <input ng-model = 'edit.products'
+                <input ng-model = 'farmInfoCtrl.edit.products'
                 class = 'form-control'/>
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class = 'row form-group'>
             <label class = 'col-md-3 col-sm-3 text-right'>Your usename: </label>
             <div class = 'col-md-9 col-sm-9'>
-                <input class = 'form-control' ng-model = 'edit.author'/>
+                <input class = 'form-control' ng-model = 'farmInfoCtrl.edit.author'/>
                 <span ng-show = 'invalidIdentity'
                 class = 'text-danger'>*This name is already used by someone. Enter the right e-mail to use this again or choose another name.</span>
             </div>
@@ -43,7 +43,7 @@
         <div class = 'row form-group'>
             <label class = 'col-md-3 col-sm-3 text-right'>E-mail:</label>
             <div class = 'col-md-9 col-sm-9'>
-                <input class = 'form-control' ng-model = 'edit.email'/>
+                <input class = 'form-control' ng-model = 'farmInfoCtrl.edit.email'/>
                 <div>
                     <span class = 'deemphasize'>Email will not be public. Fill this if you would like to use the same name next time.
                     </span>

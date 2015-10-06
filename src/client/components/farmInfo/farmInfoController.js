@@ -2,206 +2,206 @@
     'use strict';
 
     angular.module('app')
-    .controller('FarmInfoController', farmInfoController);
+    .controller('FarmInfoController', FarmInfoController);
 
-    farmInfoController.$inject = ['$state', '$stateParams', '$http', 'OLServices', '$timeout', 'searchService', '$scope', '$anchorScroll', '$location'];
+    FarmInfoController.$inject = ['$state', '$stateParams', '$http', 'OLServices', '$timeout', '$scope', '$anchorScroll', '$location'];
 
-    function farmInfoController($state, $stateParams, $http, OLServices, $timeout, searchService, $scope, $anchorScroll, $location) {
+    function FarmInfoController($state, $stateParams, $http, OLServices, $timeout, $scope, $anchorScroll, $location) {
         /* jshint validthis: true*/
         var farmId = $stateParams.farmId;
-        var farmInfoCtrl = this;
-        var map = new OLServices.OLMap();
+        this.map = new OLServices.OLMap();
         $location.hash('');
-        $scope.mode = {};
-        $scope.newComment = {};
-        $scope.editor = {};
-        farmInfoCtrl.farm = {};
-        getFarm(farmId).then(function() {
-            setup();
-        }).then(function() {
-            getComments(farmId);
-        });
-        farmInfoCtrl.sendComment = sendComment;
-        farmInfoCtrl.getSenderInfo = getSenderInfo;
-        farmInfoCtrl.getEditorInfo = getEditorInfo;
-        farmInfoCtrl.sendUpdate = sendUpdate;
-        farmInfoCtrl.cancelEdit = cancelEdit;
-        farmInfoCtrl.toEditMode = function() {
+        this._location = $location;
+        this._anchorScroll = $anchorScroll;
+        this._timeout = $timeout;
+        this._http = $http;
+        this._state = $state;
+        this.mode = {};
+        this.newComment = {};
+        this.editor = {};
+        this.farm = {};
+        this.getFarm(farmId)
+        .then(this.setup.bind(this))
+        .then(this.getComments.bind(this, farmId));
+        this.toEditMode = function() {
             $state.go('farmInfo.edit', {farmId: farmId}, {reload: true});
         };
-        farmInfoCtrl.reportBadAddr = reportBadAddr;
-        farmInfoCtrl.showHistoryFn = showHistory;
-        farmInfoCtrl.format = function(farm) {
+        this.format = function(farm) {
             return [farm.street, farm.city, farm.canton, farm.country].filter(Boolean).join(', ');
         };
-        function getFarm(id) {
-            var req = {
-                method: 'post',
-                url: '/getFarm',
-                data: {id: id}
-            };
-            return $http(req).then(function(res) {
-                if (!res.data.err) {
-                    farmInfoCtrl.farm = res.data.farmInfo;
-                }
-            }, function(err) {
-                console.log(err);
-            });
-        }
-
-        function setup() {
-            var farm = farmInfoCtrl.farm;
-            $timeout(function() {
-                map.map.setTarget('map1');
-                map.resetView([farm.lat, farm.lon]);
-            });
-            $scope.edit = {
-                name: farm.name,
-                phone: farm.phone,
-                products: farm.products
-            };
-        }
-        function sendComment(comment) {
-            var req = {
-                method: 'post',
-                url: '/postComment',
-                data: {
-                    id: farmInfoCtrl.farm.id,
-                    message: comment.text,
-                    author: comment.senderName,
-                    email: comment.senderEmail
-                }
-            };
-            $http(req).then(function(res) {
-            }, function(err) {
-                console.log('send comment error', err);
-            });
-
-            $state.go('farmInfo.view', {farmId: farmInfoCtrl.farm.id}, {reload: true});
-        }
-
-        function update(farm) {
-            var req = {
-                method: 'post',
-                url: '/updateFarm',
-                data: farm
-            };
-            $http(req).then(function(res) {
-            }, function(err) {
-                console.log('update error', err);
-            });
-        }
-
-        function getSenderInfo() {
-            if (!$scope.newComment.text) {
-                return;
-            }
-            $scope.getSenderInfo = true;
-            $location.hash('senderInfo');
-            $anchorScroll();
-        }
-
-        function getEditorInfo() {
-            var farm = farmInfoCtrl.farm;
-            if (($scope.edit.name === farm.name) &&
-                ($scope.edit.phone === farm.phone) &&
-                ($scope.edit.products === farm.products) &&
-                (!$scope.edit.comment)) {
-                return;
-            }
-            $scope.getEditorInfo = true;
-            $location.hash('editorInfo');
-            $anchorScroll();
-        }
-
-        function sendUpdate() {
-            var farm = farmInfoCtrl.farm;
-            var author = $scope.edit.author;
-            var email = $scope.edit.email;
-            farm.name = $scope.edit.name;
-            farm.phone = $scope.edit.phone;
-            farm.products = $scope.edit.products;
-            farm.author = $scope.edit.author;
-            checkContributor(author, email)
-            .then(function(res) {
-                if (res.data.err) {
-                    console.log('error', res.data.err);
-                    return;
-                }
-                if (res.data.status === 'invalid') {
-                    /*TODO: alert invalid identity*/
-                    $scope.invalidIdentity = true;
-                    console.log('invalid identity');
-                    return;
-                }
-                if (res.data.status === 'available') {
-                    addContributor(author, email);
-                }
-                update(farm);
-
-                $state.go('farmInfo.view', {farmId: farmInfoCtrl.farm.id}, {reload: true});
-            }, function(err) {
-                console.log('error', err);
-            });
-        }
-
-        function checkContributor(name, email) {
-            var req = {
-                method: 'post',
-                url: '/checkContributor',
-                data: {name: name, email: email}
-            };
-            return $http(req);
-        }
-
-        function addContributor(name, email) {
-            var req = {
-                method: 'post',
-                url: '/addContributor?',
-                data: {name: name, email: email}
-            };
-            $http(req).then(function(res) {
-            }, function(err) {
-                console.log('error', err);
-            });
-        }
-
-        function cancelEdit() {
-            $state.go('farmInfo.view', {farmId: farmInfoCtrl.farm.id}, {reload: true});
-        }
-
-        function reportBadAddr() {
-        }
-
-        function showHistory() {
-            var req = {
-                method: 'get',
-                url: '/getFarmHistory?id=' + farmInfoCtrl.farm.id
-            };
-            return $http(req).then(function(res) {
-                if (res.data.err) {
-                    return;
-                }
-                farmInfoCtrl.farmHistory = res.data;
-                farmInfoCtrl.showHistory = true;
-            }, function(err) {
-                console.log(err);
-            });
-        }
-
-        function getComments(farmId) {
-            var req = {
-                method: 'get',
-                url: '/getComments?id=' + farmId
-            };
-            return $http(req).then(function(res) {
-                if (res.data.err) {
-                    return;
-                }
-                farmInfoCtrl.comments = res.data;
-            }, function(err) {
-                console.log('get comments error', err);
-            });
-        }
     }
+
+    FarmInfoController.prototype.getFarm = function(id) {
+        var req = {
+            method: 'post',
+            url: '/getFarm',
+            data: {id: id}
+        };
+        return this._http(req).then(function(res) {
+            if (!res.data.err) {
+                this.farm = res.data.farmInfo;
+            }
+        }.bind(this), function(err) {
+            console.log(err);
+        });
+    };
+
+    FarmInfoController.prototype.setup = function() {
+        var farm = this.farm;
+        this._timeout(function() {
+            this.map.map.setTarget('map1');
+            this.map.resetView([farm.lat, farm.lon]);
+        }.bind(this));
+        this.edit = {
+            name: farm.name,
+            phone: farm.phone,
+            products: farm.products
+        };
+    };
+
+    FarmInfoController.prototype.sendComment = function(comment) {
+        var req = {
+            method: 'post',
+            url: '/postComment',
+            data: {
+                id: this.farm.id,
+                message: comment.text,
+                author: comment.senderName,
+                email: comment.senderEmail
+            }
+        };
+        this._http(req).then(function(res) {
+        }, function(err) {
+            console.log('send comment error', err);
+        });
+
+        this._state.go('farmInfo.view', {farmId: this.farm.id}, {reload: true});
+    };
+
+    FarmInfoController.prototype.update = function(farm) {
+        var req = {
+            method: 'post',
+            url: '/updateFarm',
+            data: farm
+        };
+        this._http(req).then(function(res) {
+        }, function(err) {
+            console.log('update error', err);
+        });
+    };
+
+    FarmInfoController.prototype.getSenderInfoFn = function() {
+        if (!this.newComment.text) {
+            return;
+        }
+        this.getSenderInfo = true;
+        this._location.hash('senderInfo');
+        this._anchorScroll();
+    };
+
+    FarmInfoController.prototype.getEditorInfoFn = function() {
+        var farm = this.farm;
+	var edit = this.edit;
+        if ((edit.name === farm.name) &&
+            (edit.phone === farm.phone) &&
+            (edit.products === farm.products) &&
+            (!edit.comment)) {
+            return;
+        }
+        this.getEditorInfo = true;
+        this._location.hash('editorInfo');
+        this._anchorScroll();
+    };
+
+    FarmInfoController.prototype.sendUpdate = function() {
+        var farm = this.farm;
+	var edit = this.edit;
+        var author = edit.author;
+        var email = edit.email;
+        farm.name = edit.name;
+        farm.phone = edit.phone;
+        farm.products = edit.products;
+        farm.author = edit.author;
+        this.checkContributor(author, email)
+        .then(function(res) {
+            if (res.data.err) {
+                console.log('error', res.data.err);
+                return;
+            }
+            if (res.data.status === 'invalid') {
+                /*TODO: alert invalid identity*/
+                this.invalidIdentity = true;
+                console.log('invalid identity');
+                return;
+            }
+            if (res.data.status === 'available') {
+                this.addContributor(author, email);
+            }
+            this.update(farm);
+
+            this._state.go('farmInfo.view', {farmId: this.farm.id}, {reload: true});
+        }.bind(this), function(err) {
+            console.log('error', err);
+        });
+    };
+
+    FarmInfoController.prototype.checkContributor = function(name, email) {
+        var req = {
+            method: 'post',
+            url: '/checkContributor',
+            data: {name: name, email: email}
+        };
+        return this._http(req);
+    };
+
+    FarmInfoController.prototype.addContributor = function(name, email) {
+        var req = {
+            method: 'post',
+            url: '/addContributor?',
+            data: {name: name, email: email}
+        };
+        this._http(req).then(function(res) {
+        }, function(err) {
+            console.log('error', err);
+        });
+    };
+
+    FarmInfoController.prototype.cancelEdit = function() {
+        this._state.go('farmInfo.view', {farmId: this.farm.id}, {reload: true});
+    };
+
+    FarmInfoController.prototype.reportBadAddr = function() {
+    };
+
+    FarmInfoController.prototype.showHistoryFn = function() {
+        var req = {
+            method: 'get',
+            url: '/getFarmHistory?id=' + this.farm.id
+        };
+        return this._http(req).then(function(res) {
+            if (res.data.err) {
+                return;
+            }
+            this.farmHistory = res.data;
+            this.showHistory = true;
+        }.bind(this), function(err) {
+            console.log(err);
+        });
+    };
+
+    FarmInfoController.prototype.getComments = function(farmId) {
+        var req = {
+            method: 'get',
+            url: '/getComments?id=' + farmId
+        };
+        return this._http(req).then(function(res) {
+            if (res.data.err) {
+                return;
+            }
+            this.comments = res.data;
+        }.bind(this), function(err) {
+            console.log('get comments error', err);
+        });
+    };
+
 })();
