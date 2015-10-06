@@ -16,20 +16,9 @@
         $scope.newComment = {};
         $scope.editor = {};
         farmInfoCtrl.farm = {};
-        getFarm(farmId, farmInfoCtrl.farm)
-        .then(function() {
-            var farm = farmInfoCtrl.farm;
-            $timeout(function() {
-                map.map.setTarget('map1');
-                map.resetView([farm.lat, farm.lon]);
-            });
-            $scope.edit = {
-                name: farm.name,
-                phone: farm.phone,
-                products: farm.products
-            };
-        })
-        .then(function() {
+        getFarm(farmId).then(function() {
+            setup();
+        }).then(function() {
             getComments(farmId);
         });
         farmInfoCtrl.sendComment = sendComment;
@@ -45,7 +34,7 @@
         farmInfoCtrl.format = function(farm) {
             return [farm.street, farm.city, farm.canton, farm.country].filter(Boolean).join(', ');
         };
-        function getFarm(id, target) {
+        function getFarm(id) {
             var req = {
                 method: 'post',
                 url: '/getFarm',
@@ -53,16 +42,25 @@
             };
             return $http(req).then(function(res) {
                 if (!res.data.err) {
-                    var farmInfo = res.data.farmInfo;
-                    for (var key in farmInfo) {
-                        target[key] = farmInfo[key];
-                    }
+                    farmInfoCtrl.farm = res.data.farmInfo;
                 }
             }, function(err) {
                 console.log(err);
             });
         }
 
+        function setup() {
+            var farm = farmInfoCtrl.farm;
+            $timeout(function() {
+                map.map.setTarget('map1');
+                map.resetView([farm.lat, farm.lon]);
+            });
+            $scope.edit = {
+                name: farm.name,
+                phone: farm.phone,
+                products: farm.products
+            };
+        }
         function sendComment(comment) {
             var req = {
                 method: 'post',
