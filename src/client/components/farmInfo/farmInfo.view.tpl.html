@@ -35,15 +35,15 @@
      <div class = 'col-md-12 col-sm-12'>
         <small class = 'deemphasized'>Last update <span ng-bind = 'farmInfoCtrl.farm.date|date: "MM/dd/yyyy h:mma"'> </span>
         <a href = ''
-        ng-show = '!showHistory'
-        ng-click = 'farmInfoCtrl.showHistory()'>see update history</a>
+        ng-show = '!farmInfoCtrl.showHistory'
+        ng-click = 'farmInfoCtrl.showHistoryFn()'>see update history</a>
         <a href = ''
-        ng-show = 'showHistory'
-        ng-click = 'showHistory = false'>hide update history</a>
+        ng-show = 'farmInfoCtrl.showHistory'
+        ng-click = 'farmInfoCtrl.showHistory = false'>hide update history</a>
         </small>
     </div>
     <div class = 'col-md-12 col-sm-12 small'
-    ng-show = 'showHistory'>
+    ng-show = 'farmInfoCtrl.showHistory'>
         <div class = 'panel panel-info'
             style = 'max-height: 250px; overflow-Y: auto'>
             <div class = 'panel-heading'>

@@ -30,7 +30,7 @@
             $state.go('farmInfo.edit', {farmId: farmId}, {reload: true});
         };
         farmInfoCtrl.reportBadAddr = reportBadAddr;
-        farmInfoCtrl.showHistory = showHistory;
+        farmInfoCtrl.showHistoryFn = showHistory;
         farmInfoCtrl.format = function(farm) {
             return [farm.street, farm.city, farm.canton, farm.country].filter(Boolean).join(', ');
         };
@@ -182,7 +182,7 @@
                     return;
                 }
                 farmInfoCtrl.farmHistory = res.data;
-                $scope.showHistory = true;
+                farmInfoCtrl.showHistory = true;
             }, function(err) {
                 console.log(err);
             });
