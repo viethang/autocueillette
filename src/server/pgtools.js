@@ -7,6 +7,7 @@ module.exports.checkFarmInDb = checkFarmInDb;
 module.exports.searchFarms = searchFarms;
 module.exports.updateFarm = updateFarm;
 module.exports.addNewFarm = addNewFarm;
+module.exports.addFarmToArchive = addFarmToArchive;
 
 function getFarm(id, callback) {
     pg.connect(conString, function(err, client, done) {
@@ -146,6 +147,26 @@ function addNewFarm(farm, callback) {
                 return;
             }
             callback(false, result.rows[0].id);
+        });
+    });
+}
+
+function addFarmToArchive(farm, callback) {
+    pg.connect(conString, function(err, client, done) {
+        if(err) {
+            callback(err);
+            console.log('connection error', err);
+            return;
+        }
+        client.query('INSERT INTO farm_archive (name, phone, city, canton, country, products,author, coordinates, lat, lon, date, farm_id) VALUES ($1::text, $2::text, $3::text, $4::text, $5::text, $6::text, $7::text, ST_SetSRID(ST_Point($8::float, $9::float),4326)::geography, $8::float, $9::float, now(), $10);', [
+        farm.name, farm.tel, farm.city, farm.canton, farm.country, farm.product, 'TODO', farm.lat, farm.lon, farm.id], function(err, result) {
+            done();
+            if(err) {
+                callback(err);
+                console.log('insert query error', err);
+                return;
+            }
+            callback(false);
         });
     });
 }

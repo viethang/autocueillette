@@ -29,6 +29,13 @@ app.post('/addNewFarm', function(req, res, next) {
         }
         res.send({id: id});
         console.log('add farm success');
+        /*Add farm to farm_archive*/
+        pgtools.addFarmToArchive(farm, function(err) {
+            if (err) {
+                return;
+            }
+            console.log('add to archive success');
+        });
     });
 });
 
@@ -46,13 +53,39 @@ app.post('/getFarm', function(req, res) {
 
 app.post('/updateFarm', function(req, res) {
     var farm = req.body;
-    pgtools.updateFarm(farm, function(err) {
+    pgtools.getFarm(farm.id, function(err, result) { /*result = farm in database*/
         if (err) {
             res.send({err: err});
             return;
         }
-        res.send();
-        console.log('update success');
+        /* Check if farm infos are changed*/
+        var oldFarm = result;
+        var same = true;
+        var props = ['name', 'phone', 'products'];
+        var prop;
+        for (var i = 0; i < props.length; i++) {
+            prop = props[i];
+            if (farm[prop] !== oldFarm[prop]) {
+                same = false;
+            }
+        }
+        if (same) {return;}
+
+        /* Farm infos are changed, update farm and farm_archive*/
+        pgtools.updateFarm(farm, function(err) {
+            if (err) {
+                res.send({err: err});
+                return;
+            }
+            res.send();
+            console.log('update success');
+            pgtools.addFarmToArchive(farm, function(err) {
+                if (err) {
+                    return;
+                }
+                console.log('add to archive success');
+            });
+        });
     });
 });
 
