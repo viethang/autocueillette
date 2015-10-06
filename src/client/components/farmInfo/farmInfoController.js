@@ -37,7 +37,10 @@
             $state.go('farmInfo.edit', {farmId: farmId}, {reload: true});
         };
         farmInfoCtrl.reportBadAddr = reportBadAddr;
-
+        farmInfoCtrl.showHistory = showHistory;
+        farmInfoCtrl.format = function(farm) {
+            return [farm.street, farm.city, farm.canton, farm.country].filter(Boolean).join(', ');
+        };
         function getFarm(id, target) {
             var req = {
                 method: 'post',
@@ -105,37 +108,12 @@
 
         function sendUpdate() {
             var farm = farmInfoCtrl.farm;
-            var farmCopy = angular.copy(farm);
-            delete farmCopy.history;
             farm.name = $scope.edit.name;
             farm.phone = $scope.edit.phone;
             farm.products = $scope.edit.products;
-            var same = true;
-            for (var prop in farm) {
-                if (farm[prop] !== farmCopy[prop]) {
-                    same = false;
-                    break;
-                }
-            }
-            if (!same) {
-                if (!farm.history) {
-                    farm.history = [];
-                }
-                var trace = {
-                    editor: $scope.editor.name,
-                    date: new Date(),
-                    oldInfo: farmCopy
-                };
-                farm.history.push(trace);
-            }
-            if ($scope.edit.comment) {
-                farm.comments.push({
-                    text: $scope.edit.comment,
-                    date: new Date(),
-                    senderName: $scope.editor.name
-                });
-            }
+            farm.author = $scope.edit.author;
             update(farm);
+            /*TODO: thanks*/
             $state.go('farmInfo.view', {farmId: farmInfoCtrl.farm.id}, {reload: true});
         }
 
@@ -144,6 +122,22 @@
         }
 
         function reportBadAddr() {
+        }
+
+        function showHistory() {
+            var req = {
+                method: 'get',
+                url: '/getFarmHistory?id=' + farmInfoCtrl.farm.id
+            };
+            return $http(req).then(function(res) {
+                if (res.data.err) {
+                    return;
+                }
+                farmInfoCtrl.farmHistory = res.data;
+                $scope.showHistory = true;
+            }, function(err) {
+                console.log(err);
+            });
         }
     }
 })();

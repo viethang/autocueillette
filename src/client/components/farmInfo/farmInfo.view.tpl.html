@@ -32,6 +32,39 @@
             ng-click = 'farmInfoCtrl.toEditMode()'>update it</a> or <a href ='' ng-click = 'famrInfoCtrl.reportBadAddr()'>report incorrect address</a>.</p>
         </div>
     </div>
+     <div class = 'col-md-12 col-sm-12'>
+        <small class = 'deemphasized'>Last update <span ng-bind = 'farmInfoCtrl.farm.date|date: "MM/dd/yyyy h:mma"'> </span>
+        <a href = ''
+        ng-show = '!showHistory'
+        ng-click = 'farmInfoCtrl.showHistory()'>see update history</a>
+        <a href = ''
+        ng-show = 'showHistory'
+        ng-click = 'showHistory = false'>hide update history</a>
+        </small>
+    </div>
+    <div class = 'col-md-12 col-sm-12 small'
+    ng-show = 'showHistory'>
+        <div class = 'panel panel-info'
+            style = 'max-height: 250px; overflow-Y: auto'>
+            <div class = 'panel-heading'>
+                <h5>Update history</h5>
+            </div>
+            <div class = 'panel-body'>
+                <div ng-repeat = 'item in farmInfoCtrl.farmHistory | orderBy:"-date" : reverse'>
+                    <div class = 'panel panel-info'>
+                        <div class = 'panel-body'>
+                            <div class = 'text-right'>by {{item.author || 'anonymous'}}, {{item.date | date:"MM/dd/yyyy 'at' h:mma"}}</div>
+                            <div ng-show = 'farmInfoCtrl.format(item)'>Address: {{farmInfoCtrl.format(item)}}</div>
+                            <div ng-show = 'item.name'>Name: {{item.name}}</div>
+                            <div ng-show = 'item.phone'>Phone: {{item.phone}}</div>
+                            <div ng-show = 'item.products'>Products: {{item.products}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
     <div id = 'map1' aspect-ratio = '1:2' class = 'col-md-12 col-sm-12'></div>
 </div>
 </div>

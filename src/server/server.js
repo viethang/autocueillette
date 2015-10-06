@@ -105,10 +105,24 @@ app.post('/newFarm/checkDb', function(req, res) {
     pgtools.checkFarmInDb(farm, function(err, body) {
         if (err) {
             res.send({err: err});
+            return;
         }
         res.send(body);
     });
 });
+
+app.get('/getFarmHistory', function(req, res) {
+    var id = req.query.id;
+    pgtools.getFarmHistory(id, function(err, rows) {
+        if (err) {
+            res.send({err: err});
+            return;
+        }
+        res.send(rows);
+        console.log('get farm history success');
+    });
+});
+
 app.use(function(req, res) {
     console.log(req.url, 'File not found! Send index.html');
     res.sendFile(path.join(__dirname, serverReversedPath, '/index.html'));
