@@ -11,7 +11,7 @@
 
 		<!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
 		<script type="text/javascript" src="<%= file %>"></script><% }); %>
-		<script>document.write('<script src="http://'
+		<script>document.write('<script async src="http://'
 			+ (location.host || 'localhost').split(':')[0]
 			+ ':35729/livereload.js"></'
 			+ 'script>')</script>

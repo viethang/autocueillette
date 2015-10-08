@@ -8,7 +8,6 @@
     "angular-bootstrap": "~0.13.3",
     "angular-ui-router": "~0.2.15",
     "livereload-js": "~2.2.1",
-    "OpenLayers": "~3.8.2",
     "angular-sanitize": "~1.4.5"
   },
   "dependencies": {},

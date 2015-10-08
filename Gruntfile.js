@@ -470,6 +470,7 @@ module.exports = function ( grunt ) {
 		'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'copy:build_server', 'index:build', 'karmaconfig', 'karma:continuous'
 	]);
 
+
 	/**
 		* The `compile` task gets your app ready for deployment by concatenating and
 		* minifying your code.
