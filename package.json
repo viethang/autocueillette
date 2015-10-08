@@ -15,9 +15,11 @@
   "dependencies": {},
   "devDependencies": {
     "body-parser": "^1.13.3",
+    "bower": "^1.5.3",
     "express": "^4.13.3",
     "grunt": "~0.4.1",
     "grunt-bump": "0.0.6",
+    "grunt-cli": "^0.1.13",
     "grunt-coffeelint": "~0.0.10",
     "grunt-contrib-clean": "^0.4.1",
     "grunt-contrib-coffee": "^0.7.0",
@@ -38,8 +40,12 @@
     "karma-coffee-preprocessor": "^0.2.1",
     "karma-firefox-launcher": "^0.1.3",
     "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.2.1",
     "nano": "^6.1.5",
+    "nodemon": "^1.7.1",
+    "openlayers": "^3.9.0",
     "pg": "^4.4.2",
+    "phantomjs": "^1.9.18",
     "request": "^2.61.0"
   }
 }
