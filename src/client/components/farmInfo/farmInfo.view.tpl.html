@@ -15,7 +15,7 @@
         <div class = 'form-group row'>
             <label class = 'col-md-3 col-sm-3'>Address:</label>
             <div class = 'col-md-9 col-sm-9'>
-                <span ng-bind = 'farmInfoCtrl.farm.formattedAddress'></span>
+		    <span ng-bind = 'farmInfoCtrl.format(farmInfoCtrl.farm)'></span>
             </div>
         </div>
         <div class = 'row form-group'>
@@ -91,7 +91,7 @@
     </div>
     <div class = 'row' id = 'postComment'>
         <div>
-            <p>Would like to share your experience on this farm, it products or any advice with others?</p>
+            <p>Would like to share your experience about this farm, its products or any advice with others?</p>
             <textarea placeholder = 'Write your comment here' style = 'width: 100%; height: 100px'
             ng-model = 'farmInfoCtrl.newComment.text'></textarea>
             <button class = 'btn btn-primary'
